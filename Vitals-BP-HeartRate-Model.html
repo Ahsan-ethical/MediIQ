@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MediIQ — How the BP &amp; Heart-Rate Model Works</title>
+<style>
+  :root{
+    --brand:#e11d48; --brand-2:#f43f5e; --accent:#8b5cf6; --teal:#0d9488;
+    --bg:#fdf6f7; --surface:#ffffff; --surface-2:#f8eef0; --surface-3:#f2e2e5;
+    --text:#1a0d11; --muted:#57444a; --subtle:#9b8288; --border:#eddadd;
+    --good:#10b981; --warn:#f59e0b; --bad:#dc2626;
+    --code-bg:#1a0f14; --code-text:#f5e6ea;
+    --shadow:0 1px 2px rgba(26,13,17,.05),0 10px 26px -14px rgba(26,13,17,.25);
+  }
+  html[data-theme="dark"]{
+    --bg:#0e0709; --surface:#170d11; --surface-2:#1f1216; --surface-3:#2a181e;
+    --text:#f7e9ec; --muted:#c0a5ac; --subtle:#8a6e75; --border:#301c22;
+    --code-bg:#0a0507; --code-text:#f0dfe3;
+    --shadow:0 1px 2px rgba(0,0,0,.5),0 14px 32px -16px rgba(0,0,0,.85);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--text);
+    font-family:"Segoe UI",Roboto,-apple-system,Helvetica,Arial,sans-serif;line-height:1.75;font-size:16px}
+  #progress{position:fixed;top:0;left:0;height:3px;width:0;z-index:100;
+    background:linear-gradient(90deg,var(--brand),var(--accent),var(--teal));transition:width .1s linear}
+  .shell{display:grid;grid-template-columns:300px 1fr;max-width:1520px;margin:0 auto}
+  aside{position:sticky;top:0;height:100vh;overflow-y:auto;border-right:1px solid var(--border);
+    background:var(--surface);padding:20px 14px 60px}
+  .brand{display:flex;align-items:center;gap:11px;padding:6px 10px 14px}
+  .brand .logo{width:40px;height:40px;border-radius:12px;flex:0 0 auto;
+    background:linear-gradient(135deg,var(--brand),var(--accent));display:grid;place-items:center;color:#fff;font-size:20px}
+  .brand b{font-size:17px;letter-spacing:-.02em;display:block}
+  .brand small{color:var(--subtle);font-weight:700;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase}
+  .searchwrap{position:relative;margin:6px 6px 14px}
+  #search{width:100%;padding:10px 12px 10px 34px;border-radius:11px;border:1px solid var(--border);
+    background:var(--surface-2);color:var(--text);font-size:13.5px;outline:none}
+  #search:focus{border-color:var(--brand);box-shadow:0 0 0 4px color-mix(in srgb,var(--brand) 14%,transparent)}
+  .searchwrap svg{position:absolute;left:11px;top:12px;color:var(--subtle)}
+  nav a{display:block;padding:7px 12px;margin:1px 4px;border-radius:9px;color:var(--muted);
+    text-decoration:none;font-size:13.5px;font-weight:500;border:1px solid transparent}
+  nav a:hover{background:var(--surface-2);color:var(--text)}
+  nav a.active{background:color-mix(in srgb,var(--brand) 13%,transparent);color:var(--brand);
+    border-color:color-mix(in srgb,var(--brand) 27%,transparent);font-weight:700}
+  nav .grouplabel{font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--subtle);
+    font-weight:800;padding:15px 14px 5px}
+  nav a.hidden{display:none}
+  main{padding:36px clamp(18px,4vw,62px) 120px;min-width:0}
+  .topbar{display:flex;align-items:center;gap:12px;justify-content:space-between;margin-bottom:24px}
+  .crumbs{color:var(--subtle);font-size:13px;font-weight:600}
+  .iconbtn{width:40px;height:40px;border-radius:11px;border:1px solid var(--border);background:var(--surface);
+    color:var(--text);cursor:pointer;display:grid;place-items:center;font-size:16px}
+  .iconbtn:hover{background:var(--surface-2)} #menuBtn{display:none}
+  .hero{background:linear-gradient(135deg,color-mix(in srgb,var(--brand) 12%,var(--surface)),color-mix(in srgb,var(--accent) 10%,var(--surface)));
+    border:1px solid var(--border);border-radius:22px;padding:38px 32px;margin-bottom:32px}
+  .hero h1{font-size:clamp(27px,4vw,40px);margin:0 0 10px;letter-spacing:-.03em;line-height:1.12}
+  .hero p{font-size:17px;color:var(--muted);max-width:72ch;margin:0}
+  .hero .pill{display:inline-block;background:var(--surface);border:1px solid var(--border);color:var(--brand);
+    font-weight:700;font-size:12px;padding:6px 13px;border-radius:999px;margin-bottom:15px}
+  .herofacts{display:flex;flex-wrap:wrap;gap:9px;margin-top:20px}
+  .herofacts span{background:var(--surface);border:1px solid var(--border);border-radius:11px;
+    padding:8px 13px;font-size:13px;font-weight:600;color:var(--muted)}
+  h2.section{font-size:26px;letter-spacing:-.02em;margin:6px 0 4px;scroll-margin-top:16px;line-height:1.22}
+  .section-tag{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+    color:var(--brand);background:color-mix(in srgb,var(--brand) 12%,transparent);padding:4px 10px;border-radius:7px;margin-bottom:11px}
+  h3{font-size:19.5px;margin:28px 0 8px;letter-spacing:-.01em}
+  h4{font-size:16px;margin:20px 0 6px}
+  p{margin:11px 0}
+  section.block{margin-bottom:26px;padding-top:16px;border-top:1px dashed var(--border)}
+  section.block:first-of-type{border-top:none}
+  ul,ol{padding-left:22px} li{margin:6px 0}
+  .lead{font-size:17px;color:var(--muted)}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px 22px;box-shadow:var(--shadow);margin:16px 0}
+  .grid{display:grid;gap:14px}
+  .grid.two{grid-template-columns:repeat(auto-fit,minmax(265px,1fr))}
+  .grid.three{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+  .mini{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 18px}
+  .mini h4{margin:0 0 6px;font-size:15px} .mini p{margin:0;font-size:14px;color:var(--muted)}
+  .kbadge{display:inline-block;font-size:12px;font-weight:700;padding:2px 8px;border-radius:6px;
+    background:var(--surface-2);border:1px solid var(--border);color:var(--muted);font-family:Consolas,monospace}
+  .note{border-left:4px solid var(--brand);background:color-mix(in srgb,var(--brand) 6%,var(--surface));
+    padding:13px 16px;border-radius:0 12px 12px 0;margin:16px 0;font-size:14.5px}
+  .note.good{border-color:var(--good);background:color-mix(in srgb,var(--good) 8%,var(--surface))}
+  .note.warn{border-color:var(--warn);background:color-mix(in srgb,var(--warn) 10%,var(--surface))}
+  .note.bad{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 8%,var(--surface))}
+  .note.teal{border-color:var(--teal);background:color-mix(in srgb,var(--teal) 8%,var(--surface))}
+  .note b.tag{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;color:var(--brand)}
+  .note.good b.tag{color:var(--good)} .note.bad b.tag{color:var(--bad)} .note.teal b.tag{color:var(--teal)}
+  .note.warn b.tag{color:color-mix(in srgb,var(--warn) 76%,#000)}
+  html[data-theme="dark"] .note.warn b.tag{color:var(--warn)}
+  .tablewrap{overflow-x:auto;border:1px solid var(--border);border-radius:14px;margin:16px 0}
+  table{border-collapse:collapse;width:100%;font-size:14px;min-width:540px}
+  th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+  th{background:var(--surface-2);font-weight:700;font-size:12.5px;text-transform:uppercase;letter-spacing:.03em;color:var(--muted)}
+  tr:last-child td{border-bottom:none}
+  td.num{font-variant-numeric:tabular-nums;font-weight:700}
+  details.collap{border:1px solid var(--border);border-radius:14px;margin:12px 0;background:var(--surface);overflow:hidden}
+  details.collap>summary{cursor:pointer;padding:15px 18px;font-weight:700;font-size:15.5px;list-style:none;display:flex;align-items:center;gap:11px}
+  details.collap>summary::-webkit-details-marker{display:none}
+  details.collap>summary .chev{margin-left:auto;color:var(--subtle);transition:.2s}
+  details.collap[open]>summary .chev{transform:rotate(90deg)}
+  details.collap>summary .num{width:27px;height:27px;border-radius:8px;flex:0 0 auto;display:grid;place-items:center;
+    font-size:12.5px;font-weight:800;background:color-mix(in srgb,var(--brand) 15%,transparent);color:var(--brand)}
+  details.collap .body{padding:2px 18px 18px;border-top:1px solid var(--border)}
+  .code{position:relative;background:var(--code-bg);color:var(--code-text);border-radius:13px;margin:14px 0;
+    font-family:"JetBrains Mono",Consolas,Menlo,monospace;font-size:12.8px;line-height:1.62;overflow:hidden}
+  .code .cap{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 14px;
+    background:rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.09);font-size:11.5px;color:#d3a9b4;font-weight:700}
+  .code pre{margin:0;padding:15px;overflow-x:auto;white-space:pre}
+  .copybtn{background:rgba(255,255,255,.11);color:#f0dfe3;border:none;border-radius:7px;padding:4px 11px;cursor:pointer;font-size:11.5px;font-weight:700;flex:0 0 auto}
+  .copybtn:hover{background:rgba(255,255,255,.2)} .copybtn.done{background:var(--good);color:#fff}
+  .diagram{border:2px dashed var(--border);border-radius:16px;padding:32px 20px;text-align:center;color:var(--subtle);
+    background:repeating-linear-gradient(45deg,transparent,transparent 12px,color-mix(in srgb,var(--border) 30%,transparent) 12px,color-mix(in srgb,var(--border) 30%,transparent) 13px);
+    margin:18px 0;font-weight:700;font-size:14px}
+  .diagram span{display:block;font-size:12px;font-weight:500;margin-top:6px}
+  .flow{display:flex;flex-direction:column;margin:16px 0}
+  .step{display:flex;gap:15px;position:relative;padding-bottom:20px}
+  .step:not(:last-child)::before{content:"";position:absolute;left:17px;top:36px;bottom:0;width:2px;background:var(--border)}
+  .step .dot{width:36px;height:36px;border-radius:11px;flex:0 0 auto;display:grid;place-items:center;font-weight:800;font-size:13px;
+    background:linear-gradient(135deg,var(--brand),var(--accent));color:#fff;z-index:1}
+  .step .st{flex:1;padding-top:3px} .step .st b{display:block;margin-bottom:2px}
+  .step .st p{margin:0;font-size:14.5px;color:var(--muted)}
+  .bignum{font-size:30px;font-weight:800;letter-spacing:-.03em;color:var(--brand);font-variant-numeric:tabular-nums;line-height:1.1}
+  .tagrow{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 4px}
+  .tagrow em{font-style:normal;font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:7px;
+    background:var(--surface-2);border:1px solid var(--border);color:var(--muted)}
+  .tagrow em.new{background:color-mix(in srgb,var(--good) 14%,transparent);color:var(--good);border-color:color-mix(in srgb,var(--good) 30%,transparent)}
+  .tagrow em.old{background:color-mix(in srgb,var(--subtle) 14%,transparent);color:var(--subtle);border-color:var(--border)}
+  footer.docfoot{border-top:1px solid var(--border);margin-top:48px;padding-top:22px;color:var(--subtle);font-size:13.5px}
+  #backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:40}
+  @media(max-width:960px){
+    .shell{grid-template-columns:1fr}
+    aside{position:fixed;left:0;top:0;z-index:50;width:290px;transform:translateX(-100%);transition:transform .25s;box-shadow:var(--shadow)}
+    aside.open{transform:translateX(0)} #menuBtn{display:grid} #backdrop.show{display:block}
+  }
+  @media(max-width:520px){body{font-size:15px}main{padding:20px 15px 90px}.hero{padding:24px 19px}}
+  ::selection{background:color-mix(in srgb,var(--brand) 26%,transparent)}
+  aside::-webkit-scrollbar{width:8px} aside::-webkit-scrollbar-thumb{background:var(--border);border-radius:9px}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div id="backdrop"></div>
+<div class="shell">
+<aside id="sidebar">
+  <div class="brand"><div class="logo">❤️</div><div><b>Vitals Engine</b><small>BP &amp; Heart Rate</small></div></div>
+  <div class="searchwrap">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+    <input id="search" placeholder="Search this doc…" autocomplete="off" />
+  </div>
+  <nav id="nav">
+    <div class="grouplabel">Basics</div>
+    <a href="#what">1 · What we built</a>
+    <a href="#rppg">2 · What is rPPG?</a>
+    <a href="#two-systems">3 · Old vs New system</a>
+    <a href="#overview">4 · Pipeline overview</a>
+    <div class="grouplabel">The Live Scan (Step by Step)</div>
+    <a href="#browser">5 · Browser capture</a>
+    <a href="#transport">6 · Sending the data</a>
+    <a href="#decode">7 · Server decode</a>
+    <a href="#ensemble">8 · The 3-model ensemble</a>
+    <a href="#fusion">9 · Fusing the 3 signals</a>
+    <a href="#hr">10 · Heart rate &amp; HRV</a>
+    <a href="#resnet">11 · ResNet BP model</a>
+    <a href="#nhanes">12 · NHANES blending</a>
+    <a href="#classify">13 · Final classification</a>
+    <div class="grouplabel">The Models &amp; Training</div>
+    <a href="#datasets">14 · All datasets used</a>
+    <a href="#resnet-train">15 · How ResNet was trained</a>
+    <a href="#xgboost">16 · Legacy XGBoost models</a>
+    <a href="#xgb-train">17 · How XGBoost was trained</a>
+    <a href="#features">18 · The 15 features</a>
+    <div class="grouplabel">Everything Else</div>
+    <a href="#quality">19 · Quality gates</a>
+    <a href="#privacy">20 · Privacy</a>
+    <a href="#specs">21 · Specs cheat-sheet</a>
+    <a href="#limits">22 · Limitations</a>
+    <a href="#interview">23 · Interview Q&amp;A</a>
+  </nav>
+</aside>
+
+<main>
+  <div class="topbar">
+    <button class="iconbtn" id="menuBtn" aria-label="Menu">☰</button>
+    <div class="crumbs">MediIQ · Contactless Vitals — Complete Technical Guide</div>
+    <button class="iconbtn" id="themeBtn" aria-label="Theme">🌙</button>
+  </div>
+
+  <div class="hero">
+    <span class="pill">3 neural networks + 1 ResNet · No wearable needed</span>
+    <h1>Measuring blood pressure &amp; heart rate from a face video</h1>
+    <p>MediIQ can estimate a patient's <strong>heart rate and blood pressure</strong> using only a laptop or phone camera — no cuff, no smartwatch, no finger clip. The patient looks at the camera for <strong>45 seconds</strong> and the system reads the tiny colour changes in their skin caused by their heartbeat. This document explains <strong>every single step</strong>, in very simple words.</p>
+    <div class="herofacts">
+      <span>📹 45-second face scan</span>
+      <span>🧠 3-model AI ensemble</span>
+      <span>🫀 1D-ResNet trained on MIMIC-III</span>
+      <span>📊 XGBoost fallback system</span>
+      <span>🔒 Video never leaves the device</span>
+      <span>±5–8 bpm accuracy</span>
+    </div>
+  </div>
+
+  <p class="lead">If you read only one thing: the system captures 45 seconds of face video in the browser, sends only tiny 72×72 face thumbnails to a Python server, runs <strong>three different rPPG neural networks</strong> on them, blends their answers, and feeds the resulting pulse wave into a <strong>ResNet trained on hospital ICU data</strong> to predict blood pressure.</p>
+
+  <!-- ============ 1 WHAT ============ -->
+  <section class="block" id="what">
+    <span class="section-tag">Basics</span>
+    <h2 class="section">1 · What we built and why</h2>
+    <h3>The problem</h3>
+    <p>In a normal doctor visit, a nurse measures blood pressure with an <strong>inflatable cuff</strong> and heart rate with a finger clip. But MediIQ is an <strong>online</strong> consultation platform — the patient is at home. Most people do not own a BP machine.</p>
+    <p>Without vitals, the doctor is working half-blind. Blood pressure changes the prescription: for example, some medicines are unsafe if the patient has high blood pressure.</p>
+
+    <h3>The solution</h3>
+    <p>Use the camera that <strong>everyone already has</strong>. When your heart beats, it pushes blood into your face. That extra blood changes your skin colour by a tiny amount — far too small for the human eye, but a camera sensor can measure it. Read that colour change over time and you get the patient's pulse.</p>
+    <div class="note"><b class="tag">The whole idea in one sentence</b>Your face is blushing and un-blushing with every heartbeat, thousands of times smaller than you can see. The camera measures that flicker, and AI turns it into heart rate and blood pressure.</div>
+
+    <h3>What the patient experiences</h3>
+    <div class="flow">
+      <div class="step"><div class="dot">1</div><div class="st"><b>Opens the pre-consultation form</b><p>Sees an optional "Vitals scan" card.</p></div></div>
+      <div class="step"><div class="dot">2</div><div class="st"><b>Clicks "Start scan", allows camera</b><p>A live camera preview appears with guidance.</p></div></div>
+      <div class="step"><div class="dot">3</div><div class="st"><b>Positions their face</b><p>The app waits until the face is well-placed and steady for 3 seconds.</p></div></div>
+      <div class="step"><div class="dot">4</div><div class="st"><b>Holds still for 45 seconds</b><p>A countdown runs while frames are collected.</p></div></div>
+      <div class="step"><div class="dot">5</div><div class="st"><b>Gets results</b><p>Heart rate, blood pressure with a confidence range, and an AHA category (Normal / Elevated / High). These attach to the consultation so the doctor and the AI prescriber can see them.</p></div></div>
+    </div>
+  </section>
+
+  <!-- ============ 2 RPPG ============ -->
+  <section class="block" id="rppg">
+    <span class="section-tag">Basics</span>
+    <h2 class="section">2 · What is rPPG? (explained simply)</h2>
+    <h3>First: what is PPG?</h3>
+    <p><strong>PPG</strong> stands for <strong>photoplethysmography</strong>. Long word, simple meaning: <em>measuring blood volume using light</em>.</p>
+    <p>You have seen this. The little clip a nurse puts on your finger, or the green light on the back of a smartwatch — both shine light into your skin and measure how much bounces back. When your heart beats and blood fills the tissue, <strong>less light</strong> comes back. Plot that over time and you get a wavy line: <strong>the pulse waveform</strong>.</p>
+
+    <h3>Now: what is rPPG?</h3>
+    <p><strong>rPPG</strong> = <strong>remote</strong> photoplethysmography. Same idea, but with <strong>no contact</strong>. Instead of a sensor touching the skin, we use an ordinary camera from a distance. The camera's normal light is enough.</p>
+    <div class="note teal"><b class="tag">Plain-word definitions to memorise</b>
+      <b>PPG signal / BVP</b> = the wavy line showing your pulse over time (BVP = Blood Volume Pulse — same thing).<br/>
+      <b>rPPG</b> = getting that wavy line from a camera instead of a contact sensor.<br/>
+      <b>SNR / SQI</b> = "signal quality" — how clean the wave is versus noise. Higher is better.
+    </div>
+
+    <h3>Why is it hard?</h3>
+    <p>The pulse signal is <strong>extremely weak</strong> — roughly 1% of the skin's colour. Meanwhile, all of these are much stronger and ruin it:</p>
+    <ul>
+      <li><strong>Head movement</strong> — even small shifts change how light hits the face.</li>
+      <li><strong>Lighting changes</strong> — a flickering bulb or a cloud passing a window.</li>
+      <li><strong>Camera auto-adjustments</strong> — webcams constantly change brightness automatically.</li>
+      <li><strong>Compression</strong> — video compression throws away subtle colour detail.</li>
+    </ul>
+    <p>So the entire engineering challenge is: <strong>pull a 1% signal out of a very noisy recording</strong>. That is exactly what the algorithms and neural networks in this document do.</p>
+    <div class="diagram">[ rPPG Concept Diagram Here ]<span>Suggested: heartbeat → blood flows to face → skin colour flickers → camera captures → waveform extracted</span></div>
+  </section>
+
+  <!-- ============ 3 TWO SYSTEMS ============ -->
+  <section class="block" id="two-systems">
+    <span class="section-tag">Basics</span>
+    <h2 class="section">3 · Two systems: the old one and the new one</h2>
+    <p><strong>This is the most important section to understand</strong>, because MediIQ contains <em>two complete vitals systems</em>. The project started with the first one and later upgraded to the second.</p>
+
+    <div class="grid two">
+      <div class="mini">
+        <div class="tagrow"><em class="old">LEGACY · fallback</em></div>
+        <h4>System A — POS + XGBoost</h4>
+        <p><b>How it works:</b> a hand-written maths algorithm (POS) turns skin colour into a pulse wave, 15 numbers ("features") are measured from that wave, and 6 XGBoost models predict BP.<br/><br/>
+        <b>Endpoint:</b> <span class="kbadge">/api/v1/vitals/predict-rgb</span><br/>
+        <b>Browser sends:</b> average colour numbers only<br/>
+        <b>Trained on:</b> PPG-BP dataset (219 subjects)</p>
+      </div>
+      <div class="mini">
+        <div class="tagrow"><em class="new">CURRENT · production</em></div>
+        <h4>System B — 3 Neural Nets + ResNet</h4>
+        <p><b>How it works:</b> three deep-learning rPPG models each extract a pulse wave from face images, their outputs are blended by quality, and a 1D-ResNet predicts BP from the blended wave.<br/><br/>
+        <b>Endpoint:</b> <span class="kbadge">/api/v1/lab/predict-faces</span><br/>
+        <b>Browser sends:</b> 72×72 face thumbnails<br/>
+        <b>Trained on:</b> RLAP + MIMIC-III (huge datasets)</p>
+      </div>
+    </div>
+
+    <div class="note good"><b class="tag">Which one runs today?</b><strong>System B (the neural network one) is what the patient actually uses.</strong> You can prove it from the code: the patient's scan window imports <span class="kbadge">predictVitalsDL</span>, which posts to <span class="kbadge">/api/v1/lab/predict-faces</span>. System A is kept in the codebase as a documented fallback and is still fully working.</div>
+
+    <h3>Why upgrade from A to B?</h3>
+    <div class="tablewrap"><table>
+      <tr><th>Problem with System A</th><th>How System B fixes it</th></tr>
+      <tr><td>POS is a fixed formula — it cannot learn. It treats every face and lighting the same.</td><td>Neural networks <b>learned</b> from thousands of real videos, so they handle skin tones, lighting and motion far better.</td></tr>
+      <tr><td>Only 3 small skin patches were used, so most of the face was thrown away.</td><td>The <b>whole face image</b> goes into the network, which decides for itself which pixels matter.</td></tr>
+      <tr><td>XGBoost was trained on only 219 people's finger recordings.</td><td>ResNet was pretrained on <b>MIMIC-III</b>, a massive hospital ICU waveform database.</td></tr>
+      <tr><td>One algorithm — if it failed, everything failed.</td><td><b>Three</b> models run together; if one fails or gives a poor signal, the others carry the result.</td></tr>
+    </table></div>
+  </section>
+
+  <!-- ============ 4 OVERVIEW ============ -->
+  <section class="block" id="overview">
+    <span class="section-tag">Basics</span>
+    <h2 class="section">4 · The full pipeline at a glance</h2>
+    <p>Here is the entire current (System B) journey. Every step gets its own detailed section next.</p>
+    <div class="code"><div class="cap"><span>End-to-end flow</span><button class="copybtn">Copy</button></div><pre>┌─ IN THE BROWSER (the patient's own device) ────────────────────┐
+│ 1. Camera runs at 30 frames per second for 45 seconds          │
+│ 2. MediaPipe FaceLandmarker finds 468 face points per frame    │
+│ 3. Quality check: is the face big enough, centred, steady?     │
+│ 4. Crop the face + 25% padding → shrink to 72 × 72 pixels      │
+│ 5. Store raw RGB bytes for every frame (~1350 frames)          │
+│ 6. Gzip-compress + Base64-encode the whole stack               │
+└────────────────────────────────────────────────────────────────┘
+                              ↓  HTTPS POST
+┌─ ON THE PYTHON SERVER (FastAPI) ───────────────────────────────┐
+│ 7. Base64 decode → gunzip → numpy array (N, 72, 72, 3)         │
+│ 8. Average every 2 frames together → halves noise, 30→15 fps   │
+│ 9. Run THREE rPPG neural networks on the same face stack:      │
+│       • FacePhys.rlap    • PhysNet.rlap    • EfficientPhys.rlap│
+│    Each returns its own pulse wave (BVP) + heart rate + SQI    │
+│10. Blend the 3 waves, weighted by their quality (SQI)          │
+│11. Take heart rate + HRV from the single best-quality model    │
+│12. Feed the blended wave into the 1D-ResNet (MIMIC-III):       │
+│       • adaptive bandpass filter around the detected HR        │
+│       • slide a 437-sample window across the signal            │
+│       • score each window's quality, predict SBP/DBP per window│
+│       • quality-weighted average of all windows                │
+│13. Blend the ResNet answer with the NHANES population average  │
+│14. Classify with AHA 2017 rules → Normal / Elevated / Stage 1…│
+└────────────────────────────────────────────────────────────────┘
+                              ↓  JSON response
+        Heart rate · BP (with 90% range) · HRV · category · confidence</pre></div>
+    <div class="diagram">[ Full Vitals Pipeline Diagram Here ]<span>Suggested: browser box → network → server box with the 3 models in parallel → ResNet → output card</span></div>
+  </section>
+
+  <!-- ============ 5 BROWSER ============ -->
+  <section class="block" id="browser">
+    <span class="section-tag">The Live Scan</span>
+    <h2 class="section">5 · Step 1 — Capturing the video in the browser</h2>
+    <p>Everything here happens on the <strong>patient's own device</strong>, in JavaScript. File: <span class="kbadge">components/vitals/useVitalsCapture.ts</span>.</p>
+
+    <h3>The settings, and why each was chosen</h3>
+    <div class="tablewrap"><table>
+      <tr><th>Setting</th><th>Value</th><th>Why this number</th></tr>
+      <tr><td>Target frame rate</td><td class="num">30 fps</td><td>Standard webcam speed. To measure a heartbeat up to ~180 bpm (3 beats/sec) you need well above 6 fps — 30 gives plenty of headroom.</td></tr>
+      <tr><td>Scan duration</td><td class="num">45 seconds</td><td><b>Increased from 30s.</b> More frames = cleaner signal. 45s gives ~1,350 frames, enough for many stable heartbeats and good HRV estimates.</td></tr>
+      <tr><td>Face crop size</td><td class="num">72 × 72 px</td><td><b>Increased from 36×36 — 4× more detail.</b> Big enough for the networks to see skin texture, small enough to keep the upload tiny.</td></tr>
+      <tr><td>Steady-before-start</td><td class="num">3 seconds</td><td>The face must be well positioned <em>continuously</em> for 3s before recording begins — prevents starting mid-fidget.</td></tr>
+      <tr><td>Face-loss pause</td><td class="num">2 seconds</td><td>If the face disappears (patient looks away), frames stop being collected rather than recording garbage.</td></tr>
+      <tr><td>Minimum frames</td><td class="num">300</td><td>= 30 fps × 10 s. Below this the scan is rejected with a helpful message instead of a bad reading.</td></tr>
+    </table></div>
+
+    <h3>How a single frame is processed</h3>
+    <div class="flow">
+      <div class="step"><div class="dot">1</div><div class="st"><b>Draw the video frame to a hidden canvas</b><p>A <span class="kbadge">&lt;canvas&gt;</span> element is an off-screen drawing surface. We paint the current camera frame onto it so we can read its pixels.</p></div></div>
+      <div class="step"><div class="dot">2</div><div class="st"><b>Find the face with MediaPipe</b><p><b>MediaPipe FaceLandmarker</b> is Google's face-tracking model, running <em>inside the browser</em>. It returns <b>468 landmark points</b> — precise dots on the eyes, nose, jawline, forehead, cheeks, etc.</p></div></div>
+      <div class="step"><div class="dot">3</div><div class="st"><b>Assess quality</b><p>Checks the face is present, large enough, centred and not too tilted. Result is <span class="kbadge">good</span>, poor, or <span class="kbadge">none</span> — shown live to the patient so they can correct themselves.</p></div></div>
+      <div class="step"><div class="dot">4</div><div class="st"><b>Compute the face bounding box</b><p>Loop through all 468 points to find min/max X and Y — that rectangle is the face. Then add <b>25% padding</b> on every side, because useful blood-flow signal lives at the edges (forehead, jaw, neck).</p></div></div>
+      <div class="step"><div class="dot">5</div><div class="st"><b>Resize to 72×72 and store raw RGB</b><p>The cropped face is drawn into a 72×72 canvas. We then read the pixels and keep only R, G, B (dropping the alpha/transparency channel), giving <b>72 × 72 × 3 = 15,552 bytes per frame</b>.</p></div></div>
+    </div>
+
+    <div class="code"><div class="cap"><span>The crop logic (simplified from useVitalsCapture.ts)</span><button class="copybtn">Copy</button></div><pre>// 1. Find the face rectangle from all 468 landmarks
+for (const lm of landmarks) {
+  xMin = Math.min(xMin, lm.x * W);   yMin = Math.min(yMin, lm.y * H);
+  xMax = Math.max(xMax, lm.x * W);   yMax = Math.max(yMax, lm.y * H);
+}
+
+// 2. Add 25% padding around it
+const pad = 0.25;
+const sx = xMin - faceW * pad;      const sy = yMin - faceH * pad;
+const sw = faceW * (1 + 2 * pad);   const sh = faceH * (1 + 2 * pad);
+
+// 3. Squash that region into a 72x72 canvas
+octx.drawImage(canvas, sx, sy, sw, sh, 0, 0, 72, 72);
+
+// 4. Keep only R,G,B (skip the alpha byte)
+rgb[i*3] = imgData.data[i*4];      // R
+rgb[i*3+1] = imgData.data[i*4+1];  // G
+rgb[i*3+2] = imgData.data[i*4+2];  // B</pre></div>
+
+    <h3>Why crop the face instead of sending the whole video?</h3>
+    <ul>
+      <li><strong>Privacy</strong> — the background, room, and other people are never captured.</li>
+      <li><strong>Size</strong> — a 45-second raw video is tens of megabytes; the crops are a few MB and compress to far less.</li>
+      <li><strong>Accuracy</strong> — the networks were trained on cropped, aligned faces, so we must feed them the same format.</li>
+      <li><strong>Stability</strong> — cropping to the tracked face means small head movements do not shift the image content.</li>
+    </ul>
+  </section>
+
+  <!-- ============ 6 TRANSPORT ============ -->
+  <section class="block" id="transport">
+    <span class="section-tag">The Live Scan</span>
+    <h2 class="section">6 · Step 2 — Sending the frames to the server</h2>
+    <p>After 45 seconds we have roughly <strong>1,350 frames × 15,552 bytes ≈ 21 MB</strong> of raw pixel data. Sending that as-is would be slow, so two things happen:</p>
+    <div class="flow">
+      <div class="step"><div class="dot">1</div><div class="st"><b>Gzip compression</b><p>Uses the browser's built-in <span class="kbadge">CompressionStream("gzip")</span>. Face crops compress extremely well because neighbouring frames look nearly identical. This typically cuts the size by a large factor.</p></div></div>
+      <div class="step"><div class="dot">2</div><div class="st"><b>Base64 encoding</b><p>Converts the compressed binary into plain text so it can travel inside normal JSON. (Base64 adds about 33% size, but makes the request simple and firewall-friendly.)</p></div></div>
+    </div>
+    <div class="code"><div class="cap"><span>The request body (lib/vitalsApi.ts → predictVitalsDL)</span><button class="copybtn">Copy</button></div><pre>POST /api/v1/lab/predict-faces
+Content-Type: application/json
+
+{
+  "face_frames_b64": "H4sIAAAAAAAA/…",   // gzipped + base64 face stack
+  "n_frames":        1350,
+  "crop_size":       72,
+  "fps":             29.7,                // the REAL measured fps, not assumed
+  "demographics": { "age": 45, "sex": "M", "height": 175, "weight": 78 }
+}</pre></div>
+    <div class="note"><b class="tag">Small but important detail</b>The browser sends the <strong>actual measured frame rate</strong> (frames captured ÷ seconds elapsed), not a hard-coded 30. Real webcams drift — a laptop under load might deliver 26.4 fps. Since heart rate is calculated from timing, using the wrong fps would give a <strong>wrong heart rate</strong>. This one line protects the accuracy of the whole result.</div>
+  </section>
+
+  <!-- ============ 7 DECODE ============ -->
+  <section class="block" id="decode">
+    <span class="section-tag">The Live Scan</span>
+    <h2 class="section">7 · Step 3 — Server decodes and cleans the frames</h2>
+    <p>File: <span class="kbadge">ml/api/lab_router.py</span>. The FastAPI server reverses the packing:</p>
+    <div class="code"><div class="cap"><span>Decoding back into an image stack</span><button class="copybtn">Copy</button></div><pre>raw_bytes    = base64.b64decode(req.face_frames_b64)
+decompressed = gzip.decompress(raw_bytes)
+faces        = np.frombuffer(decompressed, dtype=np.uint8) \
+                 .reshape(req.n_frames, 72, 72, 3)
+
+# Result: a 4-D array (frames, height, width, colour)</pre></div>
+
+    <h3>Temporal frame averaging — a clever noise trick</h3>
+    <p>Before the AI sees anything, consecutive frames are <strong>averaged in pairs</strong>: frame 1 and 2 become one frame, 3 and 4 become one, and so on.</p>
+    <div class="code"><div class="cap"><span>Pair averaging</span><button class="copybtn">Copy</button></div><pre>n_pairs  = faces.shape[0] // 2
+averaged = (faces[0::2][:n_pairs] + faces[1::2][:n_pairs]) / 2.0
+effective_fps = req.fps / 2.0        # 30 fps → 15 fps
+
+# 1350 frames @ 30fps  →  675 frames @ 15fps</pre></div>
+    <h4>Why does this help?</h4>
+    <p>Camera sensors add <strong>random noise</strong> to every frame. Random noise partly cancels itself when you average, but the real pulse signal is <em>not</em> random — it is nearly the same in both frames, so it survives. The result is a cleaner signal.</p>
+    <div class="note warn"><b class="tag">The trade-off (good interview answer)</b>Halving the frame rate to 15 fps means the fastest heartbeat we can still measure correctly drops. By the sampling rule (you need at least 2 samples per cycle), 15 fps can still capture up to 7.5 beats per second = <strong>450 bpm</strong> — far above any human heart rate. So we lose nothing real and gain a cleaner signal. Note that <span class="kbadge">effective_fps</span> is then used everywhere downstream, so all timing stays correct.</div>
+  </section>
+
+  <!-- ============ 8 ENSEMBLE ============ -->
+  <section class="block" id="ensemble">
+    <span class="section-tag">The Live Scan</span>
+    <h2 class="section">8 · Step 4 — The three rPPG neural networks ⭐</h2>
+    <p>This is the heart of the new system. Instead of one algorithm, MediIQ runs <strong>three different deep-learning models</strong> on the exact same face frames, through the <span class="kbadge">open-rppg</span> library.</p>
+
+    <div class="code"><div class="cap"><span>The ensemble definition (lab_router.py)</span><button class="copybtn">Copy</button></div><pre>_ENSEMBLE_NAMES = ["FacePhys.rlap", "PhysNet.rlap", "EfficientPhys.rlap"]
+
+# Loaded once, then cached in memory for every later request
+for name in _ENSEMBLE_NAMES:
+    _rppg_models[name] = rppg.Model(name)</pre></div>
+
+    <h3>What each model is</h3>
+    <details class="collap" open><summary><span class="num">1</span> PhysNet <span class="chev">›</span></summary><div class="body">
+      <p><b>Type:</b> a 3D convolutional neural network (3D-CNN).</p>
+      <p><b>Simple explanation:</b> a normal CNN looks at one image at a time. A <b>3D</b> CNN looks at a <em>stack of frames together</em>, so it can see <strong>how pixels change over time</strong> — which is exactly what a pulse is. It slides a 3D filter through (height × width × time) and learns to output the pulse waveform directly.</p>
+      <p><b>Strength:</b> excellent at picking up subtle, smooth colour rhythms. It is one of the classic, well-proven rPPG architectures.</p>
+    </div></details>
+
+    <details class="collap"><summary><span class="num">2</span> EfficientPhys <span class="chev">›</span></summary><div class="body">
+      <p><b>Type:</b> an efficient CNN built for speed.</p>
+      <p><b>Simple explanation:</b> designed to give good rPPG results using far less computing power. It works largely on the <strong>difference between consecutive frames</strong> rather than the raw frames, which naturally removes anything static (the background, skin tone, moles) and keeps only what is changing — the blood flow.</p>
+      <p><b>Strength:</b> fast, light, and robust to lighting differences. Good on CPU-only servers.</p>
+    </div></details>
+
+    <details class="collap"><summary><span class="num">3</span> FacePhys <span class="chev">›</span></summary><div class="body">
+      <p><b>Type:</b> a face-specialised rPPG network.</p>
+      <p><b>Simple explanation:</b> tuned specifically for facial physiological measurement, learning which regions of a face carry the strongest blood-flow signal (forehead and cheeks are richer than lips or eyes) and weighting them accordingly.</p>
+      <p><b>Strength:</b> typically the most accurate of the three on clean, well-lit face video.</p>
+    </div></details>
+
+    <div class="note teal"><b class="tag">What does ".rlap" mean?</b>Each model name ends with <span class="kbadge">.rlap</span>. That is the <strong>training dataset tag</strong> — these weights were trained on the <strong>RLAP dataset</strong>, a large public rPPG dataset of face videos recorded alongside real contact-sensor pulse readings. So all three models learned from real ground-truth data. More on datasets in §14.</div>
+
+    <h3>What each model returns</h3>
+    <div class="code"><div class="cap"><span>Running one model</span><button class="copybtn">Copy</button></div><pre>mdl.process_faces_tensor(faces.copy(), fps=effective_fps)
+
+bvp_i, _ = mdl.bvp()               # the pulse waveform (a long list of numbers)
+hr_i     = mdl.hr(return_hrv=True) # { "hr": 72.4, "SQI": 0.81, "hrv": {...} }</pre></div>
+    <ul>
+      <li><strong>BVP</strong> — the extracted pulse waveform.</li>
+      <li><strong>HR</strong> — heart rate in beats per minute.</li>
+      <li><strong>SQI</strong> — Signal Quality Index: how trustworthy this model thinks its own reading is.</li>
+      <li><strong>HRV</strong> — heart-rate variability statistics (SDNN, RMSSD, pNN50, LF/HF, breathing rate).</li>
+    </ul>
+
+    <h3>Why three models instead of one? (classic interview question)</h3>
+    <div class="grid two">
+      <div class="mini"><h4>🎯 Better accuracy</h4><p>Different architectures make different mistakes. Averaging them cancels out individual errors — this is the standard "ensemble" idea in machine learning.</p></div>
+      <div class="mini"><h4>🛡️ Fault tolerance</h4><p>Each model runs inside its own <span class="kbadge">try/except</span>. If one crashes, returns <span class="kbadge">None</span>, or produces <span class="kbadge">NaN</span>, it is skipped with a warning and the others continue.</p></div>
+      <div class="mini"><h4>📊 Quality awareness</h4><p>Each reports its own SQI, so we know <em>which</em> answer to trust more rather than blindly averaging.</p></div>
+      <div class="mini"><h4>🔍 Explainability</h4><p>Every model's HR and SQI is returned in the diagnostics, so a developer can see exactly what each one said and which was chosen as best.</p></div>
+    </div>
+    <div class="note bad"><b class="tag">Total failure case</b>If <strong>all three</strong> models fail, the API raises HTTP 500 with "All ensemble models failed" — it never invents a number.</div>
+  </section>
+
+  <!-- ============ 9 FUSION ============ -->
+  <section class="block" id="fusion">
+    <span class="section-tag">The Live Scan</span>
+    <h2 class="section">9 · Step 5 — Fusing the three signals</h2>
+    <p>Now we have up to three pulse waveforms. We combine them into one — but <strong>not</strong> by a plain average. A model that reports poor quality should count less.</p>
+
+    <div class="code"><div class="cap"><span>SNR-weighted fusion (lab_router.py)</span><button class="copybtn">Copy</button></div><pre>total_snr   = sum(snr_list)                    # sum of all SQI values
+weights_arr = [s / total_snr for s in snr_list]  # each model's share
+
+min_len    = min(len(b) for b in bvp_list)     # trim all to the same length
+bvp_signal = np.zeros(min_len)
+for w, bvp_i in zip(weights_arr, bvp_list):
+    bvp_signal += w * bvp_i[:min_len]          # weighted sum</pre></div>
+
+    <h3>A worked example</h3>
+    <div class="tablewrap"><table>
+      <tr><th>Model</th><th>SQI (quality)</th><th>Weight</th><th>Influence on final wave</th></tr>
+      <tr><td>FacePhys</td><td class="num">0.80</td><td class="num">0.80 / 1.60 = 0.50</td><td>50%</td></tr>
+      <tr><td>PhysNet</td><td class="num">0.50</td><td class="num">0.50 / 1.60 = 0.31</td><td>31%</td></tr>
+      <tr><td>EfficientPhys</td><td class="num">0.30</td><td class="num">0.30 / 1.60 = 0.19</td><td>19%</td></tr>
+    </table></div>
+    <p>The clearest signal contributes most. A safety floor of <span class="kbadge">max(sqi, 0.01)</span> stops any model getting a zero or negative weight, and if the total quality is essentially zero the code falls back to a plain median.</p>
+    <div class="note"><b class="tag">Why trim to the shortest length?</b>Different architectures can output slightly different-length waveforms (some drop a few frames at the edges). To add them together they must line up, so all are cut to the shortest one — losing at most a few frames out of hundreds.</div>
+  </section>
+
+  <!-- ============ 10 HR ============ -->
+  <section class="block" id="hr">
+    <span class="section-tag">The Live Scan</span>
+    <h2 class="section">10 · Step 6 — Heart rate and HRV</h2>
+    <h3>Heart rate comes from the best model, not the blend</h3>
+    <p>For the <em>waveform</em> we blend all three. But for the <strong>heart-rate number</strong> we take the reading from the <strong>single highest-SQI model</strong>.</p>
+    <div class="code"><div class="cap"><span>Picking the best model</span><button class="copybtn">Copy</button></div><pre>best_idx   = int(np.argmax(snr_list))       # index of highest SQI
+best_model = list(models.values())[best_idx]
+hr_result  = best_model.hr(return_hrv=True)
+
+hr_bpm   = float(hr_result.get("hr", 0.0))
+hrv_data = hr_result.get("hrv", {})
+sqi      = float(np.mean(snr_list))          # overall confidence = mean SQI</pre></div>
+    <p><strong>Why?</strong> Heart rate is a single precise number derived from peak timing. Averaging three heart rates — say 68, 72 and a noisy 95 — would drag the answer toward the bad one. Taking the cleanest model's reading is more reliable. (The waveform is different: blending waves genuinely reduces noise.)</p>
+
+    <h3>What is HRV, and why do we return it?</h3>
+    <p><strong>HRV = Heart Rate Variability</strong> — the tiny differences in time between one beat and the next. A healthy heart is <em>not</em> perfectly regular; some variation is a sign of good autonomic health.</p>
+    <div class="tablewrap"><table>
+      <tr><th>Metric</th><th>What it means (simple)</th></tr>
+      <tr><td><b>SDNN</b></td><td>Overall spread of beat-to-beat times. General variability.</td></tr>
+      <tr><td><b>RMSSD</b></td><td>Short-term variation between neighbouring beats. Linked to the "rest and digest" nervous system.</td></tr>
+      <tr><td><b>pNN50</b></td><td>Percentage of beat gaps differing by more than 50 milliseconds.</td></tr>
+      <tr><td><b>LF/HF</b></td><td>Balance of low- vs high-frequency rhythms — often read as a stress indicator.</td></tr>
+      <tr><td><b>Breathing rate</b></td><td>Breaths per minute, estimated from slow waves in the pulse signal.</td></tr>
+    </table></div>
+
+    <h3>The quality gate</h3>
+    <div class="code"><div class="cap"><span>Reject bad scans honestly</span><button class="copybtn">Copy</button></div><pre>if sqi &lt; 0.1:
+    raise HTTPException(
+        status_code=422,
+        detail=f"Signal quality too low (SQI={sqi:.3f}). "
+               "Try better lighting and hold still."
+    )</pre></div>
+    <p>If the average quality is below 0.1 the request is <strong>rejected with advice</strong>. The system never returns a guessed number from an unusable scan.</p>
+  </section>
+
+  <!-- ============ 11 RESNET ============ -->
+  <section class="block" id="resnet">
+    <span class="section-tag">The Live Scan</span>
+    <h2 class="section">11 · Step 7 — The ResNet blood-pressure model ⭐</h2>
+    <p>We now have a clean pulse waveform. Turning that into blood pressure is the job of a <strong>1D-ResNet</strong> — a deep neural network pretrained on <strong>MIMIC-III</strong> hospital data. File: <span class="kbadge">ml/src/lab_bp_model.py</span>, weights: <span class="kbadge">1d_resnet_bp.pth</span> (≈23 MB).</p>
+
+    <h3>How can a pulse wave reveal blood pressure?</h3>
+    <p>The <strong>shape</strong> of each pulse carries the answer. When arteries are stiff and pressure is high, the wave rises sharply and the reflected "bounce" (the dicrotic notch) sits differently than in a relaxed, low-pressure artery. Humans cannot reliably read those subtleties — a neural network trained on hundreds of thousands of examples can.</p>
+
+    <h3>Stage 1 — Clean the signal</h3>
+    <div class="code"><div class="cap"><span>Detrend + adaptive bandpass</span><button class="copybtn">Copy</button></div><pre>sig = detrend(bvp_signal)                       # remove slow drift
+sig = _adaptive_bandpass(sig, fs, detected_hr)  # keep only the pulse band
+
+# then scale to 0..1
+sig = (sig - sig.min()) / (sig.max() - sig.min())</pre></div>
+    <h4>The "adaptive" bandpass — a smart detail</h4>
+    <p>A <strong>bandpass filter</strong> keeps frequencies inside a range and removes everything outside. A normal system uses a fixed range (0.7–3 Hz). This one is smarter: because we <em>already know</em> the heart rate from step 6, it narrows the filter tightly around it.</p>
+    <div class="code"><div class="cap"><span>Adaptive filter window</span><button class="copybtn">Copy</button></div><pre>if detected_hr and 40 &lt; detected_hr &lt; 200:
+    hr_hz = detected_hr / 60.0          # e.g. 72 bpm → 1.2 Hz
+    low   = max(0.5, hr_hz - 0.5)       # → 0.7 Hz
+    high  = min(fs/2 - 0.1, hr_hz + 0.5)# → 1.7 Hz
+else:
+    low, high = 0.7, 3.0                # fallback: the generic band
+
+b, a = butter(4, [low/nyq, high/nyq], btype="band")
+return filtfilt(b, a, sig)</pre></div>
+    <p>Instead of keeping everything from 0.7–3 Hz, it keeps only 0.7–1.7 Hz — <strong>throwing away far more noise</strong> while keeping all of the real pulse. <span class="kbadge">filtfilt</span> runs the filter forwards <em>and</em> backwards so the wave is not shifted in time (important, since timing is the signal).</p>
+
+    <h3>Stage 2 — Sliding windows</h3>
+    <p>The network expects exactly <strong>437 samples</strong> at a time. So a window of 437 samples slides along the signal, moving <strong>80 samples</strong> each step.</p>
+    <div class="code"><div class="cap"><span>Window loop</span><button class="copybtn">Copy</button></div><pre>_WINDOW_LEN = 437
+_STEP_SIZE  = 80
+
+for start in range(0, len(sig) - 437 + 1, 80):
+    window = sig[start : start + 437]
+    q      = _window_quality(window, fs)          # 0..1 score for THIS window
+    tensor = torch.tensor(window).unsqueeze(0).unsqueeze(0)  # → (1,1,437)
+
+    with torch.no_grad():
+        pred = model(tensor)                      # → [SBP, DBP]
+
+    sbp_preds.append(float(pred[0, 0]))
+    dbp_preds.append(float(pred[0, 1]))
+    qualities.append(q)</pre></div>
+    <p>Because the step (80) is much smaller than the window (437), the windows <strong>overlap heavily</strong> — each part of the signal is examined about 5 times from different alignments. That produces dozens of independent BP estimates instead of one.</p>
+
+    <h3>Stage 3 — Quality-weighted averaging of windows</h3>
+    <p>Each window gets its own quality score, computed with a <strong>Welch power spectrum</strong>: what fraction of that window's energy lies in the pulse band (0.7–3 Hz)? Mostly pulse = high score; mostly noise = low score.</p>
+    <div class="code"><div class="cap"><span>Weighted combine, with a median fallback</span><button class="copybtn">Copy</button></div><pre>q_sum = q_arr.sum()
+if q_sum &gt; 1e-8:
+    weights  = q_arr / q_sum
+    sbp_raw  = float(np.dot(weights, sbp_arr))   # clean windows count more
+    dbp_raw  = float(np.dot(weights, dbp_arr))
+else:
+    sbp_raw  = float(np.median(sbp_arr))         # everything was noisy
+    dbp_raw  = float(np.median(dbp_arr))
+
+# Confidence range straight from the spread of window predictions
+sbp_q05 = np.percentile(sbp_preds, 5)
+sbp_q95 = np.percentile(sbp_preds, 95)</pre></div>
+    <div class="note good"><b class="tag">Where the 90% range comes from</b>Notice the interval is <strong>not</strong> guessed. If all windows agree closely, the 5th–95th percentile range is narrow → confident. If they disagree, the range is wide → the doctor immediately sees the reading is uncertain. This is honest uncertainty reporting.</div>
+    <div class="diagram">[ Sliding Window BP Prediction Diagram Here ]<span>Suggested: long waveform with overlapping 437-sample windows, each producing an SBP/DBP dot, weighted into one final value + range</span></div>
+  </section>
+
+  <!-- ============ 12 NHANES ============ -->
+  <section class="block" id="nhanes">
+    <span class="section-tag">The Live Scan</span>
+    <h2 class="section">12 · Step 8 — Blending with population averages (NHANES)</h2>
+    <p>The final safety net. If the camera signal was weak, trusting the model 100% would be reckless. So the prediction is <strong>mixed with what is statistically normal</strong> for someone of that age and sex.</p>
+
+    <h3>What is NHANES?</h3>
+    <p><strong>NHANES</strong> = the US <em>National Health and Nutrition Examination Survey</em>, run by the CDC. It measures the real blood pressure of thousands of Americans. From it we get: "the average 45-year-old man has about 124.7 / 77.2 mmHg."</p>
+    <div class="code"><div class="cap"><span>The built-in NHANES table (CDC 2017–2020 means)</span><button class="copybtn">Copy</button></div><pre>MALE:                        FEMALE:
+  age 18 → 117.5 / 68.8        age 18 → 110.8 / 66.2
+  age 25 → 119.4 / 70.1        age 25 → 112.3 / 67.8
+  age 35 → 121.8 / 74.5        age 35 → 114.9 / 71.2
+  age 45 → 124.7 / 77.2        age 45 → 120.1 / 74.1
+  age 55 → 129.3 / 78.1        age 55 → 127.8 / 75.3
+  age 65 → 133.9 / 74.8        age 65 → 134.2 / 72.1
+  age 75 → 137.2 / 70.4        age 75 → 139.1 / 68.3
+  age 85 → 139.5 / 67.8        age 85 → 142.8 / 65.7
+
+Ages in between are LINEARLY INTERPOLATED.
+Example, age 40 (male): halfway between 121.8 and 124.7 → 123.25</pre></div>
+
+    <h3>BMI adjustment</h3>
+    <div class="code"><div class="cap"><span>Body weight shifts the baseline</span><button class="copybtn">Copy</button></div><pre>bmi = weight / (height/100)**2
+
+if bmi &gt; 25:            # overweight → higher expected BP
+    sbp += (bmi - 25) * 0.7
+    dbp += (bmi - 25) * 0.35
+elif bmi &lt; 18.5:        # underweight → lower expected BP
+    sbp -= (18.5 - bmi) * 0.5
+    dbp -= (18.5 - bmi) * 0.3</pre></div>
+
+    <h3>The blend formula</h3>
+    <div class="code"><div class="cap"><span>Quality decides how much to trust the camera</span><button class="copybtn">Copy</button></div><pre>blend = min(0.85, max(0.0, signal_quality))   # capped at 0.85
+
+sbp_final = blend * sbp_from_resnet + (1 - blend) * sbp_from_nhanes
+dbp_final = blend * dbp_from_resnet + (1 - blend) * dbp_from_nhanes
+
+used_fallback = blend &lt; 0.5      # reported as signal_source: "fallback"</pre></div>
+    <div class="tablewrap"><table>
+      <tr><th>Signal quality</th><th>Blend</th><th>What the answer is really based on</th></tr>
+      <tr><td>0.85 or higher</td><td class="num">0.85</td><td>85% camera, 15% population average — a clean scan.</td></tr>
+      <tr><td>0.60</td><td class="num">0.60</td><td>60% camera, 40% population average.</td></tr>
+      <tr><td>0.30</td><td class="num">0.30</td><td>30% camera, 70% population — flagged as <span class="kbadge">fallback</span>.</td></tr>
+    </table></div>
+    <div class="note warn"><b class="tag">Why cap the blend at 0.85?</b>Even a perfect-looking camera signal never gets 100% trust. Camera-based BP is an <strong>estimate</strong>, not a cuff measurement, so the population prior always keeps at least 15% influence. This deliberately pulls wild predictions back toward reality — a safety design choice, and a very good thing to say in an interview.</div>
+    <p>Everything is transparent in the response: <span class="kbadge">model_info</span> returns the <strong>raw</strong> ResNet numbers, the <strong>NHANES</strong> numbers, and the exact <strong>blend</strong> used — so nothing is hidden.</p>
+  </section>
+
+  <!-- ============ 13 CLASSIFY ============ -->
+  <section class="block" id="classify">
+    <span class="section-tag">The Live Scan</span>
+    <h2 class="section">13 · Step 9 — Final classification and response</h2>
+    <h3>Blood pressure categories (AHA 2017 guidelines)</h3>
+    <div class="code"><div class="cap"><span>ml/src/classifier.py</span><button class="copybtn">Copy</button></div><pre>if sbp &gt; 180 or dbp &gt; 120:   → "Hypertensive Crisis"
+if sbp &gt;= 140 or dbp &gt;= 90:  → "Stage 2 Hypertension"
+if sbp &gt;= 130 or dbp &gt;= 80:  → "Stage 1 Hypertension"
+if sbp &gt;= 120 and dbp &lt; 80:  → "Elevated"
+otherwise                    → "Normal"</pre></div>
+    <p>These are the official American Heart Association 2017 thresholds — not invented. Note the checks run <strong>from most severe downward</strong>, and use <strong>OR</strong> (either number being high is enough to raise the category).</p>
+
+    <h3>Heart rate categories</h3>
+    <div class="tablewrap"><table>
+      <tr><th>Range</th><th>Label</th><th>Meaning</th></tr>
+      <tr><td>below 60 bpm</td><td><b>Bradycardia</b></td><td>Slower than typical.</td></tr>
+      <tr><td>60 – 100 bpm</td><td><b>Normal</b></td><td>Typical resting range.</td></tr>
+      <tr><td>above 100 bpm</td><td><b>Tachycardia</b></td><td>Faster than typical.</td></tr>
+    </table></div>
+
+    <h3>The complete JSON response</h3>
+    <div class="code"><div class="cap"><span>What the browser receives</span><button class="copybtn">Copy</button></div><pre>{
+  "heart_rate": { "value": 72.4, "unit": "bpm" },
+  "blood_pressure": {
+    "systolic":  { "value": 124.3, "lower": 116.8, "upper": 131.9 },
+    "diastolic": { "value": 79.1,  "lower": 73.2,  "upper": 84.6  },
+    "unit": "mmHg"
+  },
+  "classification": { "bp": "Elevated", "hr": "Normal" },
+  "confidence": 0.89,
+  "signal_source": "camera",
+  "diagnostics": {
+    "frames_processed": 1350,  "duration_sec": 45.0,
+    "signal_quality": 0.81,    "latency_ms": 4210,
+    "model": "Ensemble(3) + ResNet-MIMIC-III",
+    "engine": "open-rppg + PyTorch",
+    "ensemble": {
+      "FacePhys.rlap":      { "hr": 72.4, "sqi": 0.86 },
+      "PhysNet.rlap":       { "hr": 71.9, "sqi": 0.80 },
+      "EfficientPhys.rlap": { "hr": 74.1, "sqi": 0.77 }
+    },
+    "best_model": "FacePhys.rlap",
+    "bp_model_info": {
+      "name": "1D-ResNet (MIMIC-III)", "windows_evaluated": 28,
+      "raw_sbp": 126.1, "raw_dbp": 80.2,
+      "nhanes_sbp": 124.7, "nhanes_dbp": 77.2, "blend": 0.81
+    }
+  },
+  "hrv": { "sdnn": 48.2, "rmssd": 39.7, "pnn50": 18.4,
+           "lf_hf": 1.62, "breathing_rate": 14.8 }
+}</pre></div>
+    <p>The vitals are then attached to the pre-consultation, so both the doctor and the AI prescriber (Agent 6) can factor them into the diagnosis and prescription.</p>
+  </section>
+
+  <!-- ============ 14 DATASETS ============ -->
+  <section class="block" id="datasets">
+    <span class="section-tag">Models &amp; Training</span>
+    <h2 class="section">14 · Every dataset used ⭐</h2>
+    <p class="lead">Four different datasets feed this system. Know all four — this is the question interviewers ask most.</p>
+
+    <div class="tablewrap"><table>
+      <tr><th>Dataset</th><th>What it contains</th><th>Used to train / build</th><th>Where it runs</th></tr>
+      <tr><td><b>RLAP</b></td><td>Large public rPPG dataset: face videos + simultaneous contact-sensor pulse ground truth.</td><td>The 3 ensemble models (FacePhys, PhysNet, EfficientPhys — all tagged <span class="kbadge">.rlap</span>)</td><td>Production (System B)</td></tr>
+      <tr><td><b>MIMIC-III</b></td><td>Huge ICU database from Beth Israel Deaconess Medical Center — continuous PPG + arterial BP waveforms from critical-care patients.</td><td>The 1D-ResNet BP model (<span class="kbadge">1d_resnet_bp.pth</span>, ~23 MB)</td><td>Production (System B)</td></tr>
+      <tr><td><b>PPG-BP</b></td><td>219 subjects, 657 finger PPG recordings, each labelled with real cuff BP + demographics (from Figshare).</td><td>The 6 XGBoost quantile models</td><td>Legacy (System A)</td></tr>
+      <tr><td><b>NHANES</b></td><td>CDC national health survey — average BP by age and sex across the population.</td><td>Not "trained" — used as a statistical prior table</td><td>Production (blending)</td></tr>
+    </table></div>
+
+    <h3>1 · RLAP — for the rPPG ensemble</h3>
+    <p>Every ensemble model name ends in <span class="kbadge">.rlap</span>, which identifies the training set. RLAP recordings pair <strong>face video</strong> with a <strong>real contact pulse sensor</strong> running at the same moment. That gives the network the perfect teaching signal: "here is the video, and here is the true pulse wave you should output."</p>
+    <p>The models learned to map raw face pixels → pulse waveform, across many people, lighting conditions, and movements.</p>
+
+    <h3>2 · MIMIC-III — for the blood-pressure ResNet</h3>
+    <p><strong>MIMIC-III</strong> (Medical Information Mart for Intensive Care) is one of the most-used public medical datasets in the world. It contains de-identified records from tens of thousands of ICU stays, including <strong>continuous waveform recordings</strong>.</p>
+    <div class="note teal"><b class="tag">Why it is ideal for BP training</b>ICU patients have an <strong>arterial line</strong> — a catheter measuring blood pressure continuously and precisely, beat by beat — <em>while</em> a PPG sensor records their pulse wave. That produces enormous numbers of perfectly aligned pairs: <em>"this pulse shape ↔ this exact blood pressure."</em> That is exactly what a BP model needs, and no camera dataset can offer it at that scale or precision.</div>
+    <p>The ResNet was <strong>pretrained</strong> on those PPG-waveform → (SBP, DBP) pairs. In MediIQ we then feed it a <em>camera-derived</em> pulse wave that has been filtered and normalised into the same shape the model expects.</p>
+    <div class="note warn"><b class="tag">Be honest about this in interviews</b>There is a real <strong>domain gap</strong>: the model learned from <em>contact-sensor ICU</em> waveforms but is used on <em>camera</em> waveforms from healthy people at home. That is precisely why the output is blended with the NHANES prior and capped at 85% trust — the engineering deliberately compensates for the gap.</div>
+
+    <h3>3 · PPG-BP — for the legacy XGBoost models</h3>
+    <div class="grid three">
+      <div class="mini"><div class="bignum">219</div><p>subjects with valid BP labels</p></div>
+      <div class="mini"><div class="bignum">657</div><p>PPG recordings (3 per subject)</p></div>
+      <div class="mini"><div class="bignum">1000 Hz</div><p>sampling rate of each recording</p></div>
+    </div>
+    <p>Downloaded from Figshare. Each subject has an Excel row with <strong>age, sex, height, weight, BMI, systolic BP, diastolic BP, heart rate, hypertension label</strong>, plus three <span class="kbadge">.txt</span> files containing the raw fingertip PPG samples (one line, tab-separated).</p>
+
+    <h3>4 · NHANES — the population safety net</h3>
+    <p>Not a training set — a <strong>lookup table</strong> of average BP by age and sex (CDC NHANES 2017–2020), hard-coded in <span class="kbadge">lab_bp_model.py</span>. Used to sanity-anchor predictions when the camera signal is weak (§12).</p>
+    <div class="diagram">[ Datasets → Models Mapping Diagram Here ]<span>Suggested: RLAP→3 ensemble nets, MIMIC-III→ResNet, PPG-BP→XGBoost, NHANES→prior blend</span></div>
+  </section>
+
+  <!-- ============ 15 RESNET TRAIN ============ -->
+  <section class="block" id="resnet-train">
+    <span class="section-tag">Models &amp; Training</span>
+    <h2 class="section">15 · The ResNet — architecture and training</h2>
+
+    <h3>What is a ResNet, in simple words?</h3>
+    <p><strong>ResNet</strong> = "Residual Network". Deep networks (many layers) learn better but historically got <em>worse</em> past a certain depth, because the learning signal faded as it travelled back through the layers.</p>
+    <p>ResNet fixed this with a <strong>shortcut (skip) connection</strong>: the input of a block is added directly to its output. So each block only needs to learn the <em>change</em> ("residual") rather than rebuild everything, and the learning signal has a clear express lane back through the network.</p>
+    <div class="code"><div class="cap"><span>The residual block (lab_bp_model.py)</span><button class="copybtn">Copy</button></div><pre>def forward(self, x):
+    identity = x                                  # remember the input
+    out = self.relu(self.bn1(self.conv1(x)))      # conv → norm → activate
+    out = self.bn2(self.conv2(out))               # conv → norm
+    if self.downsample:
+        identity = self.downsample(x)             # match shapes if needed
+    out += identity                               # ★ THE SKIP CONNECTION
+    return self.relu(out)</pre></div>
+
+    <h3>Why "1D"?</h3>
+    <p>Image ResNets are <strong>2D</strong> (height × width). Our input is a <strong>signal</strong> — a single line of numbers over time. So every convolution is <span class="kbadge">Conv1d</span>: filters slide along <em>time</em> only, learning shapes like "sharp rise", "wide plateau", "second bump".</p>
+
+    <h3>The exact architecture</h3>
+    <div class="code"><div class="cap"><span>_ResNet1D — layer by layer</span><button class="copybtn">Copy</button></div><pre>INPUT: (1, 1, 437)          ← 1 sample, 1 channel, 437 time steps
+
+layer0:  Conv1d(1 → 64, kernel=7, stride=2, padding=3)
+         BatchNorm1d(64) → ReLU
+         MaxPool1d(3, stride=2, padding=1)         # shrink, keep strongest
+
+layer1:  3 × ResidualBlock(64  → 64)
+layer2:  3 × ResidualBlock(64  → 128, stride=2)    # halve length, double depth
+layer3:  3 × ResidualBlock(128 → 256, stride=2)
+layer4:  3 × ResidualBlock(256 → 512, stride=2)
+
+global_pool: AdaptiveAvgPool1d(1)                  # 512 channels → 512 numbers
+fc:          Linear(512 → 2)
+
+OUTPUT: [SBP, DBP]          ← two numbers, in mmHg</pre></div>
+    <div class="tablewrap"><table>
+      <tr><th>Piece</th><th>What it does (plain words)</th></tr>
+      <tr><td><b>Conv1d</b></td><td>Slides a small pattern-detector along the signal looking for shapes.</td></tr>
+      <tr><td><b>BatchNorm1d</b></td><td>Keeps numbers in a sensible range between layers so training stays stable.</td></tr>
+      <tr><td><b>ReLU</b></td><td>Turns negatives into zero — lets the network model non-straight-line relationships.</td></tr>
+      <tr><td><b>MaxPool1d</b></td><td>Keeps only the strongest value in each small region — shrinks the data, keeps the important bits.</td></tr>
+      <tr><td><b>stride=2</b></td><td>Skips every other step, halving the length — the network sees wider patterns as it goes deeper.</td></tr>
+      <tr><td><b>AdaptiveAvgPool1d(1)</b></td><td>Collapses each of the 512 channels to a single average, giving one fixed-size summary of the whole window.</td></tr>
+      <tr><td><b>Linear(512 → 2)</b></td><td>The final layer that turns that summary into exactly two numbers: SBP and DBP.</td></tr>
+    </table></div>
+    <p><strong>Total depth:</strong> 12 residual blocks (3+3+3+3), each with 2 conv layers, plus the stem and the output layer — roughly a ResNet-26 style network, ~23 MB of weights.</p>
+
+    <h3>How it was trained (on MIMIC-III)</h3>
+    <div class="flow">
+      <div class="step"><div class="dot">1</div><div class="st"><b>Collect aligned pairs</b><p>From MIMIC-III: PPG waveform segments alongside the true arterial blood pressure at that moment.</p></div></div>
+      <div class="step"><div class="dot">2</div><div class="st"><b>Cut into fixed windows</b><p>Each PPG segment is sliced into <b>437-sample</b> windows — which is why inference uses exactly 437 too.</p></div></div>
+      <div class="step"><div class="dot">3</div><div class="st"><b>Normalise each window</b><p>Detrended, bandpass-filtered and scaled to 0–1, so the network learns from <em>shape</em>, not from raw amplitude (which varies by sensor).</p></div></div>
+      <div class="step"><div class="dot">4</div><div class="st"><b>Train as a regression</b><p>Target = the true [SBP, DBP]. The network minimises the error between its 2 outputs and the truth, adjusting weights by backpropagation over many epochs.</p></div></div>
+      <div class="step"><div class="dot">5</div><div class="st"><b>Save the weights</b><p>Exported as <span class="kbadge">1d_resnet_bp.pth</span> and loaded in MediIQ with <span class="kbadge">weights_only=True</span> (safer — it loads only numbers, never code).</p></div></div>
+    </div>
+    <div class="note"><b class="tag">How MediIQ loads it</b>The model is built once and cached in a module-level global, then set to <span class="kbadge">.eval()</span> mode (switches off training-only behaviour). All predictions run inside <span class="kbadge">torch.no_grad()</span> — no gradients are computed, which makes inference faster and lighter.</div>
+  </section>
+
+  <!-- ============ 16 XGBOOST ============ -->
+  <section class="block" id="xgboost">
+    <span class="section-tag">Models &amp; Training</span>
+    <h2 class="section">16 · The legacy XGBoost system (System A)</h2>
+    <p>Still fully working and worth understanding — it shows a completely different ML approach to the same problem.</p>
+
+    <h3>Its rPPG method: the POS algorithm</h3>
+    <p><strong>POS</strong> = <em>Plane-Orthogonal-to-Skin</em> (Wang et al., IEEE TBME 2017). It is pure mathematics — no learning, no training. It exploits a physical fact: blood-volume colour changes lie in a <strong>specific direction</strong> in RGB colour space, while lighting/motion noise lies in a different direction. Project along the right plane and the pulse survives while noise cancels.</p>
+    <div class="code"><div class="cap"><span>POS in 5 steps (ml/src/pos_algorithm.py)</span><button class="copybtn">Copy</button></div><pre># Step 1 — remove slow lighting drift (per colour channel)
+C_n = sig / sig.mean(axis=0) - 1.0
+
+# Step 2 — project onto two skin-orthogonal planes
+X = R_n - G_n
+Y = 0.5*R_n + 0.5*G_n - B_n
+
+# Step 3 — combine them, scaled so both contribute fairly
+alpha = std(X) / std(Y)
+raw   = X + alpha * Y
+
+# Step 4 — bandpass 0.7–4 Hz  (= 42–240 bpm, the possible human range)
+filtered = filtfilt(butter(4, [0.7/nyq, 4.0/nyq], 'band'), raw)
+
+# Step 5 — normalise to zero mean, unit variance
+return (filtered - mean) / std</pre></div>
+
+    <h3>Its face handling: 3 skin patches</h3>
+    <p>Instead of the whole face, System A samples <strong>three specific regions</strong> using MediaPipe FaceMesh landmarks:</p>
+    <div class="code"><div class="cap"><span>ml/src/face_roi.py</span><button class="copybtn">Copy</button></div><pre>_FOREHEAD_IDX    = [10, 67, 69, 104, 108, 151, 337, 338, 297, 299]
+_LEFT_CHEEK_IDX  = [116, 117, 118, 119, 120, 100, 47, 126, 142]
+_RIGHT_CHEEK_IDX = [345, 346, 347, 348, 349, 329, 277, 355, 371]
+
+# Then a YCrCb skin-colour mask removes non-skin pixels
+_SKIN_LOWER = [0,   133, 77]     # (Y, Cr, Cb)
+_SKIN_UPPER = [255, 173, 127]
+# ROI discarded if fewer than 50 valid skin pixels survive</pre></div>
+    <p>Forehead and cheeks are chosen because they are <strong>flat, well-lit, and rich in blood vessels</strong>, with no hair or beard. The <strong>YCrCb skin mask</strong> is a colour-space trick: YCrCb separates brightness (Y) from colour (Cr, Cb), so skin can be detected reliably even when lighting changes. Any hair, glasses, or shadow pixels inside the region get filtered out.</p>
+
+    <h3>Its full inference chain</h3>
+    <div class="code"><div class="cap"><span>System A pipeline</span><button class="copybtn">Copy</button></div><pre>Browser: extract mean R,G,B for 3 patches per frame → send ~30 KB of numbers
+Server:
+  1. POS algorithm on each patch      → 3 pulse waveforms
+  2. SNR score each                   → weighted average → 1 waveform
+  3. Resample 30 Hz → 1000 Hz         ★ critical: match the training rate
+  4. Extract the 15 features
+  5. 6 XGBoost models → SBP/DBP with a 90% range
+  6. Blend with the demographic prior, classify with AHA rules</pre></div>
+    <div class="note warn"><b class="tag">The most important line there</b>Step 3, the <strong>resample from 30 Hz to 1000 Hz</strong>. The XGBoost models were trained on 1000 Hz finger recordings, and features like rise-time and pulse-width are measured in samples. Feeding a 30 Hz signal without resampling would make every timing feature ~33× wrong and the predictions meaningless.</div>
+  </section>
+
+  <!-- ============ 17 XGB TRAIN ============ -->
+  <section class="block" id="xgb-train">
+    <span class="section-tag">Models &amp; Training</span>
+    <h2 class="section">17 · How the XGBoost models were trained</h2>
+
+    <h3>Stage 1 — Build the dataset (<span class="kbadge">build_dataset.py</span>)</h3>
+    <div class="flow">
+      <div class="step"><div class="dot">1</div><div class="st"><b>Read the Excel metadata</b><p>Subject id, sex, age, height, weight, BMI, true SBP/DBP. Column names are renamed to clean keys; rows without BP labels are dropped.</p></div></div>
+      <div class="step"><div class="dot">2</div><div class="st"><b>Find each subject's recordings</b><p>All files starting <span class="kbadge">&lt;id&gt;_</span> — typically 3 per subject.</p></div></div>
+      <div class="step"><div class="dot">3</div><div class="st"><b>Preprocess each recording</b><p>Bandpass 0.5–8 Hz → detrend (subtract a moving average) → normalise to zero mean / unit variance.</p></div></div>
+      <div class="step"><div class="dot">4</div><div class="st"><b>Extract 15 features</b><p>See §18 for all of them.</p></div></div>
+      <div class="step"><div class="dot">5</div><div class="st"><b>Quality filter</b><p>Reject any recording with <b>fewer than 2 peaks</b> or <b>signal_quality &lt; 0.10</b>. Bad data is removed rather than learned from.</p></div></div>
+      <div class="step"><div class="dot">6</div><div class="st"><b>Average across recordings</b><p>A subject's 3 recordings are averaged into <b>one row</b> — reduces noise and prevents the same person appearing 3 times.</p></div></div>
+      <div class="step"><div class="dot">7</div><div class="st"><b>Save features.csv</b><p><b>219 rows × 23 columns</b> = subject_id + 20 inputs + 2 targets.</p></div></div>
+    </div>
+
+    <div class="code"><div class="cap"><span>The exact 23 columns of features.csv</span><button class="copybtn">Copy</button></div><pre>ID:          subject_id
+DEMOGRAPHIC: age, sex, height, weight, bmi                    (5)
+HEART RATE:  hr_fft, hr_peaks, hr_final                       (3)
+HRV:         rmssd, sdnn, pnn50                               (3)
+MORPHOLOGY:  pulse_width, rise_time, fall_time,
+             peak_amplitude, notch_ratio, aug_index           (6)
+QUALITY:     signal_quality, peak_count, signal_std           (3)
+TARGETS:     sbp, dbp                                         (2)
+
+→ 20 input features, 2 targets, 219 subjects</pre></div>
+
+    <h3>Stage 2 — Train 6 models (<span class="kbadge">train.py</span>)</h3>
+    <p><strong>Why 6?</strong> Two targets (SBP, DBP) × three quantiles (5th, 50th, 95th percentile).</p>
+    <div class="tablewrap"><table>
+      <tr><th>Model file</th><th>Predicts</th></tr>
+      <tr><td><span class="kbadge">sbp_q05.pkl</span></td><td>Low end of the systolic range</td></tr>
+      <tr><td><span class="kbadge">sbp_q50.pkl</span></td><td><b>The systolic answer</b> (median)</td></tr>
+      <tr><td><span class="kbadge">sbp_q95.pkl</span></td><td>High end of the systolic range</td></tr>
+      <tr><td><span class="kbadge">dbp_q05 / q50 / q95.pkl</span></td><td>Same three for diastolic</td></tr>
+    </table></div>
+    <div class="note good"><b class="tag">What is quantile regression?</b>A normal model predicts one number — the average. <strong>Quantile regression</strong> predicts a <em>percentile</em>. The q05 model learns "5% of real values fall below this", q95 learns "95% fall below this". Together they form a <strong>90% prediction interval</strong>. Saying "≈124, likely 117–132" is far more honest than "124.0".</p></div>
+
+    <div class="code"><div class="cap"><span>Exact hyper-parameters (train.py)</span><button class="copybtn">Copy</button></div><pre>objective             = "reg:quantileerror"  # optimise a percentile
+quantile_alpha        = 0.05 / 0.50 / 0.95   # which percentile
+max_depth             = 5      # shallow trees → less over-fitting
+n_estimators          = 400    # up to 400 trees
+learning_rate         = 0.03   # small steps → careful learning
+subsample             = 0.8    # each tree sees 80% of rows
+colsample_bytree      = 0.8    # each tree sees 80% of features
+reg_alpha             = 0.1    # L1 penalty (drops useless features)
+reg_lambda            = 1.0    # L2 penalty (keeps weights small)
+early_stopping_rounds = 30     # stop if 30 rounds bring no improvement
+tree_method           = "hist" # fast histogram-based splitting
+random_state          = 42     # reproducible results
+
+Split: 80% train / 20% test  (train_test_split, seed 42)</pre></div>
+
+    <h4>Why each setting, in plain words</h4>
+    <ul>
+      <li><strong>Shallow trees (depth 5)</strong> — with only 219 rows, deep trees would memorise individuals instead of learning patterns.</li>
+      <li><strong>Slow learning (0.03) + many trees (400)</strong> — many small careful corrections beat a few big reckless ones.</li>
+      <li><strong>Subsample + colsample (0.8)</strong> — showing each tree a random 80% of rows/columns forces variety, so trees don't all make the same mistake.</li>
+      <li><strong>reg_alpha / reg_lambda</strong> — penalties that punish complexity, pushing the model to stay simple and generalise.</li>
+      <li><strong>Early stopping (30)</strong> — watches the unseen test set and stops the moment it stops improving, preventing over-fitting.</li>
+    </ul>
+
+    <h3>Stage 3 — Evaluation</h3>
+    <div class="tablewrap"><table>
+      <tr><th>Metric</th><th>What it measures</th><th>Target used in the script</th></tr>
+      <tr><td><b>MAE</b></td><td>Mean Absolute Error — the average miss in mmHg.</td><td>SBP: &lt;10 excellent, &lt;12 good · DBP: &lt;6 excellent, &lt;8 good</td></tr>
+      <tr><td><b>RMSE</b></td><td>Like MAE but punishes big misses harder.</td><td>Reported alongside</td></tr>
+      <tr><td><b>Coverage</b></td><td>How often the true value really landed inside the predicted 90% range.</td><td>85–95% = good (it <em>should</em> be ~90%)</td></tr>
+    </table></div>
+    <p>The script also prints the <strong>top-10 most important features</strong> for both SBP and DBP models — showing which parts of the pulse shape actually drove the prediction.</p>
+    <p>Finally it saves the 6 <span class="kbadge">.pkl</span> files plus <span class="kbadge">feature_columns.pkl</span>, which stores the <strong>exact column order</strong>. That matters: at prediction time the features must be assembled in precisely the same order, or every value would land in the wrong slot.</p>
+  </section>
+
+  <!-- ============ 18 FEATURES ============ -->
+  <section class="block" id="features">
+    <span class="section-tag">Models &amp; Training</span>
+    <h2 class="section">18 · The 15 PPG features explained</h2>
+    <p>These are the numbers System A measures from a pulse wave. (System B's ResNet skips this — it learns its own internal features from the raw wave.)</p>
+
+    <h3>Heart-rate features (3)</h3>
+    <div class="tablewrap"><table>
+      <tr><th>Feature</th><th>How it is computed</th><th>Why it matters</th></tr>
+      <tr><td><b>hr_fft</b></td><td>Run an FFT (frequency analysis), find the strongest frequency between 0.7–4 Hz, × 60.</td><td>Robust to individual weird beats — looks at the overall rhythm.</td></tr>
+      <tr><td><b>hr_peaks</b></td><td>Detect peaks (min 400 ms apart, above the median), average the gaps, 60 ÷ gap.</td><td>Direct beat counting — accurate on clean signals.</td></tr>
+      <tr><td><b>hr_final</b></td><td>Average of the two above.</td><td>Combines both methods for stability.</td></tr>
+    </table></div>
+
+    <h3>Heart-rate-variability features (3)</h3>
+    <div class="tablewrap"><table>
+      <tr><th>Feature</th><th>Meaning</th></tr>
+      <tr><td><b>rmssd</b></td><td>Root-mean-square of successive beat-gap differences — short-term variability.</td></tr>
+      <tr><td><b>sdnn</b></td><td>Standard deviation of all beat gaps — overall variability.</td></tr>
+      <tr><td><b>pnn50</b></td><td>% of consecutive beat gaps differing by more than 50 ms.</td></tr>
+    </table></div>
+
+    <h3>Shape (morphology) features (6) — the real BP signal</h3>
+    <div class="tablewrap"><table>
+      <tr><th>Feature</th><th>What it measures</th><th>Link to blood pressure</th></tr>
+      <tr><td><b>pulse_width</b></td><td>Width of the pulse at 50% of its height.</td><td>Narrower pulses often indicate stiffer arteries / higher BP.</td></tr>
+      <tr><td><b>rise_time</b></td><td>Time from the foot of the wave to its peak.</td><td>How fast the heart ejects blood — related to contractility.</td></tr>
+      <tr><td><b>fall_time</b></td><td>Time from peak back down to the next foot.</td><td>How quickly blood drains — reflects vascular resistance.</td></tr>
+      <tr><td><b>peak_amplitude</b></td><td>Height of the pulse.</td><td>Related to stroke volume (blood pushed per beat).</td></tr>
+      <tr><td><b>notch_ratio</b></td><td>Height of the <b>dicrotic notch</b> relative to the pulse.</td><td>The notch is the small bump from the aortic valve closing and the reflected wave — strongly tied to arterial stiffness.</td></tr>
+      <tr><td><b>aug_index</b></td><td>Augmentation index: how much the reflected wave boosts the main wave.</td><td>A classic clinical marker of arterial stiffness and hypertension.</td></tr>
+    </table></div>
+    <div class="note"><b class="tag">How the dicrotic notch is found</b>The code takes the <strong>second derivative</strong> of the falling part of each pulse (the "acceleration PPG"). The first point where it turns positive is the notch — a real trick used in clinical PPG analysis. Values are sanity-checked, and pulses with amplitude below 0.05 are skipped as too noisy.</div>
+
+    <h3>Quality features (3)</h3>
+    <div class="tablewrap"><table>
+      <tr><th>Feature</th><th>Meaning</th></tr>
+      <tr><td><b>signal_quality</b></td><td>Fraction of total power sitting in the pulse band (Welch PSD). Near 1 = clean.</td></tr>
+      <tr><td><b>peak_count</b></td><td>How many beats were detected — too few means unreliable.</td></tr>
+      <tr><td><b>signal_std</b></td><td>Overall variation — a flat line means no real signal.</td></tr>
+    </table></div>
+    <p>Every feature is computed <strong>per pulse and then averaged</strong>, and any that cannot be computed becomes <span class="kbadge">NaN</span> — which XGBoost handles natively (it learns which branch to send missing values down).</p>
+  </section>
+
+  <!-- ============ 19 QUALITY ============ -->
+  <section class="block" id="quality">
+    <span class="section-tag">Everything Else</span>
+    <h2 class="section">19 · Quality gates &amp; error handling</h2>
+    <p>The system refuses to give a bad reading. Here is every checkpoint, in order:</p>
+    <div class="tablewrap"><table>
+      <tr><th>#</th><th>Where</th><th>The check</th><th>If it fails</th></tr>
+      <tr><td>1</td><td>Browser</td><td>Face present, big enough, centred, steady 3s</td><td>Scan does not start; live guidance shown</td></tr>
+      <tr><td>2</td><td>Browser</td><td>Face lost &gt; 2s</td><td>Frame collection pauses</td></tr>
+      <tr><td>3</td><td>Browser</td><td>At least 300 valid frames</td><td>Error: "Only N valid frames captured. Try again…"</td></tr>
+      <tr><td>4</td><td>Server</td><td>Base64 + gzip decode succeeds</td><td>HTTP 422 with the decode error</td></tr>
+      <tr><td>5</td><td>Server</td><td>Request validation (60–2700 frames, crop 32–128, fps 10–60, age 1–120)</td><td>HTTP 422 from Pydantic</td></tr>
+      <tr><td>6</td><td>Server</td><td>Each model returns valid non-NaN HR + SQI</td><td>That model skipped, others continue</td></tr>
+      <tr><td>7</td><td>Server</td><td>At least one model succeeded</td><td>HTTP 500 "All ensemble models failed"</td></tr>
+      <tr><td>8</td><td>Server</td><td>Mean SQI ≥ 0.1</td><td>HTTP 422 "Signal quality too low… better lighting"</td></tr>
+      <tr><td>9</td><td>Server</td><td>Signal length ≥ 437 samples for ResNet</td><td>BP skipped (non-fatal) — HR still returned</td></tr>
+      <tr><td>10</td><td>Server</td><td>ResNet prediction succeeds</td><td>Caught; <span class="kbadge">bp_error</span> returned, HR + HRV still delivered</td></tr>
+    </table></div>
+    <div class="note good"><b class="tag">Graceful degradation</b>Notice checks 9 and 10: if blood pressure fails, the request does <strong>not</strong> crash — the patient still gets their heart rate and HRV, and the response honestly reports why BP is missing. Partial results beat no results, as long as nothing is faked.</div>
+  </section>
+
+  <!-- ============ 20 PRIVACY ============ -->
+  <section class="block" id="privacy">
+    <span class="section-tag">Everything Else</span>
+    <h2 class="section">20 · Privacy — what actually leaves the device</h2>
+    <div class="grid two">
+      <div class="mini"><h4>❌ Never sent</h4><p>The video file. The audio. The background or room. Anyone else in frame. A recognisable full-resolution face image.</p></div>
+      <div class="mini"><h4>✅ Sent</h4><p>Compressed <b>72×72 pixel</b> face thumbnails, plus age, sex, height, weight — the minimum the models need.</p></div>
+    </div>
+    <p>All camera access, face detection (MediaPipe runs <em>in the browser</em>), cropping and compression happen on the patient's own device. Nothing is written to disk on the server — frames live in memory for the few seconds of processing and are discarded. No image data is stored in the database; only the final numbers are saved with the consultation.</p>
+    <div class="note"><b class="tag">Worth saying out loud in an interview</b>72×72 is roughly the size of a small app icon. It carries enough colour-over-time information for the pulse signal, while being a far weaker biometric than a full-resolution photo. This was a deliberate privacy-vs-accuracy trade-off — and it was still <em>increased</em> from 36×36 because the networks needed more spatial detail.</div>
+  </section>
+
+  <!-- ============ 21 SPECS ============ -->
+  <section class="block" id="specs">
+    <span class="section-tag">Everything Else</span>
+    <h2 class="section">21 · Specs cheat-sheet</h2>
+    <div class="tablewrap"><table>
+      <tr><th>Item</th><th>Value</th></tr>
+      <tr><td>Scan duration</td><td class="num">45 seconds</td></tr>
+      <tr><td>Capture rate</td><td class="num">30 fps (real fps measured &amp; sent)</td></tr>
+      <tr><td>Frames collected</td><td class="num">~1,350</td></tr>
+      <tr><td>Face crop</td><td class="num">72 × 72 × 3 = 15,552 bytes/frame</td></tr>
+      <tr><td>Face padding</td><td class="num">25% around the landmark box</td></tr>
+      <tr><td>Landmarks</td><td class="num">468 (MediaPipe FaceLandmarker)</td></tr>
+      <tr><td>Frame averaging</td><td class="num">pairs → 15 fps effective</td></tr>
+      <tr><td>Ensemble models</td><td class="num">3 (FacePhys, PhysNet, EfficientPhys — .rlap)</td></tr>
+      <tr><td>BP model</td><td class="num">1D-ResNet, 12 residual blocks, ~23 MB</td></tr>
+      <tr><td>ResNet input window</td><td class="num">437 samples, step 80</td></tr>
+      <tr><td>Max blend on camera signal</td><td class="num">0.85</td></tr>
+      <tr><td>Min acceptable SQI</td><td class="num">0.10</td></tr>
+      <tr><td>Legacy models</td><td class="num">6 XGBoost quantile (q05/q50/q95 × SBP/DBP)</td></tr>
+      <tr><td>Legacy training data</td><td class="num">219 subjects / 657 recordings @ 1000 Hz</td></tr>
+      <tr><td>Legacy feature count</td><td class="num">20 inputs (5 demographic + 15 PPG)</td></tr>
+      <tr><td>HR accuracy</td><td class="num">±5–8 bpm in good lighting</td></tr>
+      <tr><td>Confidence interval</td><td class="num">90% (5th–95th percentile)</td></tr>
+    </table></div>
+  </section>
+
+  <!-- ============ 22 LIMITS ============ -->
+  <section class="block" id="limits">
+    <span class="section-tag">Everything Else</span>
+    <h2 class="section">22 · Limitations (state these honestly)</h2>
+    <ul>
+      <li><strong>Not a medical device.</strong> These are estimates to support a doctor, never a replacement for a cuff.</li>
+      <li><strong>Domain gap.</strong> The ResNet learned from contact ICU sensors but runs on camera signals — mitigated by NHANES blending, not eliminated.</li>
+      <li><strong>Lighting sensitive.</strong> Dim or flickering light lowers SQI, pushing the answer toward the population average.</li>
+      <li><strong>Motion sensitive.</strong> The patient must stay reasonably still for 45 seconds.</li>
+      <li><strong>Skin tone &amp; makeup</strong> can affect signal strength; heavy makeup or facial hair reduces usable skin area.</li>
+      <li><strong>Blood pressure is genuinely hard.</strong> Heart rate from rPPG is well established; camera-based BP is still an active research area.</li>
+      <li><strong>Small legacy training set</strong> (219 subjects) for System A.</li>
+      <li><strong>Server required.</strong> The models run in a separate Python service, so the vitals feature needs that service reachable.</li>
+    </ul>
+  </section>
+
+  <!-- ============ 23 INTERVIEW ============ -->
+  <section class="block" id="interview">
+    <span class="section-tag">Everything Else</span>
+    <h2 class="section">23 · Interview Q&amp;A</h2>
+
+    <details class="collap"><summary><span class="num">Q</span> Explain your vitals feature in 30 seconds. <span class="chev">›</span></summary><div class="body">
+      <p>A patient looks at their webcam for 45 seconds. In the browser, MediaPipe tracks 468 face landmarks and I crop 72×72 face thumbnails, which are gzipped and sent to a Python service — the video itself never leaves the device. There, an <b>ensemble of three rPPG neural networks</b> (FacePhys, PhysNet, EfficientPhys, all trained on RLAP) each extract a pulse waveform; I fuse them weighted by each model's signal-quality score. Heart rate and HRV come from the best model, and the fused waveform goes into a <b>1D-ResNet pretrained on MIMIC-III</b> that predicts systolic and diastolic BP over overlapping windows. Finally I blend with NHANES population averages based on signal quality, and classify using AHA 2017 rules.</p>
+    </div></details>
+
+    <details class="collap"><summary><span class="num">Q</span> Which datasets did you use? <span class="chev">›</span></summary><div class="body">
+      <p>Four. <b>RLAP</b> — face videos with ground-truth contact PPG — trained the three ensemble rPPG models. <b>MIMIC-III</b> — ICU PPG waveforms paired with continuous arterial blood pressure — pretrained the 1D-ResNet BP model. <b>PPG-BP</b> — 219 subjects, 657 fingertip recordings at 1000 Hz with cuff BP labels — trained my six XGBoost quantile models in the legacy pipeline. And <b>NHANES</b> (CDC) provides population BP averages by age and sex, used as a statistical prior rather than for training.</p>
+    </div></details>
+
+    <details class="collap"><summary><span class="num">Q</span> Why an ensemble of three models? <span class="chev">›</span></summary><div class="body">
+      <p>Three reasons. <b>Accuracy</b> — different architectures fail differently, so blending cancels individual errors. <b>Robustness</b> — each runs in its own try/except, so a crash or NaN from one doesn't kill the request. <b>Quality-awareness</b> — each returns its own SQI, so I weight the good signals higher instead of blindly averaging. I also take the heart rate from the single best model rather than the blend, because averaging a noisy HR would drag the number off.</p>
+    </div></details>
+
+    <details class="collap"><summary><span class="num">Q</span> How does a pulse waveform give blood pressure? <span class="chev">›</span></summary><div class="body">
+      <p>Through the <b>shape</b> of each pulse. Arterial stiffness and pressure change how sharply the wave rises, how wide it is, and where the dicrotic notch (the reflected-wave bump) sits. In the legacy system I measured that explicitly as features like rise_time, notch_ratio and augmentation index. In the current system the ResNet learns those patterns itself from the raw waveform, having been trained on MIMIC-III where each waveform had a true arterial BP label.</p>
+    </div></details>
+
+    <details class="collap"><summary><span class="num">Q</span> What is quantile regression and why use it? <span class="chev">›</span></summary><div class="body">
+      <p>Instead of predicting the mean, each model predicts a percentile. I train separate models for the 5th, 50th and 95th percentile of SBP and DBP — six in total. The 50th is the answer; the 5th and 95th form a <b>90% prediction interval</b>. For a medical estimate that's much more honest than a single number, and I validate it with a <b>coverage</b> metric: the true value should fall inside the interval about 90% of the time.</p>
+    </div></details>
+
+    <details class="collap"><summary><span class="num">Q</span> Why blend with NHANES? Isn't that cheating? <span class="chev">›</span></summary><div class="body">
+      <p>It's Bayesian thinking: combine the evidence with a sensible prior, weighted by how strong the evidence is. If signal quality is 0.8 I use 80% model and 20% population average; if it's 0.3, the population average dominates and I flag <span class="kbadge">signal_source: "fallback"</span> so the doctor knows. I also cap camera trust at 0.85 so a wild prediction can never run away unchecked. It's fully transparent — the raw model output, the NHANES value and the blend ratio are all returned in the response.</p>
+    </div></details>
+
+    <details class="collap"><summary><span class="num">Q</span> Why average frames in pairs? <span class="chev">›</span></summary><div class="body">
+      <p>Sensor noise is random, so averaging two neighbouring frames partly cancels it, while the pulse signal — nearly identical across 33 ms — survives. It halves the effective frame rate to 15 fps, but by Nyquist that still supports up to 450 bpm, far beyond any human heart rate. So it's free noise reduction. Importantly, the halved <span class="kbadge">effective_fps</span> is then used for every downstream timing calculation.</p>
+    </div></details>
+
+    <details class="collap"><summary><span class="num">Q</span> What's a ResNet and why 1D? <span class="chev">›</span></summary><div class="body">
+      <p>A ResNet adds <b>skip connections</b> that pass a block's input straight to its output, so each block only learns the residual change and gradients flow cleanly through deep networks. Mine has 12 residual blocks, widening 64→128→256→512 channels, then global average pooling and a linear layer producing two numbers. It's <b>1D</b> because the input is a time signal, not an image — convolutions slide along time only, learning shapes like sharp rises and secondary bumps.</p>
+    </div></details>
+
+    <details class="collap"><summary><span class="num">Q</span> Biggest technical challenge here? <span class="chev">›</span></summary><div class="body">
+      <p>Making a ~1% signal survive real-world conditions. My answers were layered: capture longer (45s) and bigger crops (72×72) for more information; average frame pairs to cut sensor noise; use three models instead of one; weight everything by measured quality rather than trusting it equally; narrow the bandpass adaptively around the already-detected heart rate; and average across dozens of overlapping windows. Then, rather than pretending the result is perfect, I quantify uncertainty with a percentile interval and blend toward a population prior when quality is low.</p>
+    </div></details>
+
+    <details class="collap"><summary><span class="num">Q</span> How do you handle privacy? <span class="chev">›</span></summary><div class="body">
+      <p>Face detection and cropping run entirely in the browser using MediaPipe. Only 72×72 face thumbnails — gzipped — are transmitted; the video, audio and background never leave the device. On the server the frames stay in memory for a few seconds and are never written to disk, and the database stores only the resulting numbers, never image data.</p>
+    </div></details>
+
+    <details class="collap"><summary><span class="num">Q</span> How accurate is it, honestly? <span class="chev">›</span></summary><div class="body">
+      <p>Heart rate lands within roughly ±5–8 bpm in decent lighting, which is consistent with published rPPG results. Blood pressure is harder and I present it as an estimate with a 90% interval, not a precise reading — a wide interval is itself the signal that the scan was uncertain. It's designed to support a doctor's judgement, not to replace a cuff, and it is not a certified medical device.</p>
+    </div></details>
+  </section>
+
+  <footer class="docfoot">
+    <p><b>MediIQ — Vitals Engine Handbook.</b> Every number, threshold and code snippet here was taken directly from the current source: <span class="kbadge">components/vitals/useVitalsCapture.ts</span>, <span class="kbadge">lib/vitalsApi.ts</span>, <span class="kbadge">ml/api/lab_router.py</span>, <span class="kbadge">ml/src/lab_bp_model.py</span>, <span class="kbadge">ml/src/train.py</span>, <span class="kbadge">ml/src/build_dataset.py</span>, <span class="kbadge">ml/src/feature_extraction.py</span>, <span class="kbadge">ml/src/pos_algorithm.py</span> and <span class="kbadge">ml/src/classifier.py</span>.</p>
+    <p>Datasets: RLAP, MIMIC-III, PPG-BP (Figshare), NHANES (CDC). Classification follows the ACC/AHA 2017 hypertension guidelines. MediIQ is not a certified medical device — all vitals are estimates supporting a licensed doctor.</p>
+  </footer>
+</main>
+</div>
+
+<script>
+(function(){var r=document.documentElement,b=document.getElementById('themeBtn'),s=localStorage.getItem('mediiq-vitals-theme');
+  if(s)r.setAttribute('data-theme',s);
+  function y(){b.textContent=r.getAttribute('data-theme')==='dark'?'☀️':'🌙';}y();
+  b.addEventListener('click',function(){var n=r.getAttribute('data-theme')==='dark'?'light':'dark';
+    r.setAttribute('data-theme',n);localStorage.setItem('mediiq-vitals-theme',n);y();});})();
+(function(){var b=document.getElementById('progress');
+  function u(){var h=document.documentElement.scrollHeight-document.documentElement.clientHeight;
+    b.style.width=(h>0?(window.scrollY/h)*100:0)+'%';}
+  window.addEventListener('scroll',u,{passive:true});window.addEventListener('resize',u);u();})();
+(function(){var l=[].slice.call(document.querySelectorAll('#nav a')),m={};
+  l.forEach(function(a){m[a.getAttribute('href').slice(1)]=a;});
+  var s=l.map(function(a){return document.getElementById(a.getAttribute('href').slice(1));}).filter(Boolean);
+  var o=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){
+    l.forEach(function(x){x.classList.remove('active');});
+    var a=m[e.target.id];if(a){a.classList.add('active');a.scrollIntoView({block:'nearest'});}}});},
+    {rootMargin:'-14% 0px -78% 0px',threshold:0});
+  s.forEach(function(x){o.observe(x);});})();
+(function(){var i=document.getElementById('search'),l=[].slice.call(document.querySelectorAll('#nav a')),
+  g=[].slice.call(document.querySelectorAll('#nav .grouplabel'));
+  i.addEventListener('input',function(){var q=i.value.trim().toLowerCase();
+    l.forEach(function(a){a.classList.toggle('hidden',q!==''&&a.textContent.toLowerCase().indexOf(q)===-1);});
+    g.forEach(function(lb){var n=lb.nextElementSibling,v=false;
+      while(n&&!n.classList.contains('grouplabel')){if(n.tagName==='A'&&!n.classList.contains('hidden')){v=true;break;}n=n.nextElementSibling;}
+      lb.style.display=(q!==''&&!v)?'none':'';});});
+  document.addEventListener('keydown',function(e){if(e.key==='/'&&document.activeElement!==i){e.preventDefault();i.focus();}});})();
+(function(){document.querySelectorAll('.code .copybtn').forEach(function(b){
+  b.addEventListener('click',function(){var p=b.closest('.code').querySelector('pre');
+    navigator.clipboard.writeText(p?p.innerText:'').then(function(){var o=b.textContent;
+      b.textContent='Copied!';b.classList.add('done');
+      setTimeout(function(){b.textContent=o;b.classList.remove('done');},1400);});});});})();
+(function(){var s=document.getElementById('sidebar'),m=document.getElementById('menuBtn'),b=document.getElementById('backdrop');
+  m.addEventListener('click',function(){s.classList.add('open');b.classList.add('show');});
+  b.addEventListener('click',function(){s.classList.remove('open');b.classList.remove('show');});
+  s.addEventListener('click',function(e){if(e.target.tagName==='A'){s.classList.remove('open');b.classList.remove('show');}});})();
+</script>
+</body>
+</html>

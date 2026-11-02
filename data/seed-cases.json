@@ -1,0 +1,1164 @@
+[
+  {
+    "patient": { "age": 24, "sex": "M", "weight": 68, "height": 172, "bloodGroup": "B+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "High fever, headache, body ache, fatigue", "duration": "2 days", "severity": "moderate",
+    "additionalNotes": "Temperature 102F, no cough", "currentMedications": "none",
+    "diagnosis": "Viral fever — acute febrile illness, likely viral aetiology",
+    "prescription": [
+      { "medicine": "Paracetamol", "dosage": "650mg", "timing": "after food", "frequency": "thrice daily", "duration": "5 days", "condition": "" },
+      { "medicine": "Cetirizine", "dosage": "10mg", "timing": "at bedtime", "frequency": "once daily", "duration": "5 days", "condition": "" },
+      { "medicine": "Pantoprazole", "dosage": "40mg", "timing": "before food", "frequency": "once daily", "duration": "5 days", "condition": "" }
+    ],
+    "advice": "Rest adequately. Drink plenty of fluids. Avoid cold drinks. Tepid sponging for high fever. Report if temperature exceeds 104F."
+  },
+  {
+    "patient": { "age": 54, "sex": "M", "weight": 82, "height": 168, "bloodGroup": "O+", "knownConditions": ["Type 2 Diabetes"], "allergies": [], "currentMedications": ["Metformin 500mg"] },
+    "symptoms": "Fever, chills, generalised weakness, loss of appetite", "duration": "3 days", "severity": "moderate",
+    "additionalNotes": "Blood sugar 180 fasting, temperature 101.5F", "currentMedications": "Metformin 500mg",
+    "diagnosis": "Viral fever in a diabetic patient — close glycaemic monitoring required",
+    "prescription": [
+      { "medicine": "Paracetamol", "dosage": "500mg", "timing": "after food", "frequency": "thrice daily", "duration": "5 days", "condition": "" },
+      { "medicine": "Pantoprazole", "dosage": "40mg", "timing": "before food", "frequency": "once daily", "duration": "5 days", "condition": "" },
+      { "medicine": "ORS sachets", "dosage": "1 sachet", "timing": "as needed", "frequency": "as needed", "duration": "5 days", "condition": "Take after each loose stool or if unable to eat meals" }
+    ],
+    "advice": "Monitor blood sugar every 6 hours. Maintain soft light diet. Avoid NSAIDs. Continue Metformin with food. Seek care if sugar exceeds 300."
+  },
+  {
+    "patient": { "age": 67, "sex": "F", "weight": 60, "height": 155, "bloodGroup": "A+", "knownConditions": ["Hypertension"], "allergies": [], "currentMedications": ["Amlodipine 5mg"] },
+    "symptoms": "Fever with chills, joint pain, mild breathlessness", "duration": "4 days", "severity": "moderate",
+    "additionalNotes": "BP 148/90, temperature 102F", "currentMedications": "Amlodipine 5mg",
+    "diagnosis": "Viral fever with arthralgia in elderly hypertensive patient",
+    "prescription": [
+      { "medicine": "Paracetamol", "dosage": "500mg", "timing": "after food", "frequency": "thrice daily", "duration": "5 days", "condition": "" },
+      { "medicine": "Cetirizine", "dosage": "10mg", "timing": "at bedtime", "frequency": "once daily", "duration": "3 days", "condition": "" },
+      { "medicine": "Pantoprazole", "dosage": "40mg", "timing": "before food", "frequency": "once daily", "duration": "5 days", "condition": "" }
+    ],
+    "advice": "Avoid NSAIDs due to hypertension and age. Monitor BP daily. Bed rest. Light diet with adequate fluids."
+  },
+  {
+    "patient": { "age": 31, "sex": "F", "weight": 56, "height": 160, "bloodGroup": "AB+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Fever, runny nose, sneezing, mild throat pain, watery eyes", "duration": "2 days", "severity": "mild",
+    "additionalNotes": "Seasonal change, no vomiting", "currentMedications": "none",
+    "diagnosis": "Viral fever with upper respiratory tract infection (URTI)",
+    "prescription": [
+      { "medicine": "Paracetamol", "dosage": "500mg", "timing": "after food", "frequency": "thrice daily", "duration": "4 days", "condition": "" },
+      { "medicine": "Cetirizine", "dosage": "10mg", "timing": "at bedtime", "frequency": "once daily", "duration": "5 days", "condition": "" },
+      { "medicine": "Ambroxol + Guaifenesin syrup", "dosage": "10ml", "timing": "after food", "frequency": "thrice daily", "duration": "5 days", "condition": "" }
+    ],
+    "advice": "Steam inhalation twice daily. Warm fluids. Avoid cold exposure. Rest."
+  },
+  {
+    "patient": { "age": 19, "sex": "M", "weight": 65, "height": 175, "bloodGroup": "O-", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "High fever, severe body ache, retro-orbital pain, rash on trunk", "duration": "3 days", "severity": "severe",
+    "additionalNotes": "Dengue-endemic area, platelet count 1.2 lakh", "currentMedications": "none",
+    "diagnosis": "Probable dengue fever — close monitoring advised",
+    "prescription": [
+      { "medicine": "Paracetamol", "dosage": "650mg", "timing": "after food", "frequency": "thrice daily", "duration": "5 days", "condition": "" },
+      { "medicine": "ORS sachets", "dosage": "1 sachet in 1L water", "timing": "as needed", "frequency": "as needed", "duration": "5 days", "condition": "" }
+    ],
+    "advice": "Strictly avoid NSAIDs and aspirin. Monitor platelet count every 48 hours. Drink 3–4 litres of fluid daily. Report immediately if platelet drops below 1 lakh or bleeding occurs."
+  },
+  {
+    "patient": { "age": 42, "sex": "M", "weight": 76, "height": 170, "bloodGroup": "B+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Fever with severe throat pain, difficulty swallowing, body ache", "duration": "2 days", "severity": "moderate",
+    "additionalNotes": "Tonsils inflamed, white patches visible", "currentMedications": "none",
+    "diagnosis": "Viral fever with acute tonsillitis",
+    "prescription": [
+      { "medicine": "Paracetamol", "dosage": "650mg", "timing": "after food", "frequency": "thrice daily", "duration": "5 days", "condition": "" },
+      { "medicine": "Amoxicillin", "dosage": "500mg", "timing": "after food", "frequency": "thrice daily", "duration": "5 days", "condition": "" },
+      { "medicine": "Pantoprazole", "dosage": "40mg", "timing": "before food", "frequency": "once daily", "duration": "5 days", "condition": "" },
+      { "medicine": "Betadine gargle", "dosage": "10ml diluted", "timing": "as needed", "frequency": "thrice daily", "duration": "5 days", "condition": "" }
+    ],
+    "advice": "Warm salt water gargles. Soft diet. Complete antibiotic course. Avoid cold drinks."
+  },
+  {
+    "patient": { "age": 38, "sex": "F", "weight": 62, "height": 158, "bloodGroup": "A-", "knownConditions": ["Hypothyroidism"], "allergies": [], "currentMedications": ["Levothyroxine 50mcg"] },
+    "symptoms": "Fever, joint pains, extreme fatigue, mild rash on arms", "duration": "4 days", "severity": "moderate",
+    "additionalNotes": "TSH normal last month", "currentMedications": "Levothyroxine 50mcg",
+    "diagnosis": "Viral fever with arthralgia — possible chikungunya or viral exanthem",
+    "prescription": [
+      { "medicine": "Paracetamol", "dosage": "650mg", "timing": "after food", "frequency": "thrice daily", "duration": "5 days", "condition": "" },
+      { "medicine": "Chlorpheniramine maleate", "dosage": "4mg", "timing": "at bedtime", "frequency": "once daily", "duration": "5 days", "condition": "" },
+      { "medicine": "Pantoprazole", "dosage": "40mg", "timing": "before food", "frequency": "once daily", "duration": "5 days", "condition": "" }
+    ],
+    "advice": "Continue Levothyroxine. Rest joint with mild warm compress. Adequate hydration. Follow up in 5 days."
+  },
+  {
+    "patient": { "age": 28, "sex": "M", "weight": 72, "height": 178, "bloodGroup": "O+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Fever, headache, nausea, loss of appetite, yellow tinge in eyes", "duration": "5 days", "severity": "severe",
+    "additionalNotes": "Bilirubin elevated, liver enzymes raised", "currentMedications": "none",
+    "diagnosis": "Viral hepatitis — likely Hepatitis A, jaundice present",
+    "prescription": [
+      { "medicine": "Liv 52 DS", "dosage": "2 tablets", "timing": "after food", "frequency": "twice daily", "duration": "30 days", "condition": "" },
+      { "medicine": "Ondansetron", "dosage": "4mg", "timing": "before food", "frequency": "twice daily", "duration": "5 days", "condition": "Take only if nausea is significant or vomiting occurs" },
+      { "medicine": "ORS sachets", "dosage": "1 sachet", "timing": "as needed", "frequency": "as needed", "duration": "7 days", "condition": "" }
+    ],
+    "advice": "Strict bed rest. High-carbohydrate low-fat diet. Avoid fatty foods, alcohol, and hepatotoxic drugs. Follow up in 1 week with LFT."
+  },
+  {
+    "patient": { "age": 35, "sex": "F", "weight": 58, "height": 162, "bloodGroup": "B-", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Runny nose, sneezing, nasal congestion, mild headache, no fever", "duration": "3 days", "severity": "mild",
+    "additionalNotes": "Seasonal allergic rhinitis, known dust allergy", "currentMedications": "none",
+    "diagnosis": "Allergic rhinitis — triggered by seasonal allergens",
+    "prescription": [
+      { "medicine": "Fexofenadine", "dosage": "120mg", "timing": "before food", "frequency": "once daily", "duration": "10 days", "condition": "" },
+      { "medicine": "Mometasone nasal spray", "dosage": "2 sprays each nostril", "timing": "as needed", "frequency": "once daily", "duration": "10 days", "condition": "" },
+      { "medicine": "Xylometazoline nasal drops", "dosage": "2 drops each nostril", "timing": "at bedtime", "frequency": "once daily", "duration": "3 days", "condition": "Use only if congestion is severe; do not exceed 3 days" }
+    ],
+    "advice": "Avoid dust exposure. Use N95 mask in dusty environments. Steam inhalation for congestion. Saline nasal rinse morning and night."
+  },
+  {
+    "patient": { "age": 47, "sex": "M", "weight": 80, "height": 174, "bloodGroup": "A+", "knownConditions": ["Hypertension"], "allergies": [], "currentMedications": ["Telmisartan 40mg"] },
+    "symptoms": "Sneezing, runny nose, mild sore throat, no fever", "duration": "2 days", "severity": "mild",
+    "additionalNotes": "BP well controlled", "currentMedications": "Telmisartan 40mg",
+    "diagnosis": "Common cold — viral rhinitis",
+    "prescription": [
+      { "medicine": "Cetirizine", "dosage": "10mg", "timing": "at bedtime", "frequency": "once daily", "duration": "5 days", "condition": "" },
+      { "medicine": "Paracetamol", "dosage": "500mg", "timing": "after food", "frequency": "twice daily", "duration": "3 days", "condition": "Take only if headache or discomfort" },
+      { "medicine": "Vitamin C", "dosage": "500mg", "timing": "after food", "frequency": "once daily", "duration": "7 days", "condition": "" }
+    ],
+    "advice": "Warm fluids. Avoid decongestants with pseudoephedrine (raises BP). Steam inhalation. Hand hygiene."
+  },
+  {
+    "patient": { "age": 22, "sex": "F", "weight": 52, "height": 157, "bloodGroup": "O+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Runny nose, sneezing, watery eyes, nasal congestion, mild cough", "duration": "4 days", "severity": "mild",
+    "additionalNotes": "Pet at home, no fever", "currentMedications": "none",
+    "diagnosis": "Common cold with mild allergic component",
+    "prescription": [
+      { "medicine": "Levocetirizine", "dosage": "5mg", "timing": "at bedtime", "frequency": "once daily", "duration": "7 days", "condition": "" },
+      { "medicine": "Ambroxol syrup", "dosage": "10ml", "timing": "after food", "frequency": "thrice daily", "duration": "5 days", "condition": "" }
+    ],
+    "advice": "Keep pets out of bedroom. Use air purifier if possible. Warm salt water gargles. Plenty of fluids."
+  },
+  {
+    "patient": { "age": 60, "sex": "M", "weight": 74, "height": 166, "bloodGroup": "B+", "knownConditions": ["Type 2 Diabetes", "Hypertension"], "allergies": [], "currentMedications": ["Metformin 1000mg", "Amlodipine 5mg"] },
+    "symptoms": "Nasal discharge, sneezing, nasal congestion, no fever", "duration": "3 days", "severity": "mild",
+    "additionalNotes": "BP 140/85, sugar 160", "currentMedications": "Metformin 1000mg, Amlodipine 5mg",
+    "diagnosis": "Common cold in diabetic hypertensive patient",
+    "prescription": [
+      { "medicine": "Cetirizine", "dosage": "10mg", "timing": "at bedtime", "frequency": "once daily", "duration": "5 days", "condition": "" },
+      { "medicine": "Saline nasal drops", "dosage": "2 drops each nostril", "timing": "as needed", "frequency": "thrice daily", "duration": "5 days", "condition": "" }
+    ],
+    "advice": "Avoid pseudoephedrine-containing cold medicines. Monitor BP and blood sugar. Warm fluids. Continue regular medications."
+  },
+  {
+    "patient": { "age": 29, "sex": "F", "weight": 55, "height": 161, "bloodGroup": "A+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Nasal congestion, loss of smell and taste, mild headache", "duration": "5 days", "severity": "mild",
+    "additionalNotes": "No fever, recent viral contact", "currentMedications": "none",
+    "diagnosis": "Post-viral rhinitis with anosmia",
+    "prescription": [
+      { "medicine": "Fexofenadine", "dosage": "120mg", "timing": "before food", "frequency": "once daily", "duration": "7 days", "condition": "" },
+      { "medicine": "Mometasone nasal spray", "dosage": "2 sprays each nostril", "timing": "as needed", "frequency": "once daily", "duration": "7 days", "condition": "" },
+      { "medicine": "Vitamin C", "dosage": "500mg", "timing": "after food", "frequency": "once daily", "duration": "14 days", "condition": "" }
+    ],
+    "advice": "Smell training with strong scents (lemon, clove) twice daily. Nasal saline rinse. Avoid chemical irritants."
+  },
+  {
+    "patient": { "age": 33, "sex": "M", "weight": 70, "height": 173, "bloodGroup": "O+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Dry cough, tickling in throat, worsens at night", "duration": "7 days", "severity": "mild",
+    "additionalNotes": "No fever, no sputum, post-viral", "currentMedications": "none",
+    "diagnosis": "Post-viral dry cough — irritant cough reflex",
+    "prescription": [
+      { "medicine": "Dextromethorphan + Chlorpheniramine syrup", "dosage": "10ml", "timing": "at bedtime", "frequency": "once daily", "duration": "5 days", "condition": "" },
+      { "medicine": "Montelukast", "dosage": "10mg", "timing": "at bedtime", "frequency": "once daily", "duration": "10 days", "condition": "" },
+      { "medicine": "Honey + ginger in warm water", "dosage": "1 tsp honey", "timing": "before bed", "frequency": "once daily", "duration": "7 days", "condition": "" }
+    ],
+    "advice": "Steam inhalation. Avoid cold drinks and AC. Sleep with head slightly elevated. Avoid throat clearing."
+  },
+  {
+    "patient": { "age": 45, "sex": "F", "weight": 63, "height": 159, "bloodGroup": "B+", "knownConditions": ["Asthma"], "allergies": ["Aspirin"], "currentMedications": ["Budesonide inhaler"] },
+    "symptoms": "Productive cough with yellowish sputum, mild fever, wheezing", "duration": "5 days", "severity": "moderate",
+    "additionalNotes": "Peak flow reduced, no chest pain", "currentMedications": "Budesonide inhaler",
+    "diagnosis": "Acute exacerbation of asthma with productive cough — likely infective trigger",
+    "prescription": [
+      { "medicine": "Amoxicillin-Clavulanate", "dosage": "625mg", "timing": "after food", "frequency": "twice daily", "duration": "5 days", "condition": "" },
+      { "medicine": "Salbutamol inhaler", "dosage": "2 puffs", "timing": "as needed", "frequency": "as needed", "duration": "7 days", "condition": "Use if wheezing or breathlessness occurs; can repeat every 4–6 hours" },
+      { "medicine": "Montelukast", "dosage": "10mg", "timing": "at bedtime", "frequency": "once daily", "duration": "14 days", "condition": "" },
+      { "medicine": "Ambroxol", "dosage": "30mg", "timing": "after food", "frequency": "thrice daily", "duration": "5 days", "condition": "" }
+    ],
+    "advice": "Continue Budesonide inhaler. Avoid cold air, dust, and smoke. Use spacer with inhaler. Follow up if breathlessness worsens."
+  },
+  {
+    "patient": { "age": 26, "sex": "M", "weight": 69, "height": 176, "bloodGroup": "A+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Productive cough with greenish sputum, fever, chest discomfort", "duration": "6 days", "severity": "moderate",
+    "additionalNotes": "Smoker, no breathlessness at rest", "currentMedications": "none",
+    "diagnosis": "Acute bronchitis — bacterial superinfection likely in smoker",
+    "prescription": [
+      { "medicine": "Azithromycin", "dosage": "500mg", "timing": "before food", "frequency": "once daily", "duration": "5 days", "condition": "" },
+      { "medicine": "Ambroxol + Guaifenesin", "dosage": "30mg/100mg tablet", "timing": "after food", "frequency": "thrice daily", "duration": "5 days", "condition": "" },
+      { "medicine": "Paracetamol", "dosage": "650mg", "timing": "after food", "frequency": "twice daily", "duration": "3 days", "condition": "Take only if fever present" }
+    ],
+    "advice": "Stop smoking immediately. Steam inhalation. Complete antibiotic course. Follow up if chest pain or breathlessness develops."
+  },
+  {
+    "patient": { "age": 39, "sex": "F", "weight": 58, "height": 163, "bloodGroup": "O-", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Dry cough, irritation in throat, runny nose, post-nasal drip", "duration": "10 days", "severity": "mild",
+    "additionalNotes": "Cough worse in morning and night, no fever", "currentMedications": "none",
+    "diagnosis": "Cough due to post-nasal drip — upper airway cough syndrome",
+    "prescription": [
+      { "medicine": "Montelukast + Levocetirizine", "dosage": "10mg/5mg tablet", "timing": "at bedtime", "frequency": "once daily", "duration": "14 days", "condition": "" },
+      { "medicine": "Mometasone nasal spray", "dosage": "2 sprays each nostril", "timing": "as needed", "frequency": "once daily", "duration": "14 days", "condition": "" }
+    ],
+    "advice": "Sleep with head elevated. Nasal saline rinse twice daily. Avoid dairy products at night. Follow up in 2 weeks."
+  },
+  {
+    "patient": { "age": 52, "sex": "M", "weight": 88, "height": 172, "bloodGroup": "B+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Sore throat, difficulty swallowing, fever, swollen neck glands", "duration": "3 days", "severity": "moderate",
+    "additionalNotes": "Tonsillar exudates visible", "currentMedications": "none",
+    "diagnosis": "Acute tonsillitis — bacterial (streptococcal) likely",
+    "prescription": [
+      { "medicine": "Amoxicillin", "dosage": "500mg", "timing": "after food", "frequency": "thrice daily", "duration": "7 days", "condition": "" },
+      { "medicine": "Paracetamol", "dosage": "650mg", "timing": "after food", "frequency": "thrice daily", "duration": "5 days", "condition": "" },
+      { "medicine": "Betadine gargle", "dosage": "10ml diluted in water", "timing": "as needed", "frequency": "thrice daily", "duration": "7 days", "condition": "" },
+      { "medicine": "Pantoprazole", "dosage": "40mg", "timing": "before food", "frequency": "once daily", "duration": "7 days", "condition": "" }
+    ],
+    "advice": "Complete antibiotic course. Warm salt water gargles 4 times a day. Soft diet. Cold ice cream can soothe throat."
+  },
+  {
+    "patient": { "age": 21, "sex": "F", "weight": 50, "height": 155, "bloodGroup": "A+", "knownConditions": [], "allergies": ["Penicillin"], "currentMedications": [] },
+    "symptoms": "Sore throat, hoarseness of voice, difficulty swallowing", "duration": "2 days", "severity": "mild",
+    "additionalNotes": "Allergic to penicillin", "currentMedications": "none",
+    "diagnosis": "Acute pharyngitis with laryngitis",
+    "prescription": [
+      { "medicine": "Azithromycin", "dosage": "500mg", "timing": "before food", "frequency": "once daily", "duration": "5 days", "condition": "" },
+      { "medicine": "Paracetamol", "dosage": "500mg", "timing": "after food", "frequency": "thrice daily", "duration": "4 days", "condition": "" },
+      { "medicine": "Lozengex (Benzocaine lozenge)", "dosage": "1 lozenge", "timing": "as needed", "frequency": "as needed", "duration": "5 days", "condition": "Dissolve slowly in mouth for throat pain relief" }
+    ],
+    "advice": "Voice rest — avoid speaking loudly. Warm honey-lemon tea. Avoid cold drinks."
+  },
+  {
+    "patient": { "age": 44, "sex": "M", "weight": 75, "height": 169, "bloodGroup": "O+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Sore throat, fever 101F, swollen tonsils, bad breath", "duration": "4 days", "severity": "moderate",
+    "additionalNotes": "Second episode this year", "currentMedications": "none",
+    "diagnosis": "Recurrent tonsillitis — bacterial",
+    "prescription": [
+      { "medicine": "Amoxicillin-Clavulanate", "dosage": "625mg", "timing": "after food", "frequency": "twice daily", "duration": "7 days", "condition": "" },
+      { "medicine": "Paracetamol", "dosage": "650mg", "timing": "after food", "frequency": "thrice daily", "duration": "5 days", "condition": "" },
+      { "medicine": "Metronidazole", "dosage": "400mg", "timing": "after food", "frequency": "thrice daily", "duration": "5 days", "condition": "" }
+    ],
+    "advice": "ENT referral advised for tonsillectomy evaluation. Complete antibiotics. Warm gargles. Soft diet."
+  },
+  {
+    "patient": { "age": 30, "sex": "F", "weight": 57, "height": 160, "bloodGroup": "B+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Throat pain with low-grade fever, no exudate, mild cough", "duration": "2 days", "severity": "mild",
+    "additionalNotes": "Likely viral, throat mildly red", "currentMedications": "none",
+    "diagnosis": "Viral pharyngitis",
+    "prescription": [
+      { "medicine": "Paracetamol", "dosage": "500mg", "timing": "after food", "frequency": "thrice daily", "duration": "4 days", "condition": "" },
+      { "medicine": "Cetylpyridinium chloride mouthwash", "dosage": "10ml", "timing": "as needed", "frequency": "thrice daily", "duration": "5 days", "condition": "" }
+    ],
+    "advice": "Warm salt water gargles. Avoid cold and sour food. Honey in warm water. Follow up only if fever worsens."
+  },
+  {
+    "patient": { "age": 27, "sex": "M", "weight": 71, "height": 174, "bloodGroup": "O+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Throbbing headache, nausea, sensitivity to light and sound", "duration": "1 day", "severity": "severe",
+    "additionalNotes": "Similar episodes before, unilateral pain", "currentMedications": "none",
+    "diagnosis": "Migraine without aura",
+    "prescription": [
+      { "medicine": "Sumatriptan", "dosage": "50mg", "timing": "as needed", "frequency": "as needed", "duration": "as needed", "condition": "Take at onset of migraine; may repeat after 2 hours if no relief; max 2 doses/day" },
+      { "medicine": "Domperidone", "dosage": "10mg", "timing": "before food", "frequency": "twice daily", "duration": "3 days", "condition": "Take if nausea accompanies headache" },
+      { "medicine": "Propranolol", "dosage": "20mg", "timing": "after food", "frequency": "twice daily", "duration": "30 days", "condition": "" }
+    ],
+    "advice": "Identify and avoid triggers (stress, bright light, irregular sleep). Dark quiet room during attack. Stay hydrated."
+  },
+  {
+    "patient": { "age": 40, "sex": "F", "weight": 64, "height": 162, "bloodGroup": "A+", "knownConditions": ["Hypertension"], "allergies": [], "currentMedications": ["Amlodipine 5mg"] },
+    "symptoms": "Headache at back of head, nausea, neck stiffness", "duration": "1 day", "severity": "moderate",
+    "additionalNotes": "BP 162/100 at presentation", "currentMedications": "Amlodipine 5mg",
+    "diagnosis": "Hypertensive headache — poorly controlled hypertension",
+    "prescription": [
+      { "medicine": "Paracetamol", "dosage": "500mg", "timing": "after food", "frequency": "twice daily", "duration": "3 days", "condition": "Take only if headache is present" },
+      { "medicine": "Amlodipine", "dosage": "10mg", "timing": "after food", "frequency": "once daily", "duration": "30 days", "condition": "" },
+      { "medicine": "Telmisartan", "dosage": "40mg", "timing": "before food", "frequency": "once daily", "duration": "30 days", "condition": "" }
+    ],
+    "advice": "Monitor BP twice daily. Reduce salt intake. Avoid stress. Return immediately if BP exceeds 180/110."
+  },
+  {
+    "patient": { "age": 35, "sex": "M", "weight": 73, "height": 177, "bloodGroup": "B-", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Tension headache, bilateral pressure, worse with stress and screen time", "duration": "3 days", "severity": "mild",
+    "additionalNotes": "IT professional, 10 hours screen time daily", "currentMedications": "none",
+    "diagnosis": "Tension-type headache — episodic",
+    "prescription": [
+      { "medicine": "Paracetamol", "dosage": "500mg", "timing": "after food", "frequency": "twice daily", "duration": "3 days", "condition": "" },
+      { "medicine": "Ibuprofen", "dosage": "400mg", "timing": "after food", "frequency": "twice daily", "duration": "2 days", "condition": "Take only if paracetamol gives inadequate relief" }
+    ],
+    "advice": "20-20-20 rule for screen use. Neck stretches. Regular sleep schedule. Reduce caffeine. Yoga or meditation for stress."
+  },
+  {
+    "patient": { "age": 50, "sex": "F", "weight": 66, "height": 157, "bloodGroup": "O+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Recurrent headaches, pressure around eyes, facial pain, nasal congestion", "duration": "10 days", "severity": "moderate",
+    "additionalNotes": "Worse in mornings, previous sinusitis history", "currentMedications": "none",
+    "diagnosis": "Chronic sinusitis with headache",
+    "prescription": [
+      { "medicine": "Amoxicillin-Clavulanate", "dosage": "625mg", "timing": "after food", "frequency": "twice daily", "duration": "7 days", "condition": "" },
+      { "medicine": "Mometasone nasal spray", "dosage": "2 sprays each nostril", "timing": "as needed", "frequency": "once daily", "duration": "14 days", "condition": "" },
+      { "medicine": "Paracetamol", "dosage": "500mg", "timing": "after food", "frequency": "thrice daily", "duration": "5 days", "condition": "Take only when headache is troublesome" }
+    ],
+    "advice": "Steam inhalation twice daily. Nasal saline irrigation. Sleep with head elevated. ENT referral if no improvement in 2 weeks."
+  },
+  {
+    "patient": { "age": 22, "sex": "F", "weight": 51, "height": 155, "bloodGroup": "A-", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Burning in chest, sour belching, upper abdominal pain, worse after spicy food", "duration": "5 days", "severity": "mild",
+    "additionalNotes": "Eats irregularly, skips breakfast", "currentMedications": "none",
+    "diagnosis": "Gastroesophageal reflux disease (GERD) — lifestyle-related",
+    "prescription": [
+      { "medicine": "Pantoprazole", "dosage": "40mg", "timing": "before food", "frequency": "once daily", "duration": "14 days", "condition": "" },
+      { "medicine": "Domperidone", "dosage": "10mg", "timing": "before food", "frequency": "twice daily", "duration": "7 days", "condition": "" },
+      { "medicine": "Antacid suspension (Gelusil/Digene)", "dosage": "10ml", "timing": "after food", "frequency": "as needed", "duration": "7 days", "condition": "Take if burning occurs between meals or at bedtime" }
+    ],
+    "advice": "Eat small frequent meals. No spicy, oily, or acidic food. Avoid lying down for 2 hours after meals. Elevate head of bed."
+  },
+  {
+    "patient": { "age": 48, "sex": "M", "weight": 86, "height": 172, "bloodGroup": "B+", "knownConditions": ["Type 2 Diabetes"], "allergies": [], "currentMedications": ["Metformin 500mg", "Glimepiride 1mg"] },
+    "symptoms": "Acidity, bloating, heartburn, upper abdominal discomfort after meals", "duration": "2 weeks", "severity": "mild",
+    "additionalNotes": "No alarm symptoms, occasional nausea", "currentMedications": "Metformin 500mg, Glimepiride 1mg",
+    "diagnosis": "GERD / Functional dyspepsia in diabetic patient",
+    "prescription": [
+      { "medicine": "Pantoprazole", "dosage": "40mg", "timing": "before food", "frequency": "twice daily", "duration": "14 days", "condition": "" },
+      { "medicine": "Metoclopramide", "dosage": "10mg", "timing": "before food", "frequency": "thrice daily", "duration": "7 days", "condition": "" }
+    ],
+    "advice": "Small frequent meals. Avoid lying after meals. Reduce tea and coffee. Continue diabetes medications. Monitor blood sugar."
+  },
+  {
+    "patient": { "age": 36, "sex": "F", "weight": 60, "height": 161, "bloodGroup": "O+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Upper abdominal pain, burning epigastric pain, worse on empty stomach", "duration": "1 week", "severity": "moderate",
+    "additionalNotes": "Relief after eating, NSAID use history", "currentMedications": "none",
+    "diagnosis": "Peptic ulcer disease — NSAID-induced gastritis likely",
+    "prescription": [
+      { "medicine": "Pantoprazole", "dosage": "40mg", "timing": "before food", "frequency": "twice daily", "duration": "28 days", "condition": "" },
+      { "medicine": "Sucralfate", "dosage": "1g", "timing": "before food", "frequency": "thrice daily", "duration": "28 days", "condition": "" },
+      { "medicine": "Antacid suspension", "dosage": "10ml", "timing": "after food", "frequency": "as needed", "duration": "14 days", "condition": "Take if pain occurs between meals" }
+    ],
+    "advice": "Avoid NSAIDs, aspirin, and alcohol. Eat regularly. No spicy food. Follow up with endoscopy if no improvement in 4 weeks."
+  },
+  {
+    "patient": { "age": 55, "sex": "M", "weight": 79, "height": 170, "bloodGroup": "A+", "knownConditions": ["Hypertension"], "allergies": [], "currentMedications": ["Losartan 50mg"] },
+    "symptoms": "Heartburn, regurgitation, belching, throat irritation", "duration": "3 weeks", "severity": "mild",
+    "additionalNotes": "Obese, BMI 30", "currentMedications": "Losartan 50mg",
+    "diagnosis": "GERD — obesity-related, exacerbated by Losartan",
+    "prescription": [
+      { "medicine": "Rabeprazole", "dosage": "20mg", "timing": "before food", "frequency": "twice daily", "duration": "14 days", "condition": "" },
+      { "medicine": "Domperidone", "dosage": "10mg", "timing": "before food", "frequency": "twice daily", "duration": "7 days", "condition": "" }
+    ],
+    "advice": "Weight reduction target BMI <25. Elevate head of bed by 6 inches. Eat dinner 3 hours before sleep. Avoid tea and coffee after 6pm."
+  },
+  {
+    "patient": { "age": 29, "sex": "M", "weight": 67, "height": 173, "bloodGroup": "B+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Stomach cramps, loose watery stools, nausea, vomiting, mild fever", "duration": "1 day", "severity": "moderate",
+    "additionalNotes": "Ate outside food yesterday, 5–6 motions", "currentMedications": "none",
+    "diagnosis": "Acute gastroenteritis — likely food-borne",
+    "prescription": [
+      { "medicine": "ORS sachets", "dosage": "1 sachet in 1L water", "timing": "as needed", "frequency": "as needed", "duration": "3 days", "condition": "Sip 200ml after each loose stool" },
+      { "medicine": "Ondansetron", "dosage": "4mg", "timing": "before food", "frequency": "twice daily", "duration": "3 days", "condition": "Take only if vomiting is present" },
+      { "medicine": "Norfloxacin", "dosage": "400mg", "timing": "before food", "frequency": "twice daily", "duration": "3 days", "condition": "" },
+      { "medicine": "Racecadotril", "dosage": "100mg", "timing": "before food", "frequency": "thrice daily", "duration": "3 days", "condition": "" }
+    ],
+    "advice": "Bland diet — rice, curd, banana. Avoid oily food. No milk. Strict hand hygiene. Seek emergency if unable to retain fluids."
+  },
+  {
+    "patient": { "age": 42, "sex": "F", "weight": 61, "height": 158, "bloodGroup": "O-", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Cramping abdominal pain around umbilicus, watery diarrhoea, no fever", "duration": "2 days", "severity": "mild",
+    "additionalNotes": "Stress-related, no travel history", "currentMedications": "none",
+    "diagnosis": "Acute gastroenteritis — possibly irritable bowel exacerbation",
+    "prescription": [
+      { "medicine": "ORS sachets", "dosage": "1 sachet in 1L water", "timing": "as needed", "frequency": "as needed", "duration": "3 days", "condition": "" },
+      { "medicine": "Racecadotril", "dosage": "100mg", "timing": "before food", "frequency": "thrice daily", "duration": "3 days", "condition": "" },
+      { "medicine": "Dicyclomine", "dosage": "20mg", "timing": "before food", "frequency": "thrice daily", "duration": "3 days", "condition": "Take only if abdominal cramps are severe" }
+    ],
+    "advice": "Light diet. Avoid raw vegetables and dairy. Manage stress. Probiotics (curd) can help after recovery."
+  },
+  {
+    "patient": { "age": 65, "sex": "M", "weight": 70, "height": 165, "bloodGroup": "A+", "knownConditions": ["Type 2 Diabetes"], "allergies": [], "currentMedications": ["Metformin 1000mg", "Sitagliptin 100mg"] },
+    "symptoms": "Loose stools, abdominal pain, nausea, dehydration", "duration": "2 days", "severity": "moderate",
+    "additionalNotes": "Metformin can cause diarrhoea, blood sugar dropping", "currentMedications": "Metformin 1000mg, Sitagliptin 100mg",
+    "diagnosis": "Acute gastroenteritis with dehydration in diabetic patient",
+    "prescription": [
+      { "medicine": "ORS sachets", "dosage": "1 sachet in 1L water", "timing": "as needed", "frequency": "as needed", "duration": "3 days", "condition": "" },
+      { "medicine": "Ondansetron", "dosage": "4mg", "timing": "before food", "frequency": "twice daily", "duration": "2 days", "condition": "Take only if nausea or vomiting is troublesome" },
+      { "medicine": "Norfloxacin", "dosage": "400mg", "timing": "before food", "frequency": "twice daily", "duration": "3 days", "condition": "" }
+    ],
+    "advice": "Temporarily reduce Metformin dose until stools normalise. Monitor blood sugar every 4 hours. Light diet — rice and curd. Seek care if unable to retain fluids."
+  },
+  {
+    "patient": { "age": 23, "sex": "F", "weight": 53, "height": 158, "bloodGroup": "B+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Severe watery diarrhoea, vomiting, abdominal cramps, weakness", "duration": "1 day", "severity": "severe",
+    "additionalNotes": "Consumed contaminated water during travel", "currentMedications": "none",
+    "diagnosis": "Acute infectious gastroenteritis — likely traveller's diarrhoea",
+    "prescription": [
+      { "medicine": "ORS sachets", "dosage": "1 sachet in 1L water", "timing": "as needed", "frequency": "as needed", "duration": "3 days", "condition": "" },
+      { "medicine": "Ciprofloxacin", "dosage": "500mg", "timing": "after food", "frequency": "twice daily", "duration": "3 days", "condition": "" },
+      { "medicine": "Ondansetron", "dosage": "4mg", "timing": "before food", "frequency": "twice daily", "duration": "2 days", "condition": "Take if vomiting prevents ORS intake" },
+      { "medicine": "Racecadotril", "dosage": "100mg", "timing": "before food", "frequency": "thrice daily", "duration": "3 days", "condition": "" }
+    ],
+    "advice": "Drink only bottled or boiled water. Strict hand hygiene. Avoid raw food while travelling. Seek IV fluids if unable to retain oral intake."
+  },
+  {
+    "patient": { "age": 38, "sex": "M", "weight": 74, "height": 171, "bloodGroup": "O+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Watery diarrhoea 6–8 times per day, rice-water stools, muscle cramps", "duration": "1 day", "severity": "severe",
+    "additionalNotes": "Coastal area, outbreak possible", "currentMedications": "none",
+    "diagnosis": "Suspected cholera — acute profuse watery diarrhoea",
+    "prescription": [
+      { "medicine": "ORS sachets", "dosage": "1 sachet in 1L water", "timing": "as needed", "frequency": "as needed", "duration": "5 days", "condition": "Sip continuously; target 500ml/hour" },
+      { "medicine": "Doxycycline", "dosage": "300mg", "timing": "after food", "frequency": "single dose", "duration": "1 day", "condition": "" }
+    ],
+    "advice": "Urgent referral to hospital for IV fluids. Strict isolation. Report to public health authority. Boil all water."
+  },
+  {
+    "patient": { "age": 31, "sex": "F", "weight": 57, "height": 162, "bloodGroup": "A+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Loose stools alternating with constipation, lower abdominal pain, bloating", "duration": "3 weeks", "severity": "mild",
+    "additionalNotes": "Stress-related, no blood in stool", "currentMedications": "none",
+    "diagnosis": "Irritable bowel syndrome (IBS) — mixed type",
+    "prescription": [
+      { "medicine": "Dicyclomine", "dosage": "20mg", "timing": "before food", "frequency": "thrice daily", "duration": "14 days", "condition": "Take only when abdominal cramps are present" },
+      { "medicine": "Ispaghula husk (Isabgol)", "dosage": "1 tsp in water", "timing": "at bedtime", "frequency": "once daily", "duration": "30 days", "condition": "" }
+    ],
+    "advice": "High-fibre diet. Identify and avoid trigger foods. Stress management — yoga or meditation. Probiotics helpful."
+  },
+  {
+    "patient": { "age": 32, "sex": "M", "weight": 68, "height": 170, "bloodGroup": "B+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Nausea, vomiting 3–4 times, upper abdominal pain, no diarrhoea", "duration": "1 day", "severity": "moderate",
+    "additionalNotes": "Ate heavy oily meal last night", "currentMedications": "none",
+    "diagnosis": "Acute gastritis with vomiting — dietary indiscretion",
+    "prescription": [
+      { "medicine": "Ondansetron", "dosage": "4mg", "timing": "before food", "frequency": "twice daily", "duration": "2 days", "condition": "Take if nausea or vomiting occurs" },
+      { "medicine": "Pantoprazole", "dosage": "40mg", "timing": "before food", "frequency": "once daily", "duration": "5 days", "condition": "" },
+      { "medicine": "Domperidone", "dosage": "10mg", "timing": "before food", "frequency": "thrice daily", "duration": "3 days", "condition": "" }
+    ],
+    "advice": "Nothing by mouth for 2 hours after vomiting. Then sip ORS. Light diet. Avoid oily food for 1 week."
+  },
+  {
+    "patient": { "age": 55, "sex": "F", "weight": 65, "height": 156, "bloodGroup": "O+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Vomiting, nausea, dizziness, headache", "duration": "1 day", "severity": "moderate",
+    "additionalNotes": "Motion sickness after long journey", "currentMedications": "none",
+    "diagnosis": "Motion sickness with vomiting",
+    "prescription": [
+      { "medicine": "Domperidone", "dosage": "10mg", "timing": "before food", "frequency": "thrice daily", "duration": "2 days", "condition": "" },
+      { "medicine": "Cinnarizine", "dosage": "25mg", "timing": "after food", "frequency": "twice daily", "duration": "2 days", "condition": "" }
+    ],
+    "advice": "Avoid reading during travel. Look at horizon. Sit in front seat. Ginger candy can help. Avoid heavy meals before travel."
+  },
+  {
+    "patient": { "age": 26, "sex": "F", "weight": 54, "height": 159, "bloodGroup": "A-", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Nausea in the morning, vomiting 2–3 times, food aversion, fatigue", "duration": "1 week", "severity": "mild",
+    "additionalNotes": "LMP 6 weeks ago", "currentMedications": "none",
+    "diagnosis": "Nausea and vomiting of early pregnancy (morning sickness)",
+    "prescription": [
+      { "medicine": "Doxylamine + Pyridoxine (Diclegis)", "dosage": "1 tablet", "timing": "at bedtime", "frequency": "once daily", "duration": "14 days", "condition": "" },
+      { "medicine": "Folic acid", "dosage": "5mg", "timing": "after food", "frequency": "once daily", "duration": "90 days", "condition": "" }
+    ],
+    "advice": "Small frequent meals. Avoid strong smells. Ginger tea may help. Stay hydrated. OB referral for antenatal care."
+  },
+  {
+    "patient": { "age": 50, "sex": "M", "weight": 80, "height": 173, "bloodGroup": "B+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "No bowel movement for 5 days, hard stool, straining, bloating", "duration": "5 days", "severity": "mild",
+    "additionalNotes": "Low fibre diet, sedentary job", "currentMedications": "none",
+    "diagnosis": "Functional constipation",
+    "prescription": [
+      { "medicine": "Ispaghula husk (Isabgol)", "dosage": "1 sachet in water", "timing": "at bedtime", "frequency": "once daily", "duration": "14 days", "condition": "" },
+      { "medicine": "Lactulose syrup", "dosage": "15ml", "timing": "after food", "frequency": "twice daily", "duration": "5 days", "condition": "" },
+      { "medicine": "Bisacodyl", "dosage": "5mg", "timing": "at bedtime", "frequency": "once daily", "duration": "3 days", "condition": "Take only if no bowel movement for 3 days" }
+    ],
+    "advice": "Increase fruits, vegetables, and water intake. Walk 30 minutes daily. Do not suppress urge to defecate."
+  },
+  {
+    "patient": { "age": 68, "sex": "F", "weight": 58, "height": 153, "bloodGroup": "A+", "knownConditions": ["Hypothyroidism", "Hypertension"], "allergies": [], "currentMedications": ["Levothyroxine 75mcg", "Amlodipine 5mg"] },
+    "symptoms": "Chronic constipation, bloating, low appetite", "duration": "2 weeks", "severity": "mild",
+    "additionalNotes": "TSH elevated last month", "currentMedications": "Levothyroxine 75mcg, Amlodipine 5mg",
+    "diagnosis": "Constipation — likely hypothyroid-related, check TSH",
+    "prescription": [
+      { "medicine": "Ispaghula husk", "dosage": "1 sachet in water", "timing": "at bedtime", "frequency": "once daily", "duration": "30 days", "condition": "" },
+      { "medicine": "Lactulose syrup", "dosage": "15ml", "timing": "after food", "frequency": "once daily", "duration": "14 days", "condition": "" }
+    ],
+    "advice": "Repeat TSH. Increase fibre intake. Warm water on waking. Light exercise. Review Levothyroxine dose with endocrinologist."
+  },
+  {
+    "patient": { "age": 34, "sex": "M", "weight": 72, "height": 175, "bloodGroup": "O+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Constipation, hard stools, anal pain while defecating, occasional blood in stool", "duration": "3 weeks", "severity": "mild",
+    "additionalNotes": "Haemorrhoids suspected", "currentMedications": "none",
+    "diagnosis": "Chronic constipation with haemorrhoids",
+    "prescription": [
+      { "medicine": "Ispaghula husk", "dosage": "1 sachet in water", "timing": "at bedtime", "frequency": "once daily", "duration": "30 days", "condition": "" },
+      { "medicine": "Microlax enema", "dosage": "1 enema", "timing": "as needed", "frequency": "as needed", "duration": "as needed", "condition": "Use only if no bowel movement for 4+ days" },
+      { "medicine": "Anovate cream", "dosage": "apply gently", "timing": "at bedtime", "frequency": "once daily", "duration": "7 days", "condition": "Apply to anal area at bedtime for pain and swelling" }
+    ],
+    "advice": "High fibre diet. Increase water intake to 3 litres/day. Sitz bath twice daily. Avoid straining. Surgical referral if not improving."
+  },
+  {
+    "patient": { "age": 45, "sex": "M", "weight": 78, "height": 170, "bloodGroup": "B+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Lower back pain, radiating to left leg, worsens on sitting or bending", "duration": "2 weeks", "severity": "moderate",
+    "additionalNotes": "Office worker, prolonged sitting", "currentMedications": "none",
+    "diagnosis": "Lumbar disc herniation with left-sided sciatica",
+    "prescription": [
+      { "medicine": "Ibuprofen", "dosage": "400mg", "timing": "after food", "frequency": "twice daily", "duration": "5 days", "condition": "" },
+      { "medicine": "Thiocolchicoside", "dosage": "4mg", "timing": "after food", "frequency": "twice daily", "duration": "5 days", "condition": "" },
+      { "medicine": "Pantoprazole", "dosage": "40mg", "timing": "before food", "frequency": "once daily", "duration": "5 days", "condition": "" },
+      { "medicine": "Pregabalin", "dosage": "75mg", "timing": "at bedtime", "frequency": "once daily", "duration": "14 days", "condition": "Take for nerve pain/tingling; may cause drowsiness" }
+    ],
+    "advice": "Hot or cold pack on lower back. Physiotherapy referral. Ergonomic chair. Avoid lifting heavy weights. MRI lumbar spine if no improvement."
+  },
+  {
+    "patient": { "age": 60, "sex": "F", "weight": 67, "height": 156, "bloodGroup": "O+", "knownConditions": ["Osteoporosis"], "allergies": [], "currentMedications": ["Calcium + Vit D3"] },
+    "symptoms": "Severe lower back pain, difficulty standing, worse in morning", "duration": "1 week", "severity": "severe",
+    "additionalNotes": "DEXA scan showed osteoporosis, sudden onset", "currentMedications": "Calcium + Vit D3",
+    "diagnosis": "Vertebral compression fracture — osteoporosis-related",
+    "prescription": [
+      { "medicine": "Paracetamol", "dosage": "650mg", "timing": "after food", "frequency": "thrice daily", "duration": "7 days", "condition": "" },
+      { "medicine": "Diclofenac gel 1%", "dosage": "apply thin layer", "timing": "after food", "frequency": "twice daily", "duration": "7 days", "condition": "Apply topically to lower back; do not use if skin is broken" },
+      { "medicine": "Alendronate", "dosage": "70mg", "timing": "before food", "frequency": "once weekly", "duration": "ongoing", "condition": "Take with full glass of water; remain upright for 30 minutes" }
+    ],
+    "advice": "Urgent X-ray lumbar spine. Fall prevention at home. Physiotherapy. Continue calcium and Vit D. Avoid oral NSAIDs in elderly."
+  },
+  {
+    "patient": { "age": 38, "sex": "M", "weight": 84, "height": 174, "bloodGroup": "A+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Lower back pain, muscle spasm, stiffness, worsens with movement", "duration": "3 days", "severity": "moderate",
+    "additionalNotes": "Lifted heavy object 3 days ago", "currentMedications": "none",
+    "diagnosis": "Acute lumbar muscle strain",
+    "prescription": [
+      { "medicine": "Diclofenac", "dosage": "50mg", "timing": "after food", "frequency": "twice daily", "duration": "5 days", "condition": "" },
+      { "medicine": "Thiocolchicoside", "dosage": "4mg", "timing": "after food", "frequency": "twice daily", "duration": "5 days", "condition": "" },
+      { "medicine": "Pantoprazole", "dosage": "40mg", "timing": "before food", "frequency": "once daily", "duration": "5 days", "condition": "" }
+    ],
+    "advice": "Hot pack to lumbar area. Short rest followed by gentle walking. No heavy lifting for 2 weeks. Physiotherapy if pain persists."
+  },
+  {
+    "patient": { "age": 52, "sex": "F", "weight": 71, "height": 160, "bloodGroup": "B+", "knownConditions": ["Hypertension"], "allergies": [], "currentMedications": ["Telmisartan 40mg"] },
+    "symptoms": "Lower back pain radiating to buttocks, no leg weakness", "duration": "10 days", "severity": "moderate",
+    "additionalNotes": "No red flag signs, no bladder issues", "currentMedications": "Telmisartan 40mg",
+    "diagnosis": "Mechanical lower back pain — sacroiliac joint dysfunction",
+    "prescription": [
+      { "medicine": "Paracetamol", "dosage": "650mg", "timing": "after food", "frequency": "thrice daily", "duration": "5 days", "condition": "" },
+      { "medicine": "Thiocolchicoside", "dosage": "4mg", "timing": "after food", "frequency": "twice daily", "duration": "5 days", "condition": "" }
+    ],
+    "advice": "Physiotherapy referral. Hot pack. Core strengthening exercises. Avoid prolonged standing. Avoid NSAIDs due to hypertension."
+  },
+  {
+    "patient": { "age": 48, "sex": "M", "weight": 91, "height": 172, "bloodGroup": "O+", "knownConditions": ["Type 2 Diabetes"], "allergies": [], "currentMedications": ["Metformin 1000mg"] },
+    "symptoms": "Lower back pain, chronic, worse in morning, associated with stiffness lasting >1 hour", "duration": "3 months", "severity": "moderate",
+    "additionalNotes": "HbA1c 7.5, raised uric acid 8.2", "currentMedications": "Metformin 1000mg",
+    "diagnosis": "Chronic lower back pain with likely spondylitis; elevated uric acid contributing to inflammation",
+    "prescription": [
+      { "medicine": "Paracetamol", "dosage": "650mg", "timing": "after food", "frequency": "twice daily", "duration": "14 days", "condition": "" },
+      { "medicine": "Thiocolchicoside", "dosage": "4mg", "timing": "after food", "frequency": "twice daily", "duration": "7 days", "condition": "" },
+      { "medicine": "Febuxostat", "dosage": "40mg", "timing": "after food", "frequency": "once daily", "duration": "30 days", "condition": "" }
+    ],
+    "advice": "Avoid NSAIDs (renal risk in diabetes). Physiotherapy. Low-purine diet. Increase water intake. Rheumatology referral for HLA-B27 testing."
+  },
+  {
+    "patient": { "age": 56, "sex": "M", "weight": 83, "height": 169, "bloodGroup": "A+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Knee pain, bilateral, worse on climbing stairs and sitting to standing", "duration": "6 months", "severity": "moderate",
+    "additionalNotes": "Crepitus on examination, no swelling", "currentMedications": "none",
+    "diagnosis": "Osteoarthritis of bilateral knees",
+    "prescription": [
+      { "medicine": "Paracetamol", "dosage": "650mg", "timing": "after food", "frequency": "twice daily", "duration": "30 days", "condition": "" },
+      { "medicine": "Glucosamine + Chondroitin", "dosage": "750mg/600mg", "timing": "after food", "frequency": "once daily", "duration": "90 days", "condition": "" },
+      { "medicine": "Diclofenac gel 1%", "dosage": "apply thin layer", "timing": "as needed", "frequency": "twice daily", "duration": "30 days", "condition": "Apply to knee joints for local pain relief" }
+    ],
+    "advice": "Weight reduction. Low-impact exercise (swimming, cycling). Avoid squatting and sitting on floor. Physiotherapy."
+  },
+  {
+    "patient": { "age": 49, "sex": "F", "weight": 68, "height": 157, "bloodGroup": "B+", "knownConditions": ["Rheumatoid Arthritis"], "allergies": [], "currentMedications": ["Methotrexate 7.5mg", "Folic acid"] },
+    "symptoms": "Knee and finger joint pain, morning stiffness >1 hour, swelling", "duration": "2 weeks", "severity": "moderate",
+    "additionalNotes": "RA flare, CRP elevated", "currentMedications": "Methotrexate 7.5mg, Folic acid",
+    "diagnosis": "Rheumatoid arthritis flare",
+    "prescription": [
+      { "medicine": "Hydroxychloroquine", "dosage": "200mg", "timing": "after food", "frequency": "twice daily", "duration": "90 days", "condition": "" },
+      { "medicine": "Prednisolone", "dosage": "10mg", "timing": "after food", "frequency": "once daily", "duration": "7 days", "condition": "" },
+      { "medicine": "Pantoprazole", "dosage": "40mg", "timing": "before food", "frequency": "once daily", "duration": "30 days", "condition": "" }
+    ],
+    "advice": "Warm water hand soaks morning. Joint protection. Continue Methotrexate and Folic acid. Rheumatology follow-up."
+  },
+  {
+    "patient": { "age": 62, "sex": "M", "weight": 78, "height": 168, "bloodGroup": "O+", "knownConditions": ["Gout"], "allergies": [], "currentMedications": ["Allopurinol 300mg"] },
+    "symptoms": "Severe pain and swelling in right big toe, redness, warm to touch, unable to walk", "duration": "2 days", "severity": "severe",
+    "additionalNotes": "Uric acid 9.2, had beer last night", "currentMedications": "Allopurinol 300mg",
+    "diagnosis": "Acute gout attack — first metatarsophalangeal joint",
+    "prescription": [
+      { "medicine": "Colchicine", "dosage": "0.5mg", "timing": "after food", "frequency": "twice daily", "duration": "5 days", "condition": "" },
+      { "medicine": "Paracetamol", "dosage": "650mg", "timing": "after food", "frequency": "thrice daily", "duration": "5 days", "condition": "" },
+      { "medicine": "Pantoprazole", "dosage": "40mg", "timing": "before food", "frequency": "once daily", "duration": "5 days", "condition": "" }
+    ],
+    "advice": "Ice pack on toe. Elevate foot. Strict avoidance of alcohol, red meat, and organ meats. Increase water. Continue Allopurinol."
+  },
+  {
+    "patient": { "age": 35, "sex": "F", "weight": 60, "height": 163, "bloodGroup": "A+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Generalised body ache, muscle pain, stiffness all over, fatigue", "duration": "2 weeks", "severity": "moderate",
+    "additionalNotes": "No fever, mild stress at work", "currentMedications": "none",
+    "diagnosis": "Fibromyalgia-like myalgia — stress-related",
+    "prescription": [
+      { "medicine": "Paracetamol", "dosage": "500mg", "timing": "after food", "frequency": "twice daily", "duration": "7 days", "condition": "" },
+      { "medicine": "Thiocolchicoside", "dosage": "4mg", "timing": "at bedtime", "frequency": "once daily", "duration": "7 days", "condition": "" },
+      { "medicine": "Vitamin D3", "dosage": "60000 IU", "timing": "after food", "frequency": "once weekly", "duration": "8 weeks", "condition": "" }
+    ],
+    "advice": "Gentle yoga and stretching. Improve sleep hygiene. Stress management. Check Vit D and B12 levels."
+  },
+  {
+    "patient": { "age": 28, "sex": "M", "weight": 73, "height": 176, "bloodGroup": "B+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Muscle pain in legs and arms after intense workout, stiffness", "duration": "2 days", "severity": "mild",
+    "additionalNotes": "Gym, first time back after 3 months", "currentMedications": "none",
+    "diagnosis": "Delayed onset muscle soreness (DOMS)",
+    "prescription": [
+      { "medicine": "Diclofenac gel 1%", "dosage": "apply", "timing": "as needed", "frequency": "twice daily", "duration": "3 days", "condition": "Apply to sore muscles" },
+      { "medicine": "Paracetamol", "dosage": "500mg", "timing": "after food", "frequency": "twice daily", "duration": "2 days", "condition": "Take only if pain is significant" }
+    ],
+    "advice": "Light stretching. Warm bath. Gradually increase workout intensity. Adequate protein intake. 48-hour rest between sessions."
+  },
+  {
+    "patient": { "age": 43, "sex": "F", "weight": 64, "height": 160, "bloodGroup": "O+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Itchy skin rash on arms and trunk, hives, swelling, redness", "duration": "2 days", "severity": "moderate",
+    "additionalNotes": "Started new soap, no food change", "currentMedications": "none",
+    "diagnosis": "Contact dermatitis — allergic reaction to topical product",
+    "prescription": [
+      { "medicine": "Levocetirizine", "dosage": "5mg", "timing": "at bedtime", "frequency": "once daily", "duration": "7 days", "condition": "" },
+      { "medicine": "Mometasone cream 0.1%", "dosage": "apply thin layer", "timing": "after food", "frequency": "once daily", "duration": "7 days", "condition": "Apply to affected skin area once daily" },
+      { "medicine": "Calamine lotion", "dosage": "apply as needed", "timing": "as needed", "frequency": "as needed", "duration": "7 days", "condition": "Apply for itching relief" }
+    ],
+    "advice": "Discontinue new soap. Use fragrance-free soap. Avoid scratching. Patch test new products. Cotton clothing."
+  },
+  {
+    "patient": { "age": 18, "sex": "M", "weight": 58, "height": 171, "bloodGroup": "A+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Urticaria (hives), severe itching all over body, mild lip swelling", "duration": "6 hours", "severity": "severe",
+    "additionalNotes": "Ate prawns at a party, first episode", "currentMedications": "none",
+    "diagnosis": "Acute urticaria — food-triggered allergic reaction",
+    "prescription": [
+      { "medicine": "Chlorpheniramine", "dosage": "4mg", "timing": "after food", "frequency": "thrice daily", "duration": "3 days", "condition": "" },
+      { "medicine": "Prednisolone", "dosage": "20mg", "timing": "after food", "frequency": "once daily", "duration": "3 days", "condition": "" },
+      { "medicine": "Adrenaline auto-injector (Epipen)", "dosage": "0.3mg IM", "timing": "as needed", "frequency": "as needed", "duration": "ongoing", "condition": "Use only if throat swelling, breathing difficulty, or collapse occurs — then call emergency" }
+    ],
+    "advice": "Strictly avoid shellfish and seafood. Carry antihistamine at all times. Allergy testing. ER immediately if throat swells."
+  },
+  {
+    "patient": { "age": 37, "sex": "F", "weight": 61, "height": 160, "bloodGroup": "B-", "knownConditions": ["Eczema"], "allergies": ["Nickel"], "currentMedications": ["Moisturiser"] },
+    "symptoms": "Dry, scaly, itchy skin patches on elbows and behind knees, oozing", "duration": "3 weeks", "severity": "moderate",
+    "additionalNotes": "Eczema flare, stressed at work", "currentMedications": "Moisturiser",
+    "diagnosis": "Atopic dermatitis (eczema) flare",
+    "prescription": [
+      { "medicine": "Levocetirizine", "dosage": "5mg", "timing": "at bedtime", "frequency": "once daily", "duration": "14 days", "condition": "" },
+      { "medicine": "Betamethasone cream 0.05%", "dosage": "apply thin layer", "timing": "after food", "frequency": "once daily", "duration": "7 days", "condition": "Apply only to affected patches; do not use on face" },
+      { "medicine": "Emollient (Cetaphil cream)", "dosage": "apply liberally", "timing": "as needed", "frequency": "twice daily", "duration": "ongoing", "condition": "" }
+    ],
+    "advice": "Moisturise immediately after bathing. Lukewarm baths only. Cotton clothing. Identify and avoid triggers. Dermatology referral."
+  },
+  {
+    "patient": { "age": 30, "sex": "M", "weight": 70, "height": 172, "bloodGroup": "O+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Scaly plaques on scalp and elbows, silver scales, itching", "duration": "2 months", "severity": "moderate",
+    "additionalNotes": "Family history of psoriasis", "currentMedications": "none",
+    "diagnosis": "Plaque psoriasis — scalp and extensor surfaces",
+    "prescription": [
+      { "medicine": "Clobetasol shampoo", "dosage": "apply to scalp", "timing": "as needed", "frequency": "twice weekly", "duration": "4 weeks", "condition": "" },
+      { "medicine": "Calcipotriol + Betamethasone ointment", "dosage": "apply thin layer", "timing": "after food", "frequency": "once daily", "duration": "4 weeks", "condition": "Apply to plaques on elbows; avoid face and folds" },
+      { "medicine": "Levocetirizine", "dosage": "5mg", "timing": "at bedtime", "frequency": "once daily", "duration": "14 days", "condition": "Take only if itching is significant" }
+    ],
+    "advice": "Avoid triggers: stress, alcohol, trauma. Sun exposure (10–15 min) can help. Dermatology referral for biologics if extensive."
+  },
+  {
+    "patient": { "age": 26, "sex": "F", "weight": 54, "height": 159, "bloodGroup": "A+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Burning urination, frequent urination, lower abdominal pain, urine colour dark", "duration": "3 days", "severity": "moderate",
+    "additionalNotes": "Urine routine shows pus cells ++, no fever", "currentMedications": "none",
+    "diagnosis": "Urinary tract infection (UTI) — uncomplicated cystitis",
+    "prescription": [
+      { "medicine": "Nitrofurantoin", "dosage": "100mg", "timing": "after food", "frequency": "twice daily", "duration": "5 days", "condition": "" },
+      { "medicine": "Phenazopyridine", "dosage": "200mg", "timing": "after food", "frequency": "thrice daily", "duration": "2 days", "condition": "Take for burning relief; urine will turn orange — normal" }
+    ],
+    "advice": "Drink 3 litres of water daily. Urinate after intercourse. Avoid holding urine. Cotton underwear. Follow up with urine culture."
+  },
+  {
+    "patient": { "age": 55, "sex": "F", "weight": 66, "height": 157, "bloodGroup": "B+", "knownConditions": ["Type 2 Diabetes"], "allergies": [], "currentMedications": ["Metformin 1000mg", "Glimepiride 1mg"] },
+    "symptoms": "Burning urination, fever, flank pain, chills", "duration": "2 days", "severity": "severe",
+    "additionalNotes": "Urine culture pending, diabetic", "currentMedications": "Metformin 1000mg, Glimepiride 1mg",
+    "diagnosis": "Pyelonephritis — upper UTI in diabetic patient",
+    "prescription": [
+      { "medicine": "Cefuroxime", "dosage": "500mg", "timing": "after food", "frequency": "twice daily", "duration": "10 days", "condition": "" },
+      { "medicine": "Paracetamol", "dosage": "500mg", "timing": "after food", "frequency": "thrice daily", "duration": "5 days", "condition": "" },
+      { "medicine": "Pantoprazole", "dosage": "40mg", "timing": "before food", "frequency": "once daily", "duration": "10 days", "condition": "" }
+    ],
+    "advice": "High fluid intake. Urine culture and sensitivity. Monitor blood sugar closely. Consider hospitalisation if vomiting prevents oral intake."
+  },
+  {
+    "patient": { "age": 34, "sex": "F", "weight": 58, "height": 162, "bloodGroup": "O-", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Recurrent UTI — burning urination, frequency, lower abdominal pain", "duration": "2 days", "severity": "mild",
+    "additionalNotes": "Third episode in 6 months", "currentMedications": "none",
+    "diagnosis": "Recurrent urinary tract infection",
+    "prescription": [
+      { "medicine": "Fosfomycin", "dosage": "3g sachet", "timing": "before food", "frequency": "single dose", "duration": "1 day", "condition": "" },
+      { "medicine": "Cranberry extract supplement", "dosage": "500mg", "timing": "after food", "frequency": "twice daily", "duration": "90 days", "condition": "" }
+    ],
+    "advice": "Gynaecology referral for recurrent UTI workup. Voiding diary. Post-coital voiding. D-mannose powder may help. Urine culture follow-up."
+  },
+  {
+    "patient": { "age": 72, "sex": "M", "weight": 68, "height": 163, "bloodGroup": "A+", "knownConditions": ["Hypertension", "Benign Prostatic Hyperplasia"], "allergies": [], "currentMedications": ["Amlodipine 5mg", "Tamsulosin 0.4mg"] },
+    "symptoms": "Burning urination, hesitancy, incomplete voiding, fever", "duration": "3 days", "severity": "moderate",
+    "additionalNotes": "Prostate enlarged on previous scan", "currentMedications": "Amlodipine 5mg, Tamsulosin 0.4mg",
+    "diagnosis": "UTI with BPH — complicated UTI in elderly male",
+    "prescription": [
+      { "medicine": "Ciprofloxacin", "dosage": "500mg", "timing": "after food", "frequency": "twice daily", "duration": "7 days", "condition": "" },
+      { "medicine": "Paracetamol", "dosage": "500mg", "timing": "after food", "frequency": "twice daily", "duration": "5 days", "condition": "Take only if fever or discomfort" }
+    ],
+    "advice": "Urology referral for BPH management. Increase fluid intake. Avoid alcohol and caffeine. Continue Tamsulosin."
+  },
+  {
+    "patient": { "age": 58, "sex": "M", "weight": 82, "height": 170, "bloodGroup": "B+", "knownConditions": ["Hypertension"], "allergies": [], "currentMedications": ["Amlodipine 5mg", "Telmisartan 40mg"] },
+    "symptoms": "BP check — no symptoms, regular review", "duration": "ongoing", "severity": "mild",
+    "additionalNotes": "BP today 148/92, on 2 medicines", "currentMedications": "Amlodipine 5mg, Telmisartan 40mg",
+    "diagnosis": "Hypertension — sub-optimally controlled, add-on therapy needed",
+    "prescription": [
+      { "medicine": "Telmisartan", "dosage": "80mg", "timing": "before food", "frequency": "once daily", "duration": "30 days", "condition": "" },
+      { "medicine": "Amlodipine", "dosage": "10mg", "timing": "after food", "frequency": "once daily", "duration": "30 days", "condition": "" },
+      { "medicine": "Indapamide", "dosage": "1.5mg", "timing": "after food", "frequency": "once daily", "duration": "30 days", "condition": "" }
+    ],
+    "advice": "DASH diet. Reduce salt to <5g/day. 30 min walk daily. Quit smoking. Recheck BP in 2 weeks. Fasting lipid profile."
+  },
+  {
+    "patient": { "age": 50, "sex": "F", "weight": 72, "height": 158, "bloodGroup": "O+", "knownConditions": ["Hypertension", "Hypothyroidism"], "allergies": [], "currentMedications": ["Losartan 50mg", "Levothyroxine 50mcg"] },
+    "symptoms": "Headache, dizziness, BP 158/96 at home readings", "duration": "1 week", "severity": "moderate",
+    "additionalNotes": "TSH 5.8 (high), poor medication compliance", "currentMedications": "Losartan 50mg, Levothyroxine 50mcg",
+    "diagnosis": "Uncontrolled hypertension with undertreated hypothyroidism",
+    "prescription": [
+      { "medicine": "Losartan", "dosage": "100mg", "timing": "before food", "frequency": "once daily", "duration": "30 days", "condition": "" },
+      { "medicine": "Amlodipine", "dosage": "5mg", "timing": "after food", "frequency": "once daily", "duration": "30 days", "condition": "" },
+      { "medicine": "Levothyroxine", "dosage": "75mcg", "timing": "before food", "frequency": "once daily", "duration": "30 days", "condition": "" }
+    ],
+    "advice": "Take Levothyroxine 30 min before breakfast on empty stomach. BP diary. Recheck TSH in 6 weeks. Reduce salt and stress."
+  },
+  {
+    "patient": { "age": 65, "sex": "M", "weight": 75, "height": 166, "bloodGroup": "A+", "knownConditions": ["Hypertension", "Type 2 Diabetes"], "allergies": [], "currentMedications": ["Metformin 1000mg", "Amlodipine 10mg"] },
+    "symptoms": "Dizziness on standing, weakness, BP 100/68 (low today)", "duration": "2 days", "severity": "mild",
+    "additionalNotes": "Recently started Amlodipine 10mg, blood sugar 95 (low)", "currentMedications": "Metformin 1000mg, Amlodipine 10mg",
+    "diagnosis": "Orthostatic hypotension — over-treated hypertension with hypoglycaemia",
+    "prescription": [
+      { "medicine": "Amlodipine", "dosage": "5mg", "timing": "after food", "frequency": "once daily", "duration": "30 days", "condition": "" }
+    ],
+    "advice": "Reduce Amlodipine back to 5mg. Rise slowly from sitting/lying. Monitor BP and blood sugar daily. Return if fainting occurs."
+  },
+  {
+    "patient": { "age": 44, "sex": "M", "weight": 85, "height": 174, "bloodGroup": "B+", "knownConditions": ["Hypertension"], "allergies": [], "currentMedications": ["Atenolol 50mg"] },
+    "symptoms": "High BP 168/100, palpitations, mild chest tightness", "duration": "3 days", "severity": "moderate",
+    "additionalNotes": "Stressful week at work, no chest pain at rest", "currentMedications": "Atenolol 50mg",
+    "diagnosis": "Poorly controlled hypertension — add amlodipine",
+    "prescription": [
+      { "medicine": "Amlodipine", "dosage": "5mg", "timing": "after food", "frequency": "once daily", "duration": "30 days", "condition": "" },
+      { "medicine": "Atenolol", "dosage": "50mg", "timing": "after food", "frequency": "once daily", "duration": "30 days", "condition": "" }
+    ],
+    "advice": "Stress management. Reduce salt. Moderate exercise. ECG. Recheck BP in 1 week. Avoid caffeine."
+  },
+  {
+    "patient": { "age": 47, "sex": "F", "weight": 69, "height": 158, "bloodGroup": "O+", "knownConditions": ["Hypertension"], "allergies": [], "currentMedications": ["Ramipril 5mg"] },
+    "symptoms": "BP monitoring visit, BP 135/85, no symptoms", "duration": "ongoing", "severity": "mild",
+    "additionalNotes": "Well controlled, routine review", "currentMedications": "Ramipril 5mg",
+    "diagnosis": "Hypertension — well controlled, continue current regimen",
+    "prescription": [
+      { "medicine": "Ramipril", "dosage": "5mg", "timing": "after food", "frequency": "once daily", "duration": "30 days", "condition": "" }
+    ],
+    "advice": "Continue current medication. Monitor BP weekly. Low-sodium diet. 30 min walk. Next review in 3 months with lipid profile."
+  },
+  {
+    "patient": { "age": 52, "sex": "M", "weight": 88, "height": 171, "bloodGroup": "A+", "knownConditions": ["Type 2 Diabetes"], "allergies": [], "currentMedications": ["Metformin 1000mg"] },
+    "symptoms": "Increased thirst, frequent urination, fatigue, blurred vision", "duration": "2 weeks", "severity": "moderate",
+    "additionalNotes": "HbA1c 9.2%, fasting sugar 240", "currentMedications": "Metformin 1000mg",
+    "diagnosis": "Poorly controlled Type 2 diabetes mellitus",
+    "prescription": [
+      { "medicine": "Metformin", "dosage": "1000mg", "timing": "after food", "frequency": "twice daily", "duration": "30 days", "condition": "" },
+      { "medicine": "Glimepiride", "dosage": "2mg", "timing": "before food", "frequency": "once daily", "duration": "30 days", "condition": "" },
+      { "medicine": "Voglibose", "dosage": "0.2mg", "timing": "before food", "frequency": "thrice daily", "duration": "30 days", "condition": "" }
+    ],
+    "advice": "Diabetic diet. No refined carbohydrates. 30 min walk after meals. Self-monitoring of blood sugar. Ophthalmology referral for blurred vision."
+  },
+  {
+    "patient": { "age": 60, "sex": "F", "weight": 65, "height": 153, "bloodGroup": "B-", "knownConditions": ["Type 2 Diabetes", "Hypertension"], "allergies": [], "currentMedications": ["Metformin 1000mg", "Sitagliptin 100mg", "Amlodipine 5mg"] },
+    "symptoms": "Foot numbness, tingling, burning pain in feet at night", "duration": "3 months", "severity": "moderate",
+    "additionalNotes": "HbA1c 8.1%, no foot ulcers", "currentMedications": "Metformin 1000mg, Sitagliptin 100mg, Amlodipine 5mg",
+    "diagnosis": "Diabetic peripheral neuropathy",
+    "prescription": [
+      { "medicine": "Pregabalin", "dosage": "75mg", "timing": "at bedtime", "frequency": "once daily", "duration": "30 days", "condition": "" },
+      { "medicine": "Alpha Lipoic Acid", "dosage": "600mg", "timing": "before food", "frequency": "once daily", "duration": "90 days", "condition": "" },
+      { "medicine": "Methylcobalamin", "dosage": "1500mcg", "timing": "after food", "frequency": "once daily", "duration": "90 days", "condition": "" }
+    ],
+    "advice": "Inspect feet daily. Avoid walking barefoot. Proper-fitting shoes. Tight glycaemic control. Podiatry referral."
+  },
+  {
+    "patient": { "age": 46, "sex": "M", "weight": 78, "height": 170, "bloodGroup": "O+", "knownConditions": ["Type 2 Diabetes"], "allergies": [], "currentMedications": ["Metformin 500mg"] },
+    "symptoms": "Low blood sugar episode — sweating, trembling, palpitations, confusion", "duration": "30 minutes", "severity": "severe",
+    "additionalNotes": "Blood sugar 52, skipped lunch", "currentMedications": "Metformin 500mg",
+    "diagnosis": "Hypoglycaemia — missed meal",
+    "prescription": [
+      { "medicine": "Dextrose tablets (15g)", "dosage": "3 tablets", "timing": "as needed", "frequency": "as needed", "duration": "ongoing", "condition": "Take immediately if blood sugar <70 or symptoms of hypoglycaemia occur; recheck after 15 min" }
+    ],
+    "advice": "Never skip meals. Carry glucose tablets at all times. Eat regular small meals. Educate family on hypoglycaemia management. Recheck blood sugar in 15 min after treatment."
+  },
+  {
+    "patient": { "age": 39, "sex": "F", "weight": 63, "height": 163, "bloodGroup": "A+", "knownConditions": ["Type 2 Diabetes"], "allergies": [], "currentMedications": ["Metformin 1000mg", "Glimepiride 1mg"] },
+    "symptoms": "Routine check — no symptoms, fasting sugar 110", "duration": "ongoing", "severity": "mild",
+    "additionalNotes": "HbA1c 6.9%, well controlled", "currentMedications": "Metformin 1000mg, Glimepiride 1mg",
+    "diagnosis": "Type 2 diabetes mellitus — well controlled, continue regimen",
+    "prescription": [
+      { "medicine": "Metformin", "dosage": "1000mg", "timing": "after food", "frequency": "twice daily", "duration": "30 days", "condition": "" },
+      { "medicine": "Glimepiride", "dosage": "1mg", "timing": "before food", "frequency": "once daily", "duration": "30 days", "condition": "" }
+    ],
+    "advice": "Continue current regimen. HbA1c every 3 months. Annual eye, foot, and kidney check. Low-GI diet. Regular exercise."
+  },
+  {
+    "patient": { "age": 57, "sex": "M", "weight": 76, "height": 168, "bloodGroup": "B+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Dizziness, spinning sensation, nausea, worse with head movement", "duration": "3 days", "severity": "moderate",
+    "additionalNotes": "Positive Dix-Hallpike test", "currentMedications": "none",
+    "diagnosis": "Benign paroxysmal positional vertigo (BPPV)",
+    "prescription": [
+      { "medicine": "Betahistine", "dosage": "16mg", "timing": "after food", "frequency": "thrice daily", "duration": "14 days", "condition": "" },
+      { "medicine": "Domperidone", "dosage": "10mg", "timing": "before food", "frequency": "twice daily", "duration": "5 days", "condition": "Take if nausea accompanies vertigo episodes" }
+    ],
+    "advice": "Epley manoeuvre to be performed by physiotherapist. Avoid sudden head movements. Sleep with head elevated. Avoid driving during acute episodes."
+  },
+  {
+    "patient": { "age": 42, "sex": "F", "weight": 60, "height": 158, "bloodGroup": "O+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Sudden onset severe dizziness, room spinning, vomiting, imbalance", "duration": "1 day", "severity": "severe",
+    "additionalNotes": "No hearing loss, no tinnitus", "currentMedications": "none",
+    "diagnosis": "Acute vestibular neuritis",
+    "prescription": [
+      { "medicine": "Betahistine", "dosage": "24mg", "timing": "after food", "frequency": "twice daily", "duration": "21 days", "condition": "" },
+      { "medicine": "Ondansetron", "dosage": "4mg", "timing": "before food", "frequency": "twice daily", "duration": "3 days", "condition": "Take only if vomiting is significant" },
+      { "medicine": "Prednisolone", "dosage": "40mg", "timing": "after food", "frequency": "once daily", "duration": "5 days", "condition": "" }
+    ],
+    "advice": "Bed rest. ENT referral. Vestibular rehabilitation exercises after acute phase. Avoid driving. Follow up in 3 days."
+  },
+  {
+    "patient": { "age": 65, "sex": "M", "weight": 72, "height": 165, "bloodGroup": "A+", "knownConditions": ["Hypertension"], "allergies": [], "currentMedications": ["Amlodipine 5mg"] },
+    "symptoms": "Giddiness on standing, unsteadiness, mild headache", "duration": "2 days", "severity": "mild",
+    "additionalNotes": "BP drops on standing, low-sodium diet recently started", "currentMedications": "Amlodipine 5mg",
+    "diagnosis": "Orthostatic vertigo — postural hypotension",
+    "prescription": [
+      { "medicine": "Betahistine", "dosage": "8mg", "timing": "after food", "frequency": "thrice daily", "duration": "14 days", "condition": "" }
+    ],
+    "advice": "Rise slowly. Increase dietary salt slightly. Increase fluid intake. Review Amlodipine dose. Compression stockings may help."
+  },
+  {
+    "patient": { "age": 38, "sex": "F", "weight": 57, "height": 160, "bloodGroup": "B+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Difficulty falling asleep, waking up at night, unrefreshing sleep, daytime fatigue", "duration": "3 weeks", "severity": "moderate",
+    "additionalNotes": "Work stress, using phone in bed", "currentMedications": "none",
+    "diagnosis": "Primary insomnia — behavioural and stress-related",
+    "prescription": [
+      { "medicine": "Melatonin", "dosage": "3mg", "timing": "at bedtime", "frequency": "once daily", "duration": "14 days", "condition": "" },
+      { "medicine": "Clonazepam", "dosage": "0.25mg", "timing": "at bedtime", "frequency": "once daily", "duration": "7 days", "condition": "Take only if unable to sleep despite melatonin; avoid long-term use" }
+    ],
+    "advice": "No screens 1 hour before bed. Fixed sleep-wake time. Dark, cool bedroom. No caffeine after 3pm. Cognitive Behavioural Therapy for insomnia (CBT-I) referral."
+  },
+  {
+    "patient": { "age": 52, "sex": "M", "weight": 85, "height": 172, "bloodGroup": "O+", "knownConditions": ["Hypertension"], "allergies": [], "currentMedications": ["Amlodipine 5mg"] },
+    "symptoms": "Snoring, gasping during sleep, excessive daytime sleepiness, morning headache", "duration": "3 months", "severity": "moderate",
+    "additionalNotes": "BMI 29, wife reports apnoea episodes", "currentMedications": "Amlodipine 5mg",
+    "diagnosis": "Obstructive sleep apnoea — suspected, needs sleep study",
+    "prescription": [
+      { "medicine": "Melatonin", "dosage": "5mg", "timing": "at bedtime", "frequency": "once daily", "duration": "14 days", "condition": "" }
+    ],
+    "advice": "Urgent sleep study (polysomnography). Weight loss. Side-sleeping. Avoid alcohol before bed. CPAP therapy likely needed. ENT referral."
+  },
+  {
+    "patient": { "age": 29, "sex": "F", "weight": 54, "height": 160, "bloodGroup": "A-", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Insomnia, anxiety, heart pounding at night, excessive worry", "duration": "1 month", "severity": "moderate",
+    "additionalNotes": "Recent job change, no prior psychiatric history", "currentMedications": "none",
+    "diagnosis": "Anxiety-related insomnia",
+    "prescription": [
+      { "medicine": "Escitalopram", "dosage": "5mg", "timing": "after food", "frequency": "once daily", "duration": "30 days", "condition": "" },
+      { "medicine": "Clonazepam", "dosage": "0.25mg", "timing": "at bedtime", "frequency": "once daily", "duration": "14 days", "condition": "Short-term use only; taper after 2 weeks" }
+    ],
+    "advice": "Counselling or CBT referral. Breathing exercises. Journalling. Limit caffeine. Review in 2 weeks."
+  },
+  {
+    "patient": { "age": 34, "sex": "F", "weight": 55, "height": 160, "bloodGroup": "O+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Generalised weakness, fatigue, pale skin, shortness of breath on exertion, palpitations", "duration": "1 month", "severity": "moderate",
+    "additionalNotes": "Haemoglobin 8.2 g/dL, vegetarian", "currentMedications": "none",
+    "diagnosis": "Iron deficiency anaemia",
+    "prescription": [
+      { "medicine": "Ferrous ascorbate + Folic acid", "dosage": "100mg elemental iron", "timing": "before food", "frequency": "once daily", "duration": "90 days", "condition": "" },
+      { "medicine": "Vitamin C", "dosage": "500mg", "timing": "with iron tablet", "frequency": "once daily", "duration": "90 days", "condition": "" }
+    ],
+    "advice": "Iron-rich diet: spinach, jaggery, dates, lentils. Avoid tea/coffee with meals. Recheck Hb in 4 weeks. If <7 g/dL, IV iron or transfusion referral."
+  },
+  {
+    "patient": { "age": 45, "sex": "F", "weight": 62, "height": 158, "bloodGroup": "B+", "knownConditions": ["Hypothyroidism"], "allergies": [], "currentMedications": ["Levothyroxine 50mcg"] },
+    "symptoms": "Fatigue, weight gain, cold intolerance, dry skin, hair fall, constipation", "duration": "2 months", "severity": "moderate",
+    "additionalNotes": "TSH 12 mIU/L, on Levothyroxine", "currentMedications": "Levothyroxine 50mcg",
+    "diagnosis": "Undertreated hypothyroidism",
+    "prescription": [
+      { "medicine": "Levothyroxine", "dosage": "75mcg", "timing": "before food", "frequency": "once daily", "duration": "30 days", "condition": "" }
+    ],
+    "advice": "Take Levothyroxine on empty stomach, 30 min before breakfast. No soy/calcium within 4 hours. Recheck TSH in 6 weeks. Biotin supplement for hair."
+  },
+  {
+    "patient": { "age": 25, "sex": "M", "weight": 60, "height": 172, "bloodGroup": "A+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Extreme fatigue, weakness, pins and needles in hands and feet, forgetfulness", "duration": "6 weeks", "severity": "moderate",
+    "additionalNotes": "Vit B12 < 150 pg/mL, vegetarian", "currentMedications": "none",
+    "diagnosis": "Vitamin B12 deficiency",
+    "prescription": [
+      { "medicine": "Methylcobalamin", "dosage": "1500mcg", "timing": "after food", "frequency": "once daily", "duration": "90 days", "condition": "" },
+      { "medicine": "Folic acid", "dosage": "5mg", "timing": "after food", "frequency": "once daily", "duration": "30 days", "condition": "" }
+    ],
+    "advice": "Include eggs, dairy, or B12-fortified foods if vegetarian. Injectable B12 if very low. Recheck B12 in 8 weeks."
+  },
+  {
+    "patient": { "age": 22, "sex": "M", "weight": 65, "height": 173, "bloodGroup": "O+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Red, painful eye, discharge, crusting on eyelids on waking", "duration": "2 days", "severity": "mild",
+    "additionalNotes": "Conjunctival injection, mucopurulent discharge", "currentMedications": "none",
+    "diagnosis": "Acute bacterial conjunctivitis",
+    "prescription": [
+      { "medicine": "Moxifloxacin eye drops 0.5%", "dosage": "1 drop", "timing": "as needed", "frequency": "thrice daily", "duration": "5 days", "condition": "" },
+      { "medicine": "Carboxymethylcellulose (Refresh) eye drops", "dosage": "1 drop", "timing": "as needed", "frequency": "as needed", "duration": "7 days", "condition": "Use as lubricant for dryness or irritation" }
+    ],
+    "advice": "Do not touch eyes. Wash hands frequently. Do not share towels. Use fresh tissue to clean discharge. No contact lenses for 2 weeks."
+  },
+  {
+    "patient": { "age": 35, "sex": "F", "weight": 58, "height": 161, "bloodGroup": "A+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Ear pain, pulling sensation in ear, discharge from ear, reduced hearing", "duration": "3 days", "severity": "moderate",
+    "additionalNotes": "Swam in pool recently, outer ear tender on movement", "currentMedications": "none",
+    "diagnosis": "Acute otitis externa — swimmer's ear",
+    "prescription": [
+      { "medicine": "Ciprofloxacin + Hydrocortisone ear drops", "dosage": "4 drops", "timing": "as needed", "frequency": "thrice daily", "duration": "7 days", "condition": "" },
+      { "medicine": "Paracetamol", "dosage": "500mg", "timing": "after food", "frequency": "thrice daily", "duration": "5 days", "condition": "Take for ear pain" }
+    ],
+    "advice": "Keep ear dry. Avoid swimming. No ear buds or cotton swabs. Warm compress on ear. ENT referral if not improving in 5 days."
+  },
+  {
+    "patient": { "age": 8, "sex": "M", "weight": 22, "height": 128, "bloodGroup": "B+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Ear pain, fever, decreased hearing, irritability", "duration": "2 days", "severity": "moderate",
+    "additionalNotes": "Child, recent cold, tympanic membrane bulging", "currentMedications": "none",
+    "diagnosis": "Acute otitis media",
+    "prescription": [
+      { "medicine": "Amoxicillin syrup", "dosage": "250mg/5ml — 5ml", "timing": "after food", "frequency": "thrice daily", "duration": "7 days", "condition": "" },
+      { "medicine": "Paracetamol syrup", "dosage": "120mg/5ml — 7.5ml", "timing": "after food", "frequency": "thrice daily", "duration": "4 days", "condition": "Give if fever or pain" }
+    ],
+    "advice": "Complete antibiotic course. Follow up with ENT in 1 week. No water in ears. Check hearing after infection resolves."
+  },
+  {
+    "patient": { "age": 48, "sex": "F", "weight": 62, "height": 156, "bloodGroup": "O+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Watery itchy eyes, foreign body sensation, no discharge", "duration": "1 week", "severity": "mild",
+    "additionalNotes": "Air-conditioned office, contact lens user", "currentMedications": "none",
+    "diagnosis": "Dry eye syndrome with allergic conjunctivitis",
+    "prescription": [
+      { "medicine": "Sodium hyaluronate eye drops (Refresh Plus)", "dosage": "1 drop each eye", "timing": "as needed", "frequency": "as needed", "duration": "ongoing", "condition": "" },
+      { "medicine": "Olopatadine eye drops 0.1%", "dosage": "1 drop", "timing": "as needed", "frequency": "twice daily", "duration": "14 days", "condition": "" }
+    ],
+    "advice": "Reduce contact lens wear. 20-20-20 rule. Humidifier in office. Omega-3 supplements. Ophthalmology review."
+  },
+  {
+    "patient": { "age": 40, "sex": "M", "weight": 75, "height": 173, "bloodGroup": "B+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Sharp chest pain on one side, worse on deep breathing, no shortness of breath, no fever", "duration": "2 days", "severity": "moderate",
+    "additionalNotes": "Pain reproducible on pressing chest wall, recent cough", "currentMedications": "none",
+    "diagnosis": "Musculoskeletal chest wall pain — costochondritis",
+    "prescription": [
+      { "medicine": "Ibuprofen", "dosage": "400mg", "timing": "after food", "frequency": "twice daily", "duration": "5 days", "condition": "" },
+      { "medicine": "Pantoprazole", "dosage": "40mg", "timing": "before food", "frequency": "once daily", "duration": "5 days", "condition": "" },
+      { "medicine": "Diclofenac gel 1%", "dosage": "apply", "timing": "as needed", "frequency": "twice daily", "duration": "5 days", "condition": "Apply locally to tender chest area" }
+    ],
+    "advice": "ECG to rule out cardiac cause. Avoid heavy lifting. Heat pad on chest. Follow up if pain worsens or spreads to arm/jaw."
+  },
+  {
+    "patient": { "age": 55, "sex": "M", "weight": 80, "height": 169, "bloodGroup": "A+", "knownConditions": ["Hypertension", "Type 2 Diabetes"], "allergies": [], "currentMedications": ["Amlodipine 5mg", "Metformin 500mg"] },
+    "symptoms": "Chest pain left-sided, radiating to left arm, sweating, breathlessness", "duration": "30 minutes", "severity": "severe",
+    "additionalNotes": "ECG changes present, high-risk presentation", "currentMedications": "Amlodipine 5mg, Metformin 500mg",
+    "diagnosis": "Acute coronary syndrome — STEMI suspected, urgent referral",
+    "prescription": [
+      { "medicine": "Aspirin", "dosage": "325mg", "timing": "as needed", "frequency": "single dose", "duration": "1 day", "condition": "Chew immediately" },
+      { "medicine": "Clopidogrel", "dosage": "300mg", "timing": "as needed", "frequency": "single dose", "duration": "1 day", "condition": "Give immediately" }
+    ],
+    "advice": "EMERGENCY — Call ambulance immediately. Lie patient flat. Oxygen if available. Do NOT drive yourself. Transfer to nearest cardiac centre for primary PCI."
+  },
+  {
+    "patient": { "age": 33, "sex": "F", "weight": 57, "height": 162, "bloodGroup": "O-", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Chest tightness, sharp pain left side, worse lying down, better sitting forward", "duration": "3 days", "severity": "moderate",
+    "additionalNotes": "Recent viral illness, pericardial friction rub", "currentMedications": "none",
+    "diagnosis": "Viral pericarditis",
+    "prescription": [
+      { "medicine": "Ibuprofen", "dosage": "600mg", "timing": "after food", "frequency": "thrice daily", "duration": "14 days", "condition": "" },
+      { "medicine": "Colchicine", "dosage": "0.5mg", "timing": "after food", "frequency": "twice daily", "duration": "3 months", "condition": "" },
+      { "medicine": "Pantoprazole", "dosage": "40mg", "timing": "before food", "frequency": "once daily", "duration": "14 days", "condition": "" }
+    ],
+    "advice": "Restrict physical activity for 3 months. Echocardiogram. Cardiology referral. No sports until pain-free for 3 months."
+  },
+  {
+    "patient": { "age": 36, "sex": "M", "weight": 74, "height": 175, "bloodGroup": "B+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Neck pain, stiffness, pain radiating to right shoulder and arm, numbness in fingers", "duration": "2 weeks", "severity": "moderate",
+    "additionalNotes": "IT professional, forward head posture", "currentMedications": "none",
+    "diagnosis": "Cervical spondylosis with radiculopathy — C5-C6 level",
+    "prescription": [
+      { "medicine": "Ibuprofen", "dosage": "400mg", "timing": "after food", "frequency": "twice daily", "duration": "7 days", "condition": "" },
+      { "medicine": "Thiocolchicoside", "dosage": "4mg", "timing": "after food", "frequency": "twice daily", "duration": "7 days", "condition": "" },
+      { "medicine": "Pregabalin", "dosage": "75mg", "timing": "at bedtime", "frequency": "once daily", "duration": "14 days", "condition": "Take for nerve pain/numbness" },
+      { "medicine": "Pantoprazole", "dosage": "40mg", "timing": "before food", "frequency": "once daily", "duration": "7 days", "condition": "" }
+    ],
+    "advice": "Cervical pillow. Physiotherapy and cervical traction. Ergonomic workstation. MRI cervical spine. Reduce screen time."
+  },
+  {
+    "patient": { "age": 43, "sex": "F", "weight": 62, "height": 158, "bloodGroup": "O+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Wrist pain and swelling, numbness in thumb, index and middle fingers, worse at night", "duration": "1 month", "severity": "moderate",
+    "additionalNotes": "Positive Tinel's sign, frequent computer work", "currentMedications": "none",
+    "diagnosis": "Carpal tunnel syndrome",
+    "prescription": [
+      { "medicine": "Ibuprofen", "dosage": "400mg", "timing": "after food", "frequency": "twice daily", "duration": "7 days", "condition": "" },
+      { "medicine": "Pantoprazole", "dosage": "40mg", "timing": "before food", "frequency": "once daily", "duration": "7 days", "condition": "" },
+      { "medicine": "Methylcobalamin", "dosage": "1500mcg", "timing": "after food", "frequency": "once daily", "duration": "90 days", "condition": "" }
+    ],
+    "advice": "Wrist splint at night. Ergonomic keyboard. Wrist stretches. Physiotherapy. Orthopaedic referral for steroid injection if no improvement."
+  },
+  {
+    "patient": { "age": 50, "sex": "M", "weight": 77, "height": 169, "bloodGroup": "A+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Neck pain and stiffness following road accident, unable to turn head", "duration": "1 day", "severity": "moderate",
+    "additionalNotes": "Whiplash injury, X-ray normal", "currentMedications": "none",
+    "diagnosis": "Cervical whiplash injury",
+    "prescription": [
+      { "medicine": "Diclofenac", "dosage": "50mg", "timing": "after food", "frequency": "twice daily", "duration": "5 days", "condition": "" },
+      { "medicine": "Thiocolchicoside", "dosage": "4mg", "timing": "after food", "frequency": "twice daily", "duration": "5 days", "condition": "" },
+      { "medicine": "Pantoprazole", "dosage": "40mg", "timing": "before food", "frequency": "once daily", "duration": "5 days", "condition": "" }
+    ],
+    "advice": "Soft cervical collar for first 72 hours. Ice pack first 48 hours, then warm. Physiotherapy. Avoid driving for 1 week."
+  },
+  {
+    "patient": { "age": 62, "sex": "M", "weight": 85, "height": 170, "bloodGroup": "B+", "knownConditions": ["Type 2 Diabetes", "Hypertension"], "allergies": [], "currentMedications": ["Metformin 1000mg", "Glimepiride 2mg", "Amlodipine 10mg", "Telmisartan 80mg"] },
+    "symptoms": "High fever, chills, body ache, high BP 170/100, blood sugar 320, loss of appetite", "duration": "3 days", "severity": "severe",
+    "additionalNotes": "HbA1c 10.2, on max oral meds, urine ketones negative", "currentMedications": "Metformin 1000mg, Glimepiride 2mg, Amlodipine 10mg, Telmisartan 80mg",
+    "diagnosis": "Viral fever with uncontrolled diabetes and hypertension — complex case requiring close monitoring",
+    "prescription": [
+      { "medicine": "Paracetamol", "dosage": "500mg", "timing": "after food", "frequency": "thrice daily", "duration": "5 days", "condition": "" },
+      { "medicine": "Insulin Glargine", "dosage": "10 units", "timing": "at bedtime", "frequency": "once daily", "duration": "7 days", "condition": "Monitor fasting sugar; adjust dose if <80 or >200" },
+      { "medicine": "Pantoprazole", "dosage": "40mg", "timing": "before food", "frequency": "once daily", "duration": "7 days", "condition": "" },
+      { "medicine": "Amlodipine", "dosage": "10mg", "timing": "after food", "frequency": "once daily", "duration": "30 days", "condition": "" },
+      { "medicine": "ORS sachets", "dosage": "1 sachet", "timing": "as needed", "frequency": "as needed", "duration": "3 days", "condition": "Take if unable to eat meals" }
+    ],
+    "advice": "Monitor blood sugar every 4–6 hours. Monitor BP twice daily. High fluid intake. Soft diet. Consider hospitalisation if fever >104F or sugar >400. Avoid NSAIDs strictly."
+  },
+  {
+    "patient": { "age": 23, "sex": "M", "weight": 63, "height": 174, "bloodGroup": "O+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Productive cough, thick yellowish sputum, low-grade fever, chest heaviness", "duration": "8 days", "severity": "moderate",
+    "additionalNotes": "Non-smoker, office worker, recent cold 2 weeks ago", "currentMedications": "none",
+    "diagnosis": "Acute bronchitis with secondary bacterial infection",
+    "prescription": [
+      { "medicine": "Amoxicillin-Clavulanate", "dosage": "625mg", "timing": "after food", "frequency": "twice daily", "duration": "5 days", "condition": "" },
+      { "medicine": "Ambroxol", "dosage": "30mg", "timing": "after food", "frequency": "thrice daily", "duration": "5 days", "condition": "" },
+      { "medicine": "Paracetamol", "dosage": "500mg", "timing": "after food", "frequency": "twice daily", "duration": "3 days", "condition": "Take only if fever is present" }
+    ],
+    "advice": "Steam inhalation twice daily. Drink warm fluids. Complete antibiotic course. Follow up if breathlessness develops."
+  },
+  {
+    "patient": { "age": 66, "sex": "F", "weight": 59, "height": 152, "bloodGroup": "A+", "knownConditions": ["Hypothyroidism", "Osteoporosis"], "allergies": [], "currentMedications": ["Levothyroxine 100mcg", "Calcium + Vit D3"] },
+    "symptoms": "Knee swelling, warmth, pain, inability to fully extend knee", "duration": "5 days", "severity": "moderate",
+    "additionalNotes": "No trauma, uric acid 5.4 (normal)", "currentMedications": "Levothyroxine 100mcg, Calcium + Vit D3",
+    "diagnosis": "Reactive arthritis — knee effusion, likely post-viral",
+    "prescription": [
+      { "medicine": "Paracetamol", "dosage": "650mg", "timing": "after food", "frequency": "thrice daily", "duration": "7 days", "condition": "" },
+      { "medicine": "Thiocolchicoside", "dosage": "4mg", "timing": "after food", "frequency": "twice daily", "duration": "5 days", "condition": "" },
+      { "medicine": "Diclofenac gel 1%", "dosage": "apply thin layer", "timing": "as needed", "frequency": "twice daily", "duration": "7 days", "condition": "Apply locally to swollen knee" }
+    ],
+    "advice": "RICE — Rest, Ice, Compression, Elevation. Orthopaedic referral for aspiration if swelling worsens. Avoid oral NSAIDs due to age."
+  },
+  {
+    "patient": { "age": 41, "sex": "F", "weight": 64, "height": 161, "bloodGroup": "O-", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Facial acne, painful pimples on cheeks and forehead, oily skin", "duration": "3 months", "severity": "moderate",
+    "additionalNotes": "Adult acne, menstrual cycle irregular", "currentMedications": "none",
+    "diagnosis": "Acne vulgaris — adult hormonal acne",
+    "prescription": [
+      { "medicine": "Doxycycline", "dosage": "100mg", "timing": "after food", "frequency": "once daily", "duration": "6 weeks", "condition": "" },
+      { "medicine": "Clindamycin + Nicotinamide gel", "dosage": "apply pea-sized", "timing": "at bedtime", "frequency": "once daily", "duration": "8 weeks", "condition": "" },
+      { "medicine": "Tretinoin cream 0.025%", "dosage": "apply thin layer", "timing": "at bedtime", "frequency": "once daily", "duration": "8 weeks", "condition": "Apply to acne spots at night only; use sunscreen in morning" }
+    ],
+    "advice": "Non-comedogenic moisturiser and sunscreen. Avoid picking pimples. Oil-free makeup. Gynaecology referral for hormonal workup. Reduce dairy."
+  },
+  {
+    "patient": { "age": 53, "sex": "M", "weight": 84, "height": 172, "bloodGroup": "A+", "knownConditions": ["Type 2 Diabetes"], "allergies": [], "currentMedications": ["Metformin 1000mg", "Glimepiride 1mg"] },
+    "symptoms": "Chronic cough for 2 months, white frothy sputum, no fever, mild breathlessness on exertion", "duration": "2 months", "severity": "mild",
+    "additionalNotes": "Smoker 20 years, FEV1/FVC ratio reduced on spirometry", "currentMedications": "Metformin 1000mg, Glimepiride 1mg",
+    "diagnosis": "Chronic Obstructive Pulmonary Disease (COPD) — mild, tobacco-related",
+    "prescription": [
+      { "medicine": "Tiotropium inhaler (Spiriva)", "dosage": "18mcg 1 capsule", "timing": "in the morning", "frequency": "once daily", "duration": "ongoing", "condition": "" },
+      { "medicine": "Salbutamol inhaler", "dosage": "2 puffs", "timing": "as needed", "frequency": "as needed", "duration": "ongoing", "condition": "Use when short of breath; not more than 4 times/day" },
+      { "medicine": "Ambroxol", "dosage": "30mg", "timing": "after food", "frequency": "twice daily", "duration": "14 days", "condition": "" }
+    ],
+    "advice": "QUIT SMOKING — most important intervention. Pulmonology referral for full PFT. Flu and pneumococcal vaccines. Breathing exercises."
+  },
+  {
+    "patient": { "age": 27, "sex": "F", "weight": 51, "height": 155, "bloodGroup": "B-", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Heavy painful periods, pelvic pain, bloating, pain during intercourse", "duration": "6 months", "severity": "moderate",
+    "additionalNotes": "Periods last 8 days, clots, no pregnancy", "currentMedications": "none",
+    "diagnosis": "Probable endometriosis — menorrhagia with dysmenorrhoea",
+    "prescription": [
+      { "medicine": "Mefenamic acid", "dosage": "500mg", "timing": "after food", "frequency": "thrice daily", "duration": "5 days", "condition": "Take during menstrual days only, starting 1 day before expected period" },
+      { "medicine": "Tranexamic acid", "dosage": "500mg", "timing": "after food", "frequency": "thrice daily", "duration": "5 days", "condition": "Take during heavy flow days only" },
+      { "medicine": "Iron supplement", "dosage": "100mg elemental iron", "timing": "before food", "frequency": "once daily", "duration": "60 days", "condition": "" }
+    ],
+    "advice": "Gynaecology referral for pelvic ultrasound and laparoscopy. Hormonal therapy may be considered. Iron-rich diet. Track menstrual cycle."
+  },
+  {
+    "patient": { "age": 19, "sex": "F", "weight": 49, "height": 156, "bloodGroup": "O+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Severe menstrual cramps, nausea, headache, unable to attend college during periods", "duration": "since menarche", "severity": "severe",
+    "additionalNotes": "Primary dysmenorrhoea, no structural cause found", "currentMedications": "none",
+    "diagnosis": "Primary dysmenorrhoea",
+    "prescription": [
+      { "medicine": "Mefenamic acid", "dosage": "500mg", "timing": "after food", "frequency": "thrice daily", "duration": "3 days", "condition": "Take starting 1 day before period and continue for first 2–3 days" },
+      { "medicine": "Paracetamol", "dosage": "500mg", "timing": "after food", "frequency": "twice daily", "duration": "3 days", "condition": "Take if mefenamic acid alone is insufficient for pain" }
+    ],
+    "advice": "Heat pad on lower abdomen. Omega-3 supplements. Regular exercise throughout the month reduces cramps. Gynaecology referral if very severe."
+  },
+  {
+    "patient": { "age": 44, "sex": "M", "weight": 79, "height": 171, "bloodGroup": "B+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Burning and tingling in right foot, numbness between 3rd and 4th toes, worsens walking", "duration": "3 weeks", "severity": "moderate",
+    "additionalNotes": "Wears tight shoes, overweight", "currentMedications": "none",
+    "diagnosis": "Morton's neuroma — compression neuropathy of interdigital nerve",
+    "prescription": [
+      { "medicine": "Ibuprofen", "dosage": "400mg", "timing": "after food", "frequency": "twice daily", "duration": "7 days", "condition": "" },
+      { "medicine": "Pantoprazole", "dosage": "40mg", "timing": "before food", "frequency": "once daily", "duration": "7 days", "condition": "" },
+      { "medicine": "Pregabalin", "dosage": "75mg", "timing": "at bedtime", "frequency": "once daily", "duration": "14 days", "condition": "Take for burning/tingling nerve pain" }
+    ],
+    "advice": "Wide-toed shoes. Metatarsal pads. Orthopaedic insoles. Weight reduction. Orthopaedic referral for steroid injection if no relief."
+  },
+  {
+    "patient": { "age": 48, "sex": "F", "weight": 67, "height": 159, "bloodGroup": "A+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Hot flushes, night sweats, mood swings, irregular periods, vaginal dryness", "duration": "4 months", "severity": "moderate",
+    "additionalNotes": "Age 48, FSH elevated, LMP 3 months ago", "currentMedications": "none",
+    "diagnosis": "Perimenopausal syndrome",
+    "prescription": [
+      { "medicine": "Clonidine", "dosage": "0.1mg", "timing": "at bedtime", "frequency": "once daily", "duration": "30 days", "condition": "Take for hot flushes; may cause mild drowsiness" },
+      { "medicine": "Calcium + Vit D3", "dosage": "500mg/200IU", "timing": "after food", "frequency": "twice daily", "duration": "ongoing", "condition": "" }
+    ],
+    "advice": "Gynaecology referral for HRT discussion. Cool bedroom. Breathable clothing. Avoid caffeine and alcohol. Soy-rich diet. DEXA scan for bone density."
+  },
+  {
+    "patient": { "age": 37, "sex": "M", "weight": 71, "height": 176, "bloodGroup": "O+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Severe unilateral headache around left eye, tearing, redness, nasal congestion, attacks last 45 minutes and occur daily at same time", "duration": "10 days", "severity": "severe",
+    "additionalNotes": "Cluster headache pattern, smoking history", "currentMedications": "none",
+    "diagnosis": "Cluster headache — episodic type",
+    "prescription": [
+      { "medicine": "Sumatriptan nasal spray", "dosage": "20mg", "timing": "as needed", "frequency": "as needed", "duration": "as needed", "condition": "Use at attack onset; max 1 dose per 24 hours" },
+      { "medicine": "Verapamil", "dosage": "80mg", "timing": "after food", "frequency": "thrice daily", "duration": "30 days", "condition": "" }
+    ],
+    "advice": "100% oxygen at 7–12 L/min for 15 min aborts most attacks — arrange home oxygen. Avoid alcohol and smoking during cluster period. Neurology referral."
+  },
+  {
+    "patient": { "age": 40, "sex": "F", "weight": 63, "height": 160, "bloodGroup": "B+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Pain and swelling in right heel, worse in morning first steps, improves after walking", "duration": "6 weeks", "severity": "moderate",
+    "additionalNotes": "Overweight, stands for long hours at work", "currentMedications": "none",
+    "diagnosis": "Plantar fasciitis — right heel",
+    "prescription": [
+      { "medicine": "Ibuprofen", "dosage": "400mg", "timing": "after food", "frequency": "twice daily", "duration": "10 days", "condition": "" },
+      { "medicine": "Pantoprazole", "dosage": "40mg", "timing": "before food", "frequency": "once daily", "duration": "10 days", "condition": "" },
+      { "medicine": "Diclofenac gel 1%", "dosage": "apply thin layer", "timing": "as needed", "frequency": "twice daily", "duration": "14 days", "condition": "Apply to heel area morning and night" }
+    ],
+    "advice": "Heel cup or silicone insole. Calf stretches before getting out of bed. Avoid walking barefoot. Weight reduction. Physiotherapy. Orthopaedic referral if no improvement in 6 weeks."
+  },
+  {
+    "patient": { "age": 45, "sex": "M", "weight": 76, "height": 168, "bloodGroup": "AB+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Itching and burning in scalp, white flakes on scalp and shoulders, mild redness", "duration": "2 months", "severity": "mild",
+    "additionalNotes": "Dandruff worsens in winter", "currentMedications": "none",
+    "diagnosis": "Seborrhoeic dermatitis — scalp",
+    "prescription": [
+      { "medicine": "Ketoconazole shampoo 2%", "dosage": "apply to wet scalp", "timing": "as needed", "frequency": "twice weekly", "duration": "4 weeks", "condition": "" },
+      { "medicine": "Clobetasol scalp lotion 0.05%", "dosage": "apply to scalp", "timing": "at bedtime", "frequency": "once daily", "duration": "2 weeks", "condition": "Apply only if itching is severe" }
+    ],
+    "advice": "Use antidandruff shampoo alternating with regular shampoo. Avoid harsh hair products. Dermatology referral if no response in 4 weeks."
+  },
+  {
+    "patient": { "age": 32, "sex": "F", "weight": 56, "height": 161, "bloodGroup": "O+", "knownConditions": [], "allergies": [], "currentMedications": [] },
+    "symptoms": "Painful blisters on lips, tingling before blisters appear, recurrent", "duration": "3 days", "severity": "mild",
+    "additionalNotes": "Second episode this year, stressed recently", "currentMedications": "none",
+    "diagnosis": "Herpes labialis (cold sores) — HSV-1 reactivation",
+    "prescription": [
+      { "medicine": "Acyclovir cream 5%", "dosage": "apply to affected area", "timing": "as needed", "frequency": "5 times daily", "duration": "5 days", "condition": "Apply at first sign of tingling for best effect" },
+      { "medicine": "Acyclovir tablet", "dosage": "400mg", "timing": "after food", "frequency": "thrice daily", "duration": "5 days", "condition": "Take for severe or spreading lesions" }
+    ],
+    "advice": "Avoid kissing or sharing utensils during active lesions. Sunscreen on lips prevents UV-triggered recurrence. Lysine supplement may reduce frequency."
+  }
+]

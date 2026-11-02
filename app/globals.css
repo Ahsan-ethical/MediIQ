@@ -1,0 +1,245 @@
+@import "tailwindcss";
+
+/* Enable class-based dark mode: `dark:` responds to a .dark ancestor. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ============================================================================
+   DESIGN TOKENS  (Phase 6 — MediIQ design system)
+   Semantic tokens flip between light/dark; brand ramp is constant.
+   ========================================================================== */
+:root {
+  /* Brand — iris / azure-blue */
+  --brand-50:  #eef3ff;
+  --brand-100: #dde7ff;
+  --brand-200: #c2d3ff;
+  --brand-300: #98b4ff;
+  --brand-400: #6a8cff;
+  --brand-500: #4667f5;
+  --brand-600: #314ee6;   /* primary action */
+  --brand-700: #2740c4;
+  --brand-800: #24399e;
+  --brand-900: #23367d;
+  --brand-950: #171f4b;
+
+  /* Accent — cyan/teal (AI · vitals · highlights) */
+  --accent-300: #5eecdf;
+  --accent-400: #22d3ee;
+  --accent-500: #06b6d4;
+  --accent-600: #0894b4;
+
+  /* Semantic status */
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger:  #f43f5e;
+  --info:    #0ea5e9;
+
+  /* Surfaces & text — LIGHT */
+  --bg:          #f5f7fb;
+  --surface:     #ffffff;
+  --surface-2:   #f7f9fc;
+  --surface-3:   #eef2f8;
+  --border:      #e6eaf1;
+  --border-strong:#d6dce6;
+  --text:        #121722;
+  --text-muted:  #58606e;
+  --text-subtle: #868f9d;
+
+  --primary:     var(--brand-600);
+  --primary-fg:  #ffffff;
+  --ring:        var(--brand-500);
+
+  /* Elevation (layered soft shadows) */
+  --shadow-1: 0 1px 2px rgba(16,24,40,.06), 0 1px 3px rgba(16,24,40,.04);
+  --shadow-2: 0 2px 4px rgba(16,24,40,.05), 0 6px 16px -6px rgba(16,24,40,.12);
+  --shadow-3: 0 4px 8px rgba(16,24,40,.05), 0 18px 40px -12px rgba(16,24,40,.18);
+  --shadow-4: 0 8px 16px rgba(16,24,40,.06), 0 32px 64px -16px rgba(16,24,40,.24);
+  --shadow-brand: 0 8px 30px -8px rgba(49,78,230,.45);
+
+  /* Radii */
+  --radius-sm: 8px; --radius-md: 12px; --radius-lg: 16px;
+  --radius-xl: 20px; --radius-2xl: 28px;
+
+  /* Motion */
+  --ease-reveal: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+
+  color-scheme: light;
+}
+
+.dark {
+  --bg:          #0a0c11;
+  --surface:     #12151d;
+  --surface-2:   #171b24;
+  --surface-3:   #1e232e;
+  --border:      rgba(255,255,255,.09);
+  --border-strong:rgba(255,255,255,.16);
+  --text:        #eef1f7;
+  --text-muted:  #9aa4b3;
+  --text-subtle: #6b7685;
+
+  --primary:     var(--brand-500);
+  --ring:        var(--brand-400);
+
+  --shadow-1: 0 1px 2px rgba(0,0,0,.4);
+  --shadow-2: 0 2px 6px rgba(0,0,0,.45), 0 8px 24px -8px rgba(0,0,0,.6);
+  --shadow-3: 0 8px 30px -10px rgba(0,0,0,.7);
+  --shadow-4: 0 16px 50px -12px rgba(0,0,0,.8);
+  --shadow-brand: 0 10px 40px -10px rgba(70,103,245,.55);
+
+  color-scheme: dark;
+}
+
+/* ============================================================================
+   TAILWIND THEME  — expose tokens as utilities (bg-brand-600, text-muted, …)
+   ========================================================================== */
+@theme inline {
+  --color-brand-50:  var(--brand-50);
+  --color-brand-100: var(--brand-100);
+  --color-brand-200: var(--brand-200);
+  --color-brand-300: var(--brand-300);
+  --color-brand-400: var(--brand-400);
+  --color-brand-500: var(--brand-500);
+  --color-brand-600: var(--brand-600);
+  --color-brand-700: var(--brand-700);
+  --color-brand-800: var(--brand-800);
+  --color-brand-900: var(--brand-900);
+  --color-brand-950: var(--brand-950);
+
+  --color-accent-300: var(--accent-300);
+  --color-accent-400: var(--accent-400);
+  --color-accent-500: var(--accent-500);
+  --color-accent-600: var(--accent-600);
+
+  --color-bg:          var(--bg);
+  --color-surface:     var(--surface);
+  --color-surface-2:   var(--surface-2);
+  --color-surface-3:   var(--surface-3);
+  --color-border:      var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-text:        var(--text);
+  --color-muted:       var(--text-muted);
+  --color-subtle:      var(--text-subtle);
+  --color-primary:     var(--primary);
+  --color-primary-fg:  var(--primary-fg);
+  --color-ring:        var(--ring);
+
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger:  var(--danger);
+  --color-info:    var(--info);
+
+  /* Back-compat aliases used by not-yet-redesigned pages */
+  --color-secondary: var(--accent-500);
+  --color-accent:    var(--accent-500);
+
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+  --radius-2xl: var(--radius-2xl);
+
+  --shadow-1: var(--shadow-1);
+  --shadow-2: var(--shadow-2);
+  --shadow-3: var(--shadow-3);
+  --shadow-4: var(--shadow-4);
+  --shadow-brand: var(--shadow-brand);
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-display: var(--font-display), Georgia, serif;
+}
+
+/* ============================================================================
+   BASE
+   ========================================================================== */
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection { background: color-mix(in srgb, var(--brand-500) 28%, transparent); }
+
+.tnum { font-variant-numeric: tabular-nums; }
+
+/* Focus ring — every interactive element */
+:where(a, button, input, textarea, select, [tabindex]):focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--ring);
+  border-radius: var(--radius-sm);
+}
+
+/* ============================================================================
+   UTILITIES
+   ========================================================================== */
+.text-gradient {
+  background: linear-gradient(100deg, var(--brand-500), var(--accent-500));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.bg-brand-gradient { background: linear-gradient(120deg, var(--brand-600), var(--accent-500)); }
+.bg-brand-radial {
+  background:
+    radial-gradient(60% 80% at 20% 0%, color-mix(in srgb, var(--brand-500) 22%, transparent), transparent 60%),
+    radial-gradient(50% 60% at 100% 20%, color-mix(in srgb, var(--accent-500) 18%, transparent), transparent 60%);
+}
+.glass {
+  background: color-mix(in srgb, var(--surface) 72%, transparent);
+  backdrop-filter: blur(14px) saturate(150%);
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
+  border: 1px solid color-mix(in srgb, var(--border-strong) 60%, transparent);
+}
+.hairline { border: 1px solid var(--border); }
+.grain::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ============================================================================
+   LEGACY animation utilities (kept so un-redesigned pages don't break)
+   ========================================================================== */
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(20px);} to { opacity: 1; transform: none;} }
+@keyframes fadeIn { from { opacity: 0;} to { opacity: 1;} }
+@keyframes slideInLeft { from { opacity: 0; transform: translateX(-20px);} to { opacity: 1; transform: none;} }
+@keyframes pulse-glow { 0%,100% { box-shadow: 0 0 0 0 rgba(49,78,230,.4);} 50% { box-shadow: 0 0 0 8px rgba(49,78,230,0);} }
+@keyframes shimmer { 0% { background-position: -200% 0;} 100% { background-position: 200% 0;} }
+@keyframes floaty { 0%,100% { transform: translateY(0);} 50% { transform: translateY(-10px);} }
+
+.animate-fade-in-up { animation: fadeInUp .5s var(--ease-reveal) forwards; }
+.animate-fade-in { animation: fadeIn .4s ease forwards; }
+.animate-slide-in-left { animation: slideInLeft .4s var(--ease-reveal) forwards; }
+.animate-pulse-glow { animation: pulse-glow 2s infinite; }
+.animate-floaty { animation: floaty 6s ease-in-out infinite; }
+.stagger-1 { animation-delay: .1s; } .stagger-2 { animation-delay: .2s; }
+.stagger-3 { animation-delay: .3s; } .stagger-4 { animation-delay: .4s; }
+
+.skeleton {
+  background: linear-gradient(90deg,
+    color-mix(in srgb, var(--surface-3) 100%, transparent) 25%,
+    color-mix(in srgb, var(--border-strong) 60%, transparent) 50%,
+    color-mix(in srgb, var(--surface-3) 100%, transparent) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--text-subtle) 45%, transparent);
+  border-radius: 9999px; border: 2px solid transparent; background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover { background: color-mix(in srgb, var(--text-muted) 60%, transparent); background-clip: padding-box; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .001ms !important; animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+  }
+}

@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MediIQ — Databases &amp; Medical Data Handbook</title>
+<style>
+  :root{
+    --brand:#0d9488; --brand-2:#0ea5e9; --accent:#8b5cf6;
+    --bg:#f5f9f8; --surface:#ffffff; --surface-2:#eaf2f1; --surface-3:#dbe8e6;
+    --text:#0c1a1c; --muted:#42565a; --subtle:#7f9196; --border:#d5e3e1;
+    --good:#10b981; --warn:#f59e0b; --bad:#ef4444;
+    --code-bg:#0b1620; --code-text:#e3f0ef;
+    --shadow:0 1px 2px rgba(12,26,28,.05),0 10px 26px -14px rgba(12,26,28,.22);
+  }
+  html[data-theme="dark"]{
+    --bg:#080f11; --surface:#0f1a1d; --surface-2:#152225; --surface-3:#1d2d31;
+    --text:#e6f1f0; --muted:#9fb3b6; --subtle:#69807f; --border:#1f3034;
+    --code-bg:#060d10; --code-text:#daeae8;
+    --shadow:0 1px 2px rgba(0,0,0,.5),0 14px 32px -16px rgba(0,0,0,.8);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--text);
+    font-family:"Segoe UI",Roboto,-apple-system,Helvetica,Arial,sans-serif;line-height:1.75;font-size:16px}
+  #progress{position:fixed;top:0;left:0;height:3px;width:0;z-index:100;
+    background:linear-gradient(90deg,var(--brand),var(--brand-2),var(--accent));transition:width .1s linear}
+  .shell{display:grid;grid-template-columns:300px 1fr;max-width:1520px;margin:0 auto}
+  aside{position:sticky;top:0;height:100vh;overflow-y:auto;border-right:1px solid var(--border);
+    background:var(--surface);padding:20px 14px 60px}
+  .brand{display:flex;align-items:center;gap:11px;padding:6px 10px 14px}
+  .brand .logo{width:40px;height:40px;border-radius:12px;flex:0 0 auto;
+    background:linear-gradient(135deg,var(--brand),var(--brand-2));display:grid;place-items:center;color:#fff;font-weight:800;font-size:19px}
+  .brand b{font-size:17px;letter-spacing:-.02em;display:block}
+  .brand small{color:var(--subtle);font-weight:700;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase}
+  .searchwrap{position:relative;margin:6px 6px 14px}
+  #search{width:100%;padding:10px 12px 10px 34px;border-radius:11px;border:1px solid var(--border);
+    background:var(--surface-2);color:var(--text);font-size:13.5px;outline:none}
+  #search:focus{border-color:var(--brand);box-shadow:0 0 0 4px color-mix(in srgb,var(--brand) 15%,transparent)}
+  .searchwrap svg{position:absolute;left:11px;top:12px;color:var(--subtle)}
+  nav a{display:block;padding:7px 12px;margin:1px 4px;border-radius:9px;color:var(--muted);
+    text-decoration:none;font-size:13.5px;font-weight:500;border:1px solid transparent}
+  nav a:hover{background:var(--surface-2);color:var(--text)}
+  nav a.active{background:color-mix(in srgb,var(--brand) 15%,transparent);color:var(--brand);
+    border-color:color-mix(in srgb,var(--brand) 28%,transparent);font-weight:700}
+  nav .grouplabel{font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--subtle);
+    font-weight:800;padding:15px 14px 5px}
+  nav a.hidden{display:none}
+  main{padding:36px clamp(18px,4vw,62px) 120px;min-width:0}
+  .topbar{display:flex;align-items:center;gap:12px;justify-content:space-between;margin-bottom:24px}
+  .crumbs{color:var(--subtle);font-size:13px;font-weight:600}
+  .iconbtn{width:40px;height:40px;border-radius:11px;border:1px solid var(--border);background:var(--surface);
+    color:var(--text);cursor:pointer;display:grid;place-items:center;font-size:16px}
+  .iconbtn:hover{background:var(--surface-2)}
+  #menuBtn{display:none}
+  .hero{background:linear-gradient(135deg,color-mix(in srgb,var(--brand) 13%,var(--surface)),color-mix(in srgb,var(--accent) 9%,var(--surface)));
+    border:1px solid var(--border);border-radius:22px;padding:38px 32px;margin-bottom:32px}
+  .hero h1{font-size:clamp(27px,4vw,40px);margin:0 0 10px;letter-spacing:-.03em;line-height:1.12}
+  .hero p{font-size:17px;color:var(--muted);max-width:72ch;margin:0}
+  .hero .pill{display:inline-block;background:var(--surface);border:1px solid var(--border);color:var(--brand);
+    font-weight:700;font-size:12px;padding:6px 13px;border-radius:999px;margin-bottom:15px}
+  .herofacts{display:flex;flex-wrap:wrap;gap:9px;margin-top:20px}
+  .herofacts span{background:var(--surface);border:1px solid var(--border);border-radius:11px;
+    padding:8px 13px;font-size:13px;font-weight:600;color:var(--muted)}
+  h2.section{font-size:26px;letter-spacing:-.02em;margin:6px 0 4px;scroll-margin-top:16px;line-height:1.22}
+  .section-tag{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+    color:var(--brand);background:color-mix(in srgb,var(--brand) 13%,transparent);padding:4px 10px;border-radius:7px;margin-bottom:11px}
+  h3{font-size:19.5px;margin:28px 0 8px;letter-spacing:-.01em}
+  h4{font-size:16px;margin:20px 0 6px}
+  p{margin:11px 0}
+  section.block{margin-bottom:26px;padding-top:16px;border-top:1px dashed var(--border)}
+  section.block:first-of-type{border-top:none}
+  ul,ol{padding-left:22px} li{margin:6px 0}
+  .lead{font-size:17px;color:var(--muted)}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px 22px;box-shadow:var(--shadow);margin:16px 0}
+  .grid{display:grid;gap:14px}
+  .grid.two{grid-template-columns:repeat(auto-fit,minmax(265px,1fr))}
+  .grid.three{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+  .mini{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 18px}
+  .mini h4{margin:0 0 6px;font-size:15px} .mini p{margin:0;font-size:14px;color:var(--muted)}
+  .kbadge{display:inline-block;font-size:12px;font-weight:700;padding:2px 8px;border-radius:6px;
+    background:var(--surface-2);border:1px solid var(--border);color:var(--muted);font-family:Consolas,monospace}
+  .note{border-left:4px solid var(--brand);background:color-mix(in srgb,var(--brand) 7%,var(--surface));
+    padding:13px 16px;border-radius:0 12px 12px 0;margin:16px 0;font-size:14.5px}
+  .note.good{border-color:var(--good);background:color-mix(in srgb,var(--good) 9%,var(--surface))}
+  .note.warn{border-color:var(--warn);background:color-mix(in srgb,var(--warn) 11%,var(--surface))}
+  .note.bad{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 9%,var(--surface))}
+  .note b.tag{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;color:var(--brand)}
+  .note.good b.tag{color:var(--good)} .note.bad b.tag{color:var(--bad)}
+  .note.warn b.tag{color:color-mix(in srgb,var(--warn) 78%,#000)}
+  html[data-theme="dark"] .note.warn b.tag{color:var(--warn)}
+  .tablewrap{overflow-x:auto;border:1px solid var(--border);border-radius:14px;margin:16px 0}
+  table{border-collapse:collapse;width:100%;font-size:14px;min-width:540px}
+  th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+  th{background:var(--surface-2);font-weight:700;font-size:12.5px;text-transform:uppercase;letter-spacing:.03em;color:var(--muted)}
+  tr:last-child td{border-bottom:none}
+  td.num{font-variant-numeric:tabular-nums;font-weight:700}
+  details.collap{border:1px solid var(--border);border-radius:14px;margin:12px 0;background:var(--surface);overflow:hidden}
+  details.collap>summary{cursor:pointer;padding:15px 18px;font-weight:700;font-size:15.5px;list-style:none;display:flex;align-items:center;gap:11px}
+  details.collap>summary::-webkit-details-marker{display:none}
+  details.collap>summary .chev{margin-left:auto;color:var(--subtle);transition:.2s}
+  details.collap[open]>summary .chev{transform:rotate(90deg)}
+  details.collap>summary .num{width:27px;height:27px;border-radius:8px;flex:0 0 auto;display:grid;place-items:center;
+    font-size:12.5px;font-weight:800;background:color-mix(in srgb,var(--brand) 16%,transparent);color:var(--brand)}
+  details.collap .body{padding:2px 18px 18px;border-top:1px solid var(--border)}
+  .code{position:relative;background:var(--code-bg);color:var(--code-text);border-radius:13px;margin:14px 0;
+    font-family:"JetBrains Mono",Consolas,Menlo,monospace;font-size:12.8px;line-height:1.62;overflow:hidden}
+  .code .cap{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 14px;
+    background:rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.09);font-size:11.5px;color:#9dbdbb;font-weight:700}
+  .code pre{margin:0;padding:15px;overflow-x:auto;white-space:pre}
+  .copybtn{background:rgba(255,255,255,.11);color:#dcecea;border:none;border-radius:7px;padding:4px 11px;cursor:pointer;font-size:11.5px;font-weight:700;flex:0 0 auto}
+  .copybtn:hover{background:rgba(255,255,255,.2)}
+  .copybtn.done{background:var(--good);color:#fff}
+  .diagram{border:2px dashed var(--border);border-radius:16px;padding:32px 20px;text-align:center;color:var(--subtle);
+    background:repeating-linear-gradient(45deg,transparent,transparent 12px,color-mix(in srgb,var(--border) 28%,transparent) 12px,color-mix(in srgb,var(--border) 28%,transparent) 13px);
+    margin:18px 0;font-weight:700;font-size:14px}
+  .diagram span{display:block;font-size:12px;font-weight:500;margin-top:6px}
+  .flow{display:flex;flex-direction:column;margin:16px 0}
+  .step{display:flex;gap:15px;position:relative;padding-bottom:20px}
+  .step:not(:last-child)::before{content:"";position:absolute;left:17px;top:36px;bottom:0;width:2px;background:var(--border)}
+  .step .dot{width:36px;height:36px;border-radius:11px;flex:0 0 auto;display:grid;place-items:center;font-weight:800;font-size:13px;
+    background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#fff;z-index:1}
+  .step .st{flex:1;padding-top:3px} .step .st b{display:block;margin-bottom:2px}
+  .step .st p{margin:0;font-size:14.5px;color:var(--muted)}
+  .srcbar{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 4px}
+  .srcbar em{font-style:normal;font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:7px;
+    background:var(--surface-2);border:1px solid var(--border);color:var(--muted)}
+  .srcbar em.live{background:color-mix(in srgb,var(--brand-2) 14%,transparent);color:var(--brand-2);border-color:color-mix(in srgb,var(--brand-2) 30%,transparent)}
+  .srcbar em.local{background:color-mix(in srgb,var(--accent) 13%,transparent);color:var(--accent);border-color:color-mix(in srgb,var(--accent) 28%,transparent)}
+  .bignum{font-size:30px;font-weight:800;letter-spacing:-.03em;color:var(--brand);font-variant-numeric:tabular-nums;line-height:1.1}
+  footer.docfoot{border-top:1px solid var(--border);margin-top:48px;padding-top:22px;color:var(--subtle);font-size:13.5px}
+  #backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:40}
+  @media(max-width:960px){
+    .shell{grid-template-columns:1fr}
+    aside{position:fixed;left:0;top:0;z-index:50;width:290px;transform:translateX(-100%);transition:transform .25s;box-shadow:var(--shadow)}
+    aside.open{transform:translateX(0)} #menuBtn{display:grid} #backdrop.show{display:block}
+  }
+  @media(max-width:520px){body{font-size:15px}main{padding:20px 15px 90px}.hero{padding:24px 19px}}
+  ::selection{background:color-mix(in srgb,var(--brand) 28%,transparent)}
+  aside::-webkit-scrollbar{width:8px} aside::-webkit-scrollbar-thumb{background:var(--border);border-radius:9px}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div id="backdrop"></div>
+<div class="shell">
+<aside id="sidebar">
+  <div class="brand"><div class="logo">DB</div><div><b>MediIQ Data</b><small>Databases Handbook</small></div></div>
+  <div class="searchwrap">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+    <input id="search" placeholder="Search data sources…" autocomplete="off" />
+  </div>
+  <nav id="nav">
+    <div class="grouplabel">Start Here</div>
+    <a href="#intro">1 · What this file covers</a>
+    <a href="#bigpicture">2 · The big picture</a>
+    <a href="#three-types">3 · The 3 types of data</a>
+    <a href="#numbers">4 · Real numbers in our DB</a>
+    <div class="grouplabel">Our Own Databases</div>
+    <a href="#case-library">5 · Case Library (RAG)</a>
+    <a href="#knowledge">6 · Knowledge Library</a>
+    <a href="#icd-lookup">7 · ICD-10 Lookup Table</a>
+    <a href="#ddinter">8 · DDInter Interactions</a>
+    <a href="#app-collections">9 · App Collections</a>
+    <a href="#caches">10 · Cache Collections</a>
+    <div class="grouplabel">Live Medical APIs</div>
+    <a href="#nih">11 · NIH Clinical Tables</a>
+    <a href="#medlineplus-connect">12 · MedlinePlus Connect</a>
+    <a href="#wsearch">13 · MedlinePlus Search</a>
+    <a href="#rxnorm">14 · RxNorm</a>
+    <a href="#rxclass">15 · RxClass</a>
+    <a href="#openfda">16 · openFDA</a>
+    <div class="grouplabel">Putting It Together</div>
+    <a href="#full-example">17 · Full example (Ramesh)</a>
+    <a href="#timeline">18 · Call timeline</a>
+    <a href="#embeddings">19 · Embeddings &amp; vectors</a>
+    <a href="#why">20 · Why these choices</a>
+    <a href="#interview">21 · Interview Q&amp;A</a>
+  </nav>
+</aside>
+
+<main>
+  <div class="topbar">
+    <button class="iconbtn" id="menuBtn" aria-label="Menu">☰</button>
+    <div class="crumbs">MediIQ · Databases &amp; Medical Data — Complete Guide</div>
+    <button class="iconbtn" id="themeBtn" aria-label="Theme">🌙</button>
+  </div>
+
+  <div class="hero">
+    <span class="pill">Every database · Every API · Every call explained</span>
+    <h1>Where MediIQ's medical knowledge actually comes from</h1>
+    <p>MediIQ's AI is only as smart as the medical facts it can reach. This handbook explains <strong>every single database and medical API</strong> the app uses — what each one is, what the real data looks like, exactly when it is called during a consultation, and why it was chosen. Written in very simple words, with real examples from our live database.</p>
+    <div class="herofacts">
+      <span>🗂️ 4 big data stores we built</span>
+      <span>🌐 6 live medical APIs</span>
+      <span>💾 5 cache collections</span>
+      <span>📊 175,201 drug interactions</span>
+      <span>📚 3,347 knowledge chunks</span>
+      <span>🏷️ 2,134 ICD-10 codes</span>
+    </div>
+  </div>
+
+  <p class="lead">Read section 17 if you only have time for one thing — it follows one real patient from booking to prescription and shows <strong>every database call in order</strong>.</p>
+
+  <!-- ============ 1 INTRO ============ -->
+  <section class="block" id="intro">
+    <span class="section-tag">Start Here</span>
+    <h2 class="section">1 · What this file covers</h2>
+    <p>When a doctor treats a patient, they use knowledge from many places: their memory of past patients, medical textbooks, drug reference books, and allergy charts. <strong>MediIQ's AI needs the same things</strong> — but in digital form.</p>
+    <p>So the app pulls medical facts from <strong>10 different data sources</strong>. Some we downloaded and stored inside our own MongoDB database. Others we call live over the internet while the patient is being treated.</p>
+    <div class="note"><b class="tag">The one-line summary</b>MediIQ mixes <strong>its own memory</strong> (past cases we have seen) with <strong>official free medical databases</strong> from the US government (NIH, FDA, National Library of Medicine) and a research drug-interaction dataset (DDInter). Nothing is invented by the AI — every medical fact traces back to a real source.</div>
+    <h3>Why this matters so much</h3>
+    <p>An AI language model on its own will sometimes <strong>make things up</strong> (this is called "hallucination"). In medicine that is dangerous. The fix is to <strong>give the AI real documents to read</strong> before it answers. Every database in this file exists to feed the AI real, checkable facts.</p>
+  </section>
+
+  <!-- ============ 2 BIG PICTURE ============ -->
+  <section class="block" id="bigpicture">
+    <span class="section-tag">Start Here</span>
+    <h2 class="section">2 · The big picture — all sources at a glance</h2>
+    <p>Here is every data source, what it is, and which AI agent uses it. Each one gets its own full section later.</p>
+    <div class="tablewrap"><table>
+      <tr><th>Source</th><th>What it is (simple words)</th><th>Where it lives</th><th>Used by</th></tr>
+      <tr><td><b>Case Library</b></td><td>Our own memory — anonymised past consultations.</td><td>Our MongoDB (<span class="kbadge">cases</span>)</td><td>Agent 3</td></tr>
+      <tr><td><b>Knowledge Library</b></td><td>Chopped-up MedlinePlus articles + FDA drug labels, ready for AI search.</td><td>Our MongoDB (<span class="kbadge">medicalcontexts</span>)</td><td>Agents 4, 5, 7</td></tr>
+      <tr><td><b>ICD-10 Lookup</b></td><td>Table mapping illness names → official disease codes.</td><td>Our MongoDB (<span class="kbadge">ConditionLookUp</span>)</td><td>Agent 4</td></tr>
+      <tr><td><b>DDInter</b></td><td>Huge table of "drug A + drug B = dangerous?" pairs.</td><td>Our MongoDB (<span class="kbadge">DrugInteractions</span>)</td><td>Agent 7</td></tr>
+      <tr><td><b>NIH Clinical Tables</b></td><td>Live US government service: illness name → ICD-10 code.</td><td>Internet (live API)</td><td>Agent 4</td></tr>
+      <tr><td><b>MedlinePlus Connect</b></td><td>Live service: ICD-10 code → patient-friendly article.</td><td>Internet (live API)</td><td>Agent 4</td></tr>
+      <tr><td><b>MedlinePlus Search</b></td><td>Live health-topic search, used for wording hints.</td><td>Internet (live API)</td><td>Agent 4</td></tr>
+      <tr><td><b>RxNorm</b></td><td>Official dictionary of medicine names + ID numbers.</td><td>Internet (live API)</td><td>Agents 2, 8</td></tr>
+      <tr><td><b>RxClass</b></td><td>Groups medicines into families (e.g. all penicillins).</td><td>Internet (live API)</td><td>Agents 5, 8</td></tr>
+      <tr><td><b>openFDA</b></td><td>Official FDA drug labels — doses, warnings, who must not take it.</td><td>Internet (live API)</td><td>Agent 7</td></tr>
+    </table></div>
+    <div class="diagram">[ Data Sources Map Diagram Here ]<span>Suggested: left = our MongoDB stores, right = live internet APIs, middle = the 9 agents pulling from both</span></div>
+  </section>
+
+  <!-- ============ 3 THREE TYPES ============ -->
+  <section class="block" id="three-types">
+    <span class="section-tag">Start Here</span>
+    <h2 class="section">3 · The 3 types of data (very important to understand)</h2>
+    <p>Before details, understand that our data falls into three buckets. Interviewers love this distinction because it shows you thought about <strong>speed vs freshness</strong>.</p>
+    <div class="grid three">
+      <div class="mini"><h4>🏠 Type 1 — Data we own</h4><p><b>Our own cases.</b> Created by our app as doctors use it. Grows over time. Lives only in our database.</p></div>
+      <div class="mini"><h4>📦 Type 2 — Downloaded once</h4><p><b>Bundled data.</b> We downloaded big public datasets (MedlinePlus, FDA labels, DDInter, ICD-10) and loaded them into our database with seed scripts. Fast, works offline, never rate-limited.</p></div>
+      <div class="mini"><h4>🌐 Type 3 — Called live</h4><p><b>Live APIs.</b> Fetched from the internet during the consultation, because they change or are too big to download (RxNorm, RxClass, NIH, openFDA).</p></div>
+    </div>
+    <h3>Why not download everything?</h3>
+    <ul>
+      <li><strong>RxNorm/RxClass are enormous and change often</strong> — new medicines get added. Live is fresher.</li>
+      <li><strong>DDInter is stable and huge</strong> (175k rows) — downloading it once makes checks instant, and there is no public API anyway.</li>
+      <li><strong>MedlinePlus + FDA labels</strong> — we downloaded a curated slice so we could <em>chop it up and embed it</em> for AI search (you cannot do that against a live API).</li>
+    </ul>
+    <h3>Why not call everything live?</h3>
+    <p>Because it would be <strong>slow</strong> and could <strong>fail</strong>. A consultation would need ~70 internet calls. Free government APIs also have rate limits. So we download what we can, and cache everything else (see section 10).</p>
+  </section>
+
+  <!-- ============ 4 NUMBERS ============ -->
+  <section class="block" id="numbers">
+    <span class="section-tag">Start Here</span>
+    <h2 class="section">4 · Real numbers from our live database</h2>
+    <p>These are actual counts measured from the running MongoDB Atlas database — useful to quote in an interview.</p>
+    <div class="grid three">
+      <div class="mini"><div class="bignum">175,201</div><p><b>Drug-interaction pairs</b> in <span class="kbadge">DrugInteractions</span></p></div>
+      <div class="mini"><div class="bignum">3,347</div><p><b>Knowledge chunks</b> in <span class="kbadge">medicalcontexts</span></p></div>
+      <div class="mini"><div class="bignum">2,134</div><p><b>ICD-10 mappings</b> in <span class="kbadge">ConditionLookUp</span></p></div>
+      <div class="mini"><div class="bignum">3,072</div><p><b>Numbers per embedding</b> (vector size)</p></div>
+      <div class="mini"><div class="bignum">131</div><p><b>Past cases</b> in the case library</p></div>
+      <div class="mini"><div class="bignum">140</div><p><b>Days</b> sliding cache lifetime</p></div>
+    </div>
+    <h3>DDInter split by danger level</h3>
+    <div class="tablewrap"><table>
+      <tr><th>Level</th><th>Rows</th><th>What it means</th></tr>
+      <tr><td><b>Major</b></td><td class="num">33,896</td><td>Serious — usually must avoid this combination.</td></tr>
+      <tr><td><b>Moderate</b></td><td class="num">130,367</td><td>Use with care, may need dose change or monitoring.</td></tr>
+      <tr><td><b>Minor</b></td><td class="num">10,938</td><td>Small effect, usually just worth knowing.</td></tr>
+      <tr><td><b>Total stored</b></td><td class="num">175,201</td><td>Cleaned from ~222,000 raw CSV rows across 8 files.</td></tr>
+    </table></div>
+    <h3>Knowledge library split by source</h3>
+    <div class="tablewrap"><table>
+      <tr><th>Source / type</th><th>Chunks</th><th>What these chunks contain</th></tr>
+      <tr><td>medlineplus / condition</td><td class="num">2,424</td><td>Plain-English explanations of illnesses.</td></tr>
+      <tr><td>openfda / dosage</td><td class="num">194</td><td>How much of a drug to give.</td></tr>
+      <tr><td>openfda / indication</td><td class="num">194</td><td>What the drug is approved to treat.</td></tr>
+      <tr><td>openfda / contraindication</td><td class="num">186</td><td>Who must <b>not</b> take the drug.</td></tr>
+      <tr><td>openfda / interaction</td><td class="num">175</td><td>Which other drugs clash with it.</td></tr>
+      <tr><td>openfda / warning</td><td class="num">174</td><td>Dangers and boxed warnings.</td></tr>
+      <tr><td><b>Total</b></td><td class="num">3,347</td><td>All embedded with Gemini, searchable by meaning.</td></tr>
+    </table></div>
+  </section>
+
+  <!-- ============ 5 CASE LIBRARY ============ -->
+  <section class="block" id="case-library">
+    <span class="section-tag">Our Own Databases</span>
+    <h2 class="section">5 · Case Library — our own memory</h2>
+    <div class="srcbar"><em class="local">Stored in our MongoDB</em><em>Collection: cases</em><em>131 documents</em><em>Used by Agent 3</em></div>
+
+    <h3>What is it?</h3>
+    <p>Every time a consultation finishes, MediIQ saves an <strong>anonymised copy</strong> of it: the symptoms, what the doctor diagnosed, what medicines were given, and basic patient facts (age, sex, conditions). No names, no contact details.</p>
+    <p>Think of it as the clinic's <strong>collective memory</strong>. When a new patient arrives, the AI can ask: <em>"Have we seen someone like this before? What worked?"</em></p>
+
+    <h3>What one record actually looks like</h3>
+    <p>This is a real (simplified) document from our database:</p>
+    <div class="code"><div class="cap"><span>A real document in the "cases" collection</span><button class="copybtn">Copy</button></div><pre>{
+  "symptoms":  "Fever, leg pain",
+  "duration":  "2 days",
+  "severity":  "moderate",
+  "patient": {
+    "age": 21,  "sex": "Male",  "weight": 70,  "height": 175,
+    "bloodGroup": "O+",
+    "knownConditions": ["diabetes"],
+    "allergies": [],
+    "currentMedications": []
+  },
+  "diagnosis": "Acute Febrile Illness with Myalgia, likely viral...",
+  "prescription": [
+    { "medicine": "Paracetamol", "dosage": "500mg",
+      "frequency": "as needed", "duration": "3 days" }
+  ],
+  "advice": "Rest, plenty of fluids, monitor blood glucose",
+  "embedding": [0.013, -0.245, 0.087, ... ]   // 3072 numbers
+}</pre></div>
+
+    <h3>The special part — the <span class="kbadge">embedding</span> field</h3>
+    <p>Notice the last field. An <strong>embedding</strong> is a list of 3,072 numbers that represents the <em>meaning</em> of the case's symptoms. Two cases that mean similar things get similar numbers — even if they use totally different words.</p>
+    <div class="note"><b class="tag">Simple example</b>"High temperature and body ache" and "Fever with myalgia" use <em>different words</em> but mean <em>the same thing</em>. Their embeddings will be very close together. This is how the computer finds similar cases without needing exact word matches.</div>
+
+    <h3>How it is used during a consultation</h3>
+    <div class="flow">
+      <div class="step"><div class="dot">1</div><div class="st"><b>Patient types symptoms</b><p>e.g. "Fever, body pain" in the pre-consultation form.</p></div></div>
+      <div class="step"><div class="dot">2</div><div class="st"><b>Agent 3 turns them into an embedding</b><p>Sends the text to Gemini, gets back 3,072 numbers.</p></div></div>
+      <div class="step"><div class="dot">3</div><div class="st"><b>MongoDB vector search</b><p>Compares that list against all 131 stored case embeddings and returns the closest ones.</p></div></div>
+      <div class="step"><div class="dot">4</div><div class="st"><b>Boost + re-rank</b><p>Cases with matching age/conditions get a small score boost, then the AI picks the best 10.</p></div></div>
+      <div class="step"><div class="dot">5</div><div class="st"><b>Handed to Agent 6</b><p>As "weak reference" context — helpful precedent, never to be copied blindly.</p></div></div>
+    </div>
+
+    <div class="code"><div class="cap"><span>The actual vector search (from lib/agents/agent3.ts)</span><button class="copybtn">Copy</button></div><pre>Case.aggregate([
+  { $vectorSearch: {
+      index:         "case_vector_index",
+      path:          "embedding",
+      queryVector:   embedding,   // patient's symptoms as 3072 numbers
+      numCandidates: 150,         // scan 150 nearby cases
+      limit:         50           // keep the best 50
+  }},
+  { $project: { embedding: 0 } }  // don't send the huge vector back
+])</pre></div>
+
+    <div class="note warn"><b class="tag">Interview question you WILL get</b><b>"How do you stop the AI from just copying an old prescription?"</b><br/>Answer: the prompt given to Agent 6 explicitly labels similar cases as <em>"EPIDEMIOLOGICAL REFERENCES ONLY — do NOT copy their prescriptions"</em>, and instructs it to reason independently for this patient's age, allergies and comorbidities. Retrieval gives knowledge; the prompt enforces safety.</div>
+  </section>
+
+  <!-- ============ 6 KNOWLEDGE LIBRARY ============ -->
+  <section class="block" id="knowledge">
+    <span class="section-tag">Our Own Databases</span>
+    <h2 class="section">6 · Knowledge Library — the medical textbook</h2>
+    <div class="srcbar"><em class="local">Stored in our MongoDB</em><em>Collection: medicalcontexts</em><em>3,347 chunks</em><em>Used by Agents 4, 5, 7</em></div>
+
+    <h3>What is it?</h3>
+    <p>This is MediIQ's <strong>digital textbook</strong>. We downloaded two big free medical sources, chopped them into small readable pieces ("chunks"), turned each piece into an embedding, and stored them so the AI can search them by meaning.</p>
+    <div class="grid two">
+      <div class="mini"><h4>📘 MedlinePlus (2,424 chunks)</h4><p>Plain-English articles about illnesses, written by the US National Library of Medicine. Tells you what a condition is, its symptoms, causes and treatment.</p></div>
+      <div class="mini"><h4>💊 openFDA drug labels (923 chunks)</h4><p>Official FDA information printed on drug packaging: what it treats, the dose, who must not take it, warnings, and drug clashes.</p></div>
+    </div>
+
+    <h3>How we built it (the "chunking" process)</h3>
+    <p>You cannot embed a whole 5,000-word article — the meaning gets blurry. So the seed script splits things into small focused pieces:</p>
+    <div class="flow">
+      <div class="step"><div class="dot">1</div><div class="st"><b>MedlinePlus: split at question headings</b><p>Long articles are cut at natural headings like <em>"What is…", "What causes…", "How is it treated…"</em>. Short articles stay as one chunk. Each chunk is capped at ~400 words.</p></div></div>
+      <div class="step"><div class="dot">2</div><div class="st"><b>openFDA: split by label section</b><p>Each drug becomes up to 6 chunks — one each for <b>indication, dosage, contraindication, warning, boxed warning, interaction</b>. This is why we can search "who must not take ibuprofen" precisely.</p></div></div>
+      <div class="step"><div class="dot">3</div><div class="st"><b>Add a header line before embedding</b><p>Each chunk's embed text starts with context, e.g. <em>"Condition: Diabetes. Also known as: … Category: …"</em> or <em>"Drug: Ibuprofen. Contraindications: …"</em>. This makes the meaning much sharper.</p></div></div>
+      <div class="step"><div class="dot">4</div><div class="st"><b>Embed with Gemini + store</b><p>Every chunk gets its 3,072-number embedding and is inserted in batches of 50, with a small delay to respect API rate limits.</p></div></div>
+    </div>
+
+    <h3>What a real chunk looks like</h3>
+    <div class="code"><div class="cap"><span>Real MedlinePlus chunk from our DB</span><button class="copybtn">Copy</button></div><pre>{
+  "source": "medlineplus",
+  "type":   "condition",
+  "name":   "A1C",
+  "display_text": "A1C is a blood test for type 2 diabetes and prediabetes.
+                   It measures your average blood glucose level over the past
+                   3 months...",
+  "metadata": {
+    "url": "https://medlineplus.gov/a1c.html",
+    "groups": ["Diagnostic Tests", "Diabetes Mellitus"],
+    "also_called": ["Glycohemoglobin", "HbA1C", "Hemoglobin A1C test"]
+  },
+  "embedding": [ ...3072 numbers... ]
+}</pre></div>
+    <div class="code"><div class="cap"><span>Real openFDA chunk from our DB</span><button class="copybtn">Copy</button></div><pre>{
+  "source": "openfda",
+  "type":   "contraindication",
+  "name":   "ACETAMINOPHEN AND CODEINE PHOSPHATE",
+  "display_text": "CONTRAINDICATIONS ... is contraindicated for: all children
+                   younger than 12 years of age; post-operative management in
+                   children younger than 18 following tonsillectomy...",
+  "metadata": { "rxcui": [...], "brand_name": "...", "route": ["ORAL"] },
+  "embedding": [ ...3072 numbers... ]
+}</pre></div>
+
+    <h3>How Agent 4 searches it — the clever part</h3>
+    <p>Agent 4 does not run one search. It writes <strong>5 different questions</strong> about the patient, and each question searches only the <em>relevant type</em> of chunk. This is called a <strong>filtered vector search</strong>.</p>
+    <div class="tablewrap"><table>
+      <tr><th>#</th><th>The question it asks</th><th>Only searches chunks of type</th></tr>
+      <tr><td>Q1</td><td>"management of &lt;symptoms&gt;"</td><td><span class="kbadge">condition</span></td></tr>
+      <tr><td>Q2</td><td>"prescribing considerations and drugs to avoid in &lt;conditions&gt;"</td><td><span class="kbadge">contraindication</span>, <span class="kbadge">warning</span></td></tr>
+      <tr><td>Q3</td><td>"treating &lt;symptom&gt; in patients with &lt;condition&gt;"</td><td><span class="kbadge">condition</span></td></tr>
+      <tr><td>Q4</td><td>"drug interactions and contraindications for &lt;symptoms&gt; meds"</td><td><span class="kbadge">interaction</span>, <span class="kbadge">contraindication</span></td></tr>
+      <tr><td>Q5</td><td>"warning signs and referral criteria for &lt;symptoms&gt;"</td><td><span class="kbadge">warning</span>, <span class="kbadge">condition</span></td></tr>
+    </table></div>
+
+    <h4>Quality controls applied to the results</h4>
+    <ul>
+      <li><strong>Score floor (0.80):</strong> anything less similar than 0.80 is thrown away — no weak matches.</li>
+      <li><strong>Combo-drug penalty:</strong> products with 2+ commas in the name (e.g. "Paracetamol, Caffeine, Phenylephrine") lose 0.04 score — single-ingredient info is more useful.</li>
+      <li><strong>Duplicate removal:</strong> identical text (by MD5 hash) is kept only once, at its best score.</li>
+      <li><strong>Source balancing:</strong> keeps at least 5 MedlinePlus chunks so drug labels don't drown out condition knowledge. Final answer = <strong>15 chunks max</strong>.</li>
+    </ul>
+    <div class="note good"><b class="tag">Why this design is good</b>Filtering by <em>type</em> means when we ask about "drugs to avoid", we only search the contraindication/warning chunks — so we never get a cheerful "what is diabetes" article back when we asked a safety question. That is far more accurate than one big unfiltered search.</div>
+  </section>
+
+  <!-- ============ 7 ICD LOOKUP ============ -->
+  <section class="block" id="icd-lookup">
+    <span class="section-tag">Our Own Databases</span>
+    <h2 class="section">7 · ICD-10 Lookup Table</h2>
+    <div class="srcbar"><em class="local">Stored in our MongoDB</em><em>Collection: ConditionLookUp</em><em>2,134 rows</em><em>Used by Agent 4</em></div>
+
+    <h3>What is ICD-10?</h3>
+    <p><strong>ICD-10</strong> is the world's official code list for diseases, run by the WHO. Every illness has a short code. For example, a cut/laceration is <span class="kbadge">T14.8XXA</span>.</p>
+    <p><strong>Why codes instead of words?</strong> Because people write the same illness in many ways — "sugar", "diabetes", "diabetes mellitus", "DM type 2". A code removes all confusion, and other medical services (like MedlinePlus) accept codes to give you the exact right article.</p>
+
+    <h3>What a row looks like</h3>
+    <div class="code"><div class="cap"><span>Real row from ConditionLookUp</span><button class="copybtn">Copy</button></div><pre>{
+  "condition":      "laceration",
+  "condition_norm": "laceration",     // cleaned version used for matching
+  "code":           "T14.8XXA"        // the official ICD-10 code
+}</pre></div>
+
+    <h3>The "normalize" trick</h3>
+    <p>Before looking anything up, the text is <strong>normalised</strong>: lowercased, punctuation removed, extra spaces squashed, and the words <strong>sorted alphabetically</strong>.</p>
+    <div class="code"><div class="cap"><span>Why sorting words matters</span><button class="copybtn">Copy</button></div><pre>"Type 2 Diabetes"     → "2 diabetes type"
+"Diabetes, Type 2"    → "2 diabetes type"     ← same key!
+"diabetes type 2"     → "2 diabetes type"     ← same key!</pre></div>
+    <p>All three spellings become the <strong>same lookup key</strong>, so they all find the same code. Simple but very effective.</p>
+
+    <h3>The 2-step lookup (local first, internet second)</h3>
+    <div class="flow">
+      <div class="step"><div class="dot">1</div><div class="st"><b>Check our own table</b><p>Instant — no internet needed. Covers 2,134 common conditions.</p></div></div>
+      <div class="step"><div class="dot">2</div><div class="st"><b>Not found? Ask NIH live</b><p>Calls the NIH Clinical Tables API (section 11).</p></div></div>
+      <div class="step"><div class="dot">3</div><div class="st"><b>Save the answer back</b><p>The new code is written into our table, so next time it is instant. The table <strong>learns and grows</strong>.</p></div></div>
+    </div>
+    <div class="note"><b class="tag">Nice detail to mention</b>This is called a <strong>"cache-back"</strong> or self-populating lookup. It started smaller and has grown to 2,134 entries as real patients used the app.</div>
+  </section>
+
+  <!-- ============ 8 DDINTER ============ -->
+  <section class="block" id="ddinter">
+    <span class="section-tag">Our Own Databases</span>
+    <h2 class="section">8 · DDInter — the drug clash database</h2>
+    <div class="srcbar"><em class="local">Stored in our MongoDB</em><em>Collection: DrugInteractions</em><em>175,201 rows</em><em>Used by Agent 7</em></div>
+
+    <h3>What is DDInter?</h3>
+    <p><strong>DDInter</strong> is a free research database of <strong>drug-drug interactions</strong> — meaning: "if a patient takes drug A <em>and</em> drug B together, is that dangerous?" Each pair is graded <strong>Major</strong>, <strong>Moderate</strong>, or <strong>Minor</strong>.</p>
+    <div class="note bad"><b class="tag">Why this is life-or-death</b>Some medicines are perfectly safe alone but harmful together. Example: certain antibiotics + certain heart medicines can cause dangerous heart-rhythm problems. A busy doctor cannot memorise 175,000 combinations — the computer can check them all in milliseconds.</div>
+
+    <h3>How we loaded it</h3>
+    <p>We downloaded <strong>8 CSV files</strong> from DDInter (split by drug category: A, B, D, H, L, P, R, V — these are ATC groups like Alimentary, Blood, Dermatological, etc.). The seed script:</p>
+    <ol>
+      <li>Reads all 8 CSVs (~222,000 raw rows).</li>
+      <li>Skips broken rows and any level that isn't Major/Moderate/Minor.</li>
+      <li><strong>Normalises both drug names</strong> (lowercase, remove bracketed notes like "(topical)").</li>
+      <li>Inserts in batches of 5,000 → <strong>175,201 clean rows</strong>.</li>
+      <li>Creates <strong>two indexes</strong> so lookups are instant in both directions.</li>
+    </ol>
+
+    <h3>What a row looks like</h3>
+    <div class="code"><div class="cap"><span>Real row from DrugInteractions</span><button class="copybtn">Copy</button></div><pre>{
+  "drug_a":      "Metformin",
+  "drug_b":      "Abemaciclib",
+  "drug_a_norm": "metformin",      // normalised for fast matching
+  "drug_b_norm": "abemaciclib",
+  "level":       "Moderate",       // Major | Moderate | Minor
+  "ddi_id_a":    "DDInter1164",
+  "ddi_id_b":    "DDInter7"
+}</pre></div>
+
+    <h3>The two-index trick (great interview point)</h3>
+    <p>The database stores the pair as "Metformin + Abemaciclib". But a doctor might prescribe them in the other order. So we build <strong>two indexes</strong>:</p>
+    <div class="code"><div class="cap"><span>Both directions indexed</span><button class="copybtn">Copy</button></div><pre>createIndex({ drug_a_norm: 1, drug_b_norm: 1 })   // idx_pair_ab
+createIndex({ drug_b_norm: 1, drug_a_norm: 1 })   // idx_pair_ba
+
+// And the query checks both directions at once:
+col.findOne({ $or: [
+  { drug_a_norm: "metformin",   drug_b_norm: "azithromycin" },
+  { drug_a_norm: "azithromycin", drug_b_norm: "metformin"   }
+]})</pre></div>
+    <p>Without this, a valid dangerous pair could be <strong>missed</strong> just because of the order the doctor typed them. An index makes each lookup take about a millisecond instead of scanning 175,201 rows.</p>
+
+    <h3>How Agent 7 uses it</h3>
+    <p>Agent 7 takes <strong>every prescribed medicine + every medicine the patient already takes</strong> and builds all possible pairs.</p>
+    <div class="code"><div class="cap"><span>Example: 2 new drugs + 2 existing drugs = 6 pairs to check</span><button class="copybtn">Copy</button></div><pre>Prescribed: Azithromycin, Paracetamol
+Already taking: Metformin, Amlodipine
+
+Pairs checked:
+  1. Azithromycin ↔ Paracetamol
+  2. Azithromycin ↔ Metformin
+  3. Azithromycin ↔ Amlodipine
+  4. Paracetamol  ↔ Metformin
+  5. Paracetamol  ↔ Amlodipine
+  6. Metformin    ↔ Amlodipine
+
+Any pair that comes back "Major" → that drug is FLAGGED
+→ sent back to Agent 6 to pick a safer alternative.</pre></div>
+    <p>All pairs are checked <strong>in parallel</strong>, and every result (including "no interaction found") is cached so repeat consultations are nearly free.</p>
+  </section>
+
+  <!-- ============ 9 APP COLLECTIONS ============ -->
+  <section class="block" id="app-collections">
+    <span class="section-tag">Our Own Databases</span>
+    <h2 class="section">9 · The app's own working collections</h2>
+    <p>Besides medical knowledge, the app stores its normal working data. These are the "business" collections.</p>
+    <div class="tablewrap"><table>
+      <tr><th>Collection</th><th>Stores</th><th>Key fields</th></tr>
+      <tr><td><span class="kbadge">users</span></td><td>Every account.</td><td>name, email, password (hashed), role</td></tr>
+      <tr><td><span class="kbadge">doctorprofiles</span></td><td>Doctor details.</td><td>specialization, fee, verificationStatus, isLive, signature</td></tr>
+      <tr><td><span class="kbadge">patientprofiles</span></td><td>Patient medical record.</td><td>age, bloodGroup, knownConditions, allergies, currentMedications, summaries, allergyExpansionCache</td></tr>
+      <tr><td><span class="kbadge">appointments</span></td><td>One consultation.</td><td>patientRef, doctorRef, status, preConsultation, transcript, agentOutputs, aiPrescription, agentPipelineStep</td></tr>
+      <tr><td><span class="kbadge">cases</span></td><td>Anonymised finished consultations (see §5).</td><td>symptoms, diagnosis, prescription, embedding</td></tr>
+      <tr><td><span class="kbadge">systemdetecteds</span></td><td>AI-found allergies/medicines awaiting patient approval.</td><td>patientRef, type, value, status</td></tr>
+      <tr><td><span class="kbadge">chatconversations</span></td><td>Post-visit chatbot messages.</td><td>patientRef, messages</td></tr>
+      <tr><td><span class="kbadge">aiconsultations</span></td><td>AI-doctor (voice) sessions.</td><td>transcript, report</td></tr>
+      <tr><td><span class="kbadge">settings</span></td><td>Global admin settings.</td><td>AI engine mode, demo mode</td></tr>
+    </table></div>
+    <div class="note"><b class="tag">Note the hidden speed trick</b><span class="kbadge">patientprofiles</span> contains an <strong>allergyExpansionCache</strong>. When a patient saves their profile, the app already works out their allergy drug-classes in advance. So during a real consultation, Agent 5 often needs <strong>zero</strong> internet calls.</div>
+    <div class="diagram">[ Database Schema / Relationships Diagram Here ]</div>
+  </section>
+
+  <!-- ============ 10 CACHES ============ -->
+  <section class="block" id="caches">
+    <span class="section-tag">Our Own Databases</span>
+    <h2 class="section">10 · Cache collections — how we avoid repeating work</h2>
+    <p>A <strong>cache</strong> is a saved answer. If we already asked a question once, we store the answer and reuse it instead of asking again. This is the single biggest speed win in the whole app.</p>
+    <div class="tablewrap"><table>
+      <tr><th>Cache collection</th><th>What it remembers</th><th>Saves us from</th></tr>
+      <tr><td><span class="kbadge">agent3similarcasescaches</span></td><td>Whole similar-case results for a symptom set.</td><td>Re-running embedding + vector search + 2 LLM calls.</td></tr>
+      <tr><td><span class="kbadge">agent4_medical_context_cache</span></td><td>4 things: full output, MedlinePlus summaries, retrieval queries, query embeddings.</td><td>NIH + MedlinePlus calls, 5 embeddings, 2 LLM calls.</td></tr>
+      <tr><td><span class="kbadge">agent5_allergy_context_cache</span></td><td>Full output + per-allergen expansions + embeddings.</td><td>RxClass API calls.</td></tr>
+      <tr><td><span class="kbadge">agent7_drug_medic_cache</span></td><td>FDA labels, library context, and every drug-pair verdict.</td><td>openFDA calls + DDInter lookups.</td></tr>
+      <tr><td><span class="kbadge">agent8_allergy_check_cache</span></td><td>RxCUI lookups + drug-class member lists.</td><td>RxNorm + RxClass calls.</td></tr>
+    </table></div>
+
+    <h3>"Sliding TTL" explained simply</h3>
+    <p><strong>TTL</strong> = Time To Live = how long a saved answer stays valid. Ours is <strong>140 days</strong>. <strong>"Sliding"</strong> means every time the answer gets used, its clock resets to another 140 days.</p>
+    <div class="note good"><b class="tag">The effect</b>Popular answers (common illnesses, common drugs) <strong>never expire</strong> because they keep getting used. Rare, one-off answers quietly delete themselves after 140 days. MongoDB removes them automatically using a TTL index on <span class="kbadge">expiresAt</span> — we don't run any cleanup job.</div>
+    <p>One exception: <strong>drug-name → RxCUI</strong> lookups are cached for <strong>10 years</strong>, because a medicine's official ID number never changes.</p>
+
+    <h3>The measurable result</h3>
+    <div class="tablewrap"><table>
+      <tr><th>Scenario</th><th>External calls needed</th></tr>
+      <tr><td>First-ever consultation for a symptom set (cold cache)</td><td class="num">~70+</td></tr>
+      <tr><td>A repeat/similar consultation (warm cache)</td><td class="num">~3 (LLM only)</td></tr>
+    </table></div>
+    <p>The remaining ~3 are the AI reasoning calls, which <em>must</em> run fresh because the patient is different every time.</p>
+  </section>
+
+  <!-- ============ 11 NIH ============ -->
+  <section class="block" id="nih">
+    <span class="section-tag">Live Medical APIs</span>
+    <h2 class="section">11 · NIH Clinical Tables — name → ICD-10 code</h2>
+    <div class="srcbar"><em class="live">Live internet API</em><em>clinicaltables.nlm.nih.gov</em><em>Free, no key needed</em><em>Used by Agent 4</em></div>
+
+    <h3>What is it?</h3>
+    <p>A free service from the <strong>US National Library of Medicine</strong>. You give it an illness name, it gives you the official <strong>ICD-10 code</strong>. We only call it when our own lookup table (§7) does not already know the answer.</p>
+
+    <h3>The real call</h3>
+    <div class="code"><div class="cap"><span>Request (from lib/agents/condition-resolver.ts)</span><button class="copybtn">Copy</button></div><pre>GET https://clinicaltables.nlm.nih.gov/api/conditions/v3/search
+      ?terms=diabetes
+      &ef=icd10cm
+
+Timeout: 8 seconds</pre></div>
+    <div class="code"><div class="cap"><span>Response shape (an array of 4 things)</span><button class="copybtn">Copy</button></div><pre>[
+  7,                                       // [0] how many matches
+  ["id1","id2", ...],                      // [1] internal ids
+  { "icd10cm": [[{ "code":"E11.9",         // [2] the codes
+                   "name":"Type 2 diabetes mellitus..." }]] },
+  [["Diabetes"]]                           // [3] display names
+]</pre></div>
+
+    <h3>The safety gate (important detail)</h3>
+    <p>APIs can return a confidently wrong match. So before trusting the code, we do a <strong>token overlap check</strong>: at least one word from what the patient wrote must also appear in the matched disease name.</p>
+    <div class="code"><div class="cap"><span>Why the gate exists</span><button class="copybtn">Copy</button></div><pre>Patient wrote:  "sneeze"
+API returned:   "Bacterial infection, unspecified"
+Shared words:   0   →  REJECTED, code marked "unresolved"
+
+Patient wrote:  "diabetes"
+API returned:   "Type 2 diabetes mellitus"
+Shared words:   1 ("diabetes")  →  ACCEPTED</pre></div>
+    <p>If accepted, the code is <strong>written back into our own lookup table</strong> so we never need to ask again.</p>
+    <div class="note"><b class="tag">Three possible outcomes</b>Every condition ends up labelled with a <span class="kbadge">codeSource</span>: <strong>lookup</strong> (found locally, instant), <strong>nih_api</strong> (fetched live), or <strong>unresolved</strong> (nobody could match it — the app continues honestly without a code).</div>
+  </section>
+
+  <!-- ============ 12 MEDLINEPLUS CONNECT ============ -->
+  <section class="block" id="medlineplus-connect">
+    <span class="section-tag">Live Medical APIs</span>
+    <h2 class="section">12 · MedlinePlus Connect — code → patient-friendly article</h2>
+    <div class="srcbar"><em class="live">Live internet API</em><em>connect.medlineplus.gov</em><em>Free, no key</em><em>Used by Agent 4</em></div>
+
+    <h3>What is it?</h3>
+    <p>Give it an <strong>ICD-10 code</strong>, and it returns an official, easy-to-read explanation of that condition, written for ordinary people. This is how MediIQ turns a cold code like <span class="kbadge">E11.9</span> into a real explanation the AI (and the doctor) can use.</p>
+
+    <h3>The real call</h3>
+    <div class="code"><div class="cap"><span>Request (from lib/agents/condition-resolver.ts)</span><button class="copybtn">Copy</button></div><pre>GET https://connect.medlineplus.gov/service
+      ?mainSearchCriteria.v.cs=2.16.840.1.113883.6.90   // "this is an ICD-10 code"
+      &mainSearchCriteria.v.c=E11.9                      // the code itself
+      &knowledgeResponseType=application/json
+      &informationRecipient.languageCode.c=en            // English
+
+Timeout: 10 seconds</pre></div>
+    <p>That long number <span class="kbadge">2.16.840.1.113883.6.90</span> is just the official ID meaning "the code I'm sending is ICD-10-CM". It never changes.</p>
+
+    <div class="code"><div class="cap"><span>Response (simplified)</span><button class="copybtn">Copy</button></div><pre>{ "feed": { "entry": [ {
+      "title":   { "_value": "Diabetes Type 2" },
+      "link":    [{ "href": "https://medlineplus.gov/diabetestype2.html" }],
+      "summary": { "_value": "&lt;p&gt;Type 2 diabetes is a disease in which
+                              your blood glucose levels are too high...&lt;/p&gt;" }
+} ] } }</pre></div>
+
+    <h3>What we do with the answer</h3>
+    <div class="flow">
+      <div class="step"><div class="dot">1</div><div class="st"><b>Strip the HTML tags</b><p>The summary comes with <span class="kbadge">&lt;p&gt;</span> tags — we remove them so it is clean text.</p></div></div>
+      <div class="step"><div class="dot">2</div><div class="st"><b>Condense it with the LLM</b><p>The AI rewrites it into a fixed clinical shape: <em>Overview → Key symptoms → Common causes → Major complications → Treatment essentials</em>. The prompt says "do NOT add anything not in the source".</p></div></div>
+      <div class="step"><div class="dot">3</div><div class="st"><b>Cache the result for 140 days</b><p>Keyed by the ICD-10 code, so the next diabetic patient gets it instantly with zero calls.</p></div></div>
+    </div>
+    <div class="note good"><b class="tag">Two caches protect this one API</b>There is a <strong>12-hour in-memory cache</strong> inside the app process, plus the <strong>140-day MongoDB cache</strong>. The same condition is essentially never fetched twice.</div>
+  </section>
+
+  <!-- ============ 13 WSEARCH ============ -->
+  <section class="block" id="wsearch">
+    <span class="section-tag">Live Medical APIs</span>
+    <h2 class="section">13 · MedlinePlus Web Search — wording hints</h2>
+    <div class="srcbar"><em class="live">Live internet API</em><em>wsearch.nlm.nih.gov</em><em>Free, no key</em><em>Used by Agent 4</em></div>
+    <h3>What is it, and why is it different?</h3>
+    <p>This one searches MedlinePlus <strong>health topics</strong> by free text. MediIQ uses it in a small but smart way: not for medical facts, but for <strong>correct medical wording</strong>.</p>
+    <p>Before Agent 4 writes its 5 search questions, it asks this API "what are the official topic names related to these symptoms?" and gets back up to 3 titles. Those titles are given to the AI as <em>"wording inspiration only"</em>, so the questions it writes use proper medical vocabulary instead of casual patient language.</p>
+    <div class="code"><div class="cap"><span>Request + what we extract</span><button class="copybtn">Copy</button></div><pre>GET https://wsearch.nlm.nih.gov/ws/query
+      ?db=healthTopics
+      &term=fever%20body%20pain
+      &retmax=3
+
+Response is XML. We pull out up to 3 of these:
+  &lt;content name="title"&gt;Fever&lt;/content&gt;
+  &lt;content name="title"&gt;Muscle Disorders&lt;/content&gt;
+
+Timeout: 6 seconds — and if it fails, we simply carry on with none.</pre></div>
+    <div class="note"><b class="tag">Graceful failure</b>This call is completely optional. If it times out or errors, the function returns an empty list and the pipeline continues normally. Nothing breaks — a good example of designing around unreliable third-party services.</div>
+  </section>
+
+  <!-- ============ 14 RXNORM ============ -->
+  <section class="block" id="rxnorm">
+    <span class="section-tag">Live Medical APIs</span>
+    <h2 class="section">14 · RxNorm — the official medicine dictionary</h2>
+    <div class="srcbar"><em class="live">Live internet API</em><em>rxnav.nlm.nih.gov/REST</em><em>Free, no key</em><em>Used by Agents 2 &amp; 8</em></div>
+
+    <h3>What is it?</h3>
+    <p><strong>RxNorm</strong> is the US National Library of Medicine's official dictionary of medicines. Every medicine has a unique ID number called an <strong>RxCUI</strong>.</p>
+    <div class="note"><b class="tag">The problem it solves</b>The same medicine has many names: <em>Paracetamol</em> (UK/India), <em>Acetaminophen</em> (US), <em>Tylenol</em> (brand), <em>Crocin</em> (brand), plus typos like "paracetmol". To a computer these are 5 different strings. RxNorm maps them all to <strong>one RxCUI number</strong> — so we can compare medicines reliably.</div>
+
+    <h3>Two-step lookup with typo tolerance</h3>
+    <div class="code"><div class="cap"><span>Step 1 — exact name search (from lib/agents/agent2.ts)</span><button class="copybtn">Copy</button></div><pre>GET https://rxnav.nlm.nih.gov/REST/rxcui.json?name=Paracetamol&search=2
+
+→ { "idGroup": { "rxnormId": ["161"] } }
+
+Then fetch the official name:
+GET https://rxnav.nlm.nih.gov/REST/rxcui/161/properties.json
+→ { "properties": { "rxcui": "161", "name": "acetaminophen" } }</pre></div>
+    <div class="code"><div class="cap"><span>Step 2 — approximate match (only if step 1 fails)</span><button class="copybtn">Copy</button></div><pre>GET https://rxnav.nlm.nih.gov/REST/approximateTerm.json
+      ?term=paracetmol      ← misspelled!
+      &maxEntries=1
+
+→ { "approximateGroup": { "candidate": [
+      { "rxcui": "161", "name": "acetaminophen" } ] } }
+
+This is what makes the system forgiving of doctor/patient typos.</pre></div>
+
+    <h3>Where it is used</h3>
+    <div class="grid two">
+      <div class="mini"><h4>Agent 2 — after the call</h4><p>Takes every medicine name mentioned in the conversation, strips the dose ("500 mg" removed), and looks up the real name + RxCUI. Any drug it cannot match is honestly marked <span class="kbadge">unrecognized</span> and the agent returns a "flag" status.</p></div>
+      <div class="mini"><h4>Agent 8 — allergy checking</h4><p>Converts each prescribed drug into its RxCUI so it can be compared against the RxCUI list of the patient's allergy drug-class (see §15).</p></div>
+    </div>
+    <p>All lookups run <strong>in parallel</strong> and are cached essentially forever (10 years), because a medicine's ID number never changes. Even "not found" results are cached, so we don't retry a bad name repeatedly.</p>
+  </section>
+
+  <!-- ============ 15 RXCLASS ============ -->
+  <section class="block" id="rxclass">
+    <span class="section-tag">Live Medical APIs</span>
+    <h2 class="section">15 · RxClass — drug families for allergy safety</h2>
+    <div class="srcbar"><em class="live">Live internet API</em><em>rxnav.nlm.nih.gov/REST/rxclass</em><em>Free, no key</em><em>Used by Agents 5 &amp; 8</em></div>
+
+    <h3>What is it, and why is it critical?</h3>
+    <p><strong>RxClass</strong> tells you which <strong>family</strong> a medicine belongs to. This is the single most important idea in MediIQ's allergy safety.</p>
+    <div class="note bad"><b class="tag">The danger it prevents</b>A patient says <em>"I am allergic to Penicillin."</em> A naive system would only block the exact word "Penicillin" — and would happily prescribe <strong>Amoxicillin</strong>, which is <em>also a penicillin</em> and could cause a life-threatening reaction. RxClass expands one allergy into the <strong>whole drug family</strong>, so all of them get blocked.</div>
+
+    <h3>Step 1 — allergen → drug class</h3>
+    <p>First, a small built-in map converts an allergy word into a real example drug (because RxClass needs a drug, not a class name):</p>
+    <div class="code"><div class="cap"><span>The allergen → example drug map (agent5.ts)</span><button class="copybtn">Copy</button></div><pre>penicillin      → amoxicillin        nsaid / nsaids  → ibuprofen
+sulfonamide     → sulfamethoxazole   tetracycline    → doxycycline
+sulfa           → sulfamethoxazole   fluoroquinolone → ciprofloxacin
+cephalosporin   → cephalexin         macrolide       → azithromycin
+aspirin         → aspirin            statin          → atorvastatin</pre></div>
+    <div class="code"><div class="cap"><span>Then ask RxClass for the class</span><button class="copybtn">Copy</button></div><pre>GET https://rxnav.nlm.nih.gov/REST/rxclass/class/byDrugName.json
+      ?drugName=amoxicillin
+      &relaSource=ATC
+
+→ rxclassDrugInfoList.rxclassDrugInfo[].rxclassMinConceptItem
+   { "className": "BETA-LACTAM ANTIBACTERIALS, PENICILLINS",
+     "classId":   "J01C" }</pre></div>
+    <p><strong>ATC</strong> means "Anatomical Therapeutic Chemical" — the WHO's official way of grouping drugs. We prefer a class whose id looks like <span class="kbadge">J01C</span> (letter-digit-digit-letter) and skip "combination" classes, because those are the clean, standard groupings.</p>
+
+    <h3>Step 2 — class → all its member drugs</h3>
+    <div class="code"><div class="cap"><span>Get everyone in the family</span><button class="copybtn">Copy</button></div><pre>GET https://rxnav.nlm.nih.gov/REST/rxclass/classMembers.json
+      ?classId=J01C
+      &relaSource=ATC
+
+→ Amoxicillin, Ampicillin, Penicillin G, Penicillin V, Piperacillin,
+  Flucloxacillin, ... (we keep up to 30 names)
+
+This entire list becomes the patient's "avoid drugs" list.</pre></div>
+
+    <h3>Step 3 — cross-reactivity (built-in medical knowledge)</h3>
+    <p>Some allergies are risky <em>across</em> families. This knowledge is hard-coded because it is stable, well-established medicine:</p>
+    <div class="tablewrap"><table>
+      <tr><th>Allergy</th><th>Also be careful with</th><th>The medical note stored</th></tr>
+      <tr><td>Penicillin</td><td>1st-gen Cephalosporins, Carbapenems</td><td>~2% cross-reactivity with cephalosporins (higher with 1st-gen); ~1% with carbapenems. 3rd/4th-gen generally safe.</td></tr>
+      <tr><td>Sulfonamide / Sulfa</td><td>Furosemide, Thiazide diuretics</td><td>Low but documented cross-reactivity with non-antibiotic sulfonamides. Document and monitor.</td></tr>
+      <tr><td>Aspirin</td><td>All COX-1 NSAIDs (ibuprofen, naproxen)</td><td>COX-2 selective (celecoxib) may be tolerated.</td></tr>
+    </table></div>
+
+    <h3>Step 4 — how strongly to block it</h3>
+    <p>Agent 5 combines <strong>how sure we are</strong> with <strong>how bad the reaction is</strong>:</p>
+    <div class="tablewrap"><table>
+      <tr><th>Status + Severity</th><th>Avoid level</th><th>Meaning</th></tr>
+      <tr><td>confirmed + severe</td><td><b>hard_block</b></td><td>Never prescribe.</td></tr>
+      <tr><td>confirmed + mild</td><td><b>strong_caution</b></td><td>Avoid unless clearly necessary.</td></tr>
+      <tr><td>suspected + severe</td><td><b>likely_block</b></td><td>Treat as blocked until confirmed.</td></tr>
+      <tr><td>anything else</td><td><b>monitor</b></td><td>Allowed, but watch the patient.</td></tr>
+    </table></div>
+
+    <h3>How Agent 8 uses all this (three checks)</h3>
+    <div class="flow">
+      <div class="step"><div class="dot">1</div><div class="st"><b>Name check (instant, no internet)</b><p>Is the prescribed drug's name in the avoid list? Most hits are caught here for free.</p></div></div>
+      <div class="step"><div class="dot">2</div><div class="st"><b>RxCUI class check</b><p>Only for drugs that passed check 1: convert the drug to its RxCUI and see if that ID is in the allergy class's member ID list. This catches brand names and spellings the name check missed.</p></div></div>
+      <div class="step"><div class="dot">3</div><div class="st"><b>Cross-reactivity check</b><p>Finally compare against the cross-reactivity families above.</p></div></div>
+    </div>
+    <div class="note good"><b class="tag">Smart efficiency</b>Notice the order: the free check runs first, and the paid/slow internet check runs <strong>only for drugs that survived it</strong>. If a drug is already blocked by name, we never waste an API call on it.</div>
+  </section>
+
+  <!-- ============ 16 OPENFDA ============ -->
+  <section class="block" id="openfda">
+    <span class="section-tag">Live Medical APIs</span>
+    <h2 class="section">16 · openFDA — official drug labels</h2>
+    <div class="srcbar"><em class="live">Live internet API</em><em>api.fda.gov</em><em>Free, no key</em><em>Used by Agent 7</em></div>
+    <div class="srcbar"><em class="local">…and also stored offline</em><em>923 chunks inside medicalcontexts</em></div>
+
+    <h3>What is it?</h3>
+    <p><strong>openFDA</strong> is the US Food &amp; Drug Administration's official open database. The <em>drug label</em> endpoint gives you exactly what is printed on the official packaging insert: what the drug treats, correct doses, who must not take it, and its warnings.</p>
+
+    <h3>The real call</h3>
+    <div class="code"><div class="cap"><span>Request (from lib/agents/agent7.ts)</span><button class="copybtn">Copy</button></div><pre>GET https://api.fda.gov/drug/label.json
+      ?search=openfda.generic_name:"paracetamol"
+      &limit=1
+
+Timeout: 8 seconds
+
+We only read two fields from the big response:
+  • indications_and_usage      → what it is approved to treat
+  • dosage_and_administration  → the approved dose range
+Each is trimmed to 500 characters to keep the AI prompt small.</pre></div>
+
+    <h3>Why openFDA appears TWICE in this project</h3>
+    <p>This confuses people, so it is worth being clear — we use FDA data in two different ways:</p>
+    <div class="grid two">
+      <div class="mini"><h4>🌐 Live API (Agent 7)</h4><p>Fetches the full label for a <strong>specific named drug</strong> we are about to prescribe. Exact lookup by drug name. Cached in MongoDB.</p></div>
+      <div class="mini"><h4>📦 Offline chunks (Agents 4, 5, 7)</h4><p>923 pre-embedded label chunks inside our knowledge library, searched by <strong>meaning</strong>. Used when we don't know which drug to look up yet — e.g. "what should diabetics avoid?"</p></div>
+    </div>
+    <div class="note"><b class="tag">In one line</b>The <strong>live API answers "tell me about THIS drug"</strong>. The <strong>offline chunks answer "find me anything relevant to THIS situation"</strong>. Different questions, so both are needed.</div>
+
+    <h3>How Agent 7 verifies a prescription with it</h3>
+    <div class="flow">
+      <div class="step"><div class="dot">1</div><div class="st"><b>Fetch label + library context for every drug — in parallel</b><p>Both are cached, so this is usually instant.</p></div></div>
+      <div class="step"><div class="dot">2</div><div class="st"><b>Build ONE combined prompt for all drugs</b><p>Each drug's FDA indications, FDA dosing, and library notes are stacked into a single block.</p></div></div>
+      <div class="step"><div class="dot">3</div><div class="st"><b>One LLM call answers for all drugs</b><p>For each: does the diagnosis match its approved use (MATCH/NOMATCH) and is the dose in range (PASS/FAIL)?</p></div></div>
+      <div class="step"><div class="dot">4</div><div class="st"><b>Combine with the DDInter result</b><p>Any drug in a <b>Major</b> interaction is also flagged. Flags go back to Agent 6.</p></div></div>
+    </div>
+    <div class="note good"><b class="tag">Efficiency detail worth quoting</b>Agent 7 checks <strong>all medicines in a single LLM call</strong> instead of one call per medicine. For a 4-drug prescription that is 1 call instead of 4 — roughly 4× faster and 4× cheaper. If the LLM is unavailable, it fails <em>open</em> (treats drugs as acceptable) and lets the human doctor decide, rather than blocking the whole pipeline.</div>
+  </section>
+
+  <!-- ============ 17 FULL EXAMPLE ============ -->
+  <section class="block" id="full-example">
+    <span class="section-tag">Putting It Together</span>
+    <h2 class="section">17 · The full example — one patient, every database</h2>
+    <p class="lead">This is the most important section. We follow <strong>one complete consultation</strong> and show exactly which database is touched, in what order, and what it returns. If you understand this, you understand the whole data layer.</p>
+
+    <div class="card">
+      <h4 style="margin-top:0">Meet the patient</h4>
+      <div class="tablewrap"><table>
+        <tr><th>Field</th><th>Value</th></tr>
+        <tr><td>Name</td><td>Ramesh (stored, but never used in the case library)</td></tr>
+        <tr><td>Age / Sex</td><td>45 / Male</td></tr>
+        <tr><td>Known conditions</td><td><b>Diabetes</b></td></tr>
+        <tr><td>Allergies</td><td><b>Penicillin</b> (confirmed, severe)</td></tr>
+        <tr><td>Current medicines</td><td><b>Metformin 500mg</b></td></tr>
+        <tr><td>Symptoms typed</td><td>"Sore throat, fever"</td></tr>
+        <tr><td>Duration / severity</td><td>3 days / moderate</td></tr>
+      </table></div>
+    </div>
+
+    <h3>🔵 STAGE A — Patient saves their profile (before any booking)</h3>
+    <div class="flow">
+      <div class="step"><div class="dot">A1</div><div class="st"><b>Profile saved → allergy pre-computed</b>
+        <p><b>DB touched:</b> <span class="kbadge">patientprofiles</span> + <b>RxClass API</b>.<br/>
+        The app looks up "Penicillin" ahead of time: maps it to <em>amoxicillin</em> → asks RxClass for the class → gets <b>J01C (BETA-LACTAM ANTIBACTERIALS, PENICILLINS)</b> → fetches all member drugs → saves the list into the profile's <span class="kbadge">allergyExpansionCache</span>.<br/>
+        <b>Why:</b> so during the real consultation this costs <b>zero</b> internet calls.</p></div></div>
+    </div>
+
+    <h3>🟢 STAGE B — Patient books &amp; locks the pre-consultation form</h3>
+    <p>The moment Ramesh presses <strong>"Lock details"</strong>, Agents 3, 4 and 5 start in the background, <strong>all at the same time</strong> (they don't depend on each other).</p>
+
+    <details class="collap" open><summary><span class="num">3</span> Agent 3 — Similar Cases <span class="chev">›</span></summary><div class="body">
+      <p><b>Databases used:</b> <span class="kbadge">agent3similarcasescaches</span> → Gemini embeddings → <span class="kbadge">cases</span> (vector search)</p>
+      <div class="code"><div class="cap"><span>Step by step</span><button class="copybtn">Copy</button></div><pre>1. Build cache key from ("Sore throat, fever" + age bucket 40s + "diabetes")
+   → Check agent3similarcasescaches
+   → MISS (first time)
+
+2. Is the text messy? "Sore throat, fever" is clean
+   → SKIP the LLM cleaning call  (saves time + money)
+
+3. Embed the symptoms with Gemini
+   → [0.021, -0.118, 0.335, ... ] (3072 numbers)
+
+4. Vector search the "cases" collection
+   → 150 candidates scanned, best 50 returned
+
+5. Demographic boost:
+   +0.15 for each matching condition (diabetes matched!)
+   +0.05 if age within 10 years
+   → re-sorted
+
+6. LLM re-ranks top 15 → picks best 10, writes a reason for each
+
+7. LLM writes a pattern summary of those 10 cases
+
+8. Save everything to cache (140-day sliding TTL)</pre></div>
+      <p><b>Result handed to Agent 6:</b> 10 similar past cases (e.g. other diabetic adults with sore throat + fever, what they were diagnosed with and what worked) plus a short pattern summary.</p>
+    </div></details>
+
+    <details class="collap"><summary><span class="num">4</span> Agent 4 — Medical Context <span class="chev">›</span></summary><div class="body">
+      <p><b>Databases used:</b> <span class="kbadge">agent4_medical_context_cache</span> → <span class="kbadge">ConditionLookUp</span> → <b>NIH API</b> → <b>MedlinePlus Connect</b> → <b>wsearch</b> → <span class="kbadge">medicalcontexts</span> (vector search)</p>
+      <div class="code"><div class="cap"><span>Step by step</span><button class="copybtn">Copy</button></div><pre>1. Full-output cache check → MISS
+
+2. Resolve "Diabetes" to an ICD-10 code:
+   a. Normalize → "diabetes"
+   b. Look in ConditionLookUp  → FOUND  (codeSource: "lookup", 0 ms)
+      (if missing, it would call the NIH API and save the answer back)
+
+3. Get a patient-friendly explanation:
+   a. Check medline_summary cache for that code → MISS
+   b. GET connect.medlineplus.gov ... &mainSearchCriteria.v.c=E11.9
+   c. Strip HTML tags
+   d. LLM condenses it → Overview / Symptoms / Causes / Complications / Treatment
+   e. Save to cache (140 days)
+
+4. Get wording hints:
+   GET wsearch.nlm.nih.gov ... &term=sore throat fever
+   → ["Sore Throat", "Fever", "Strep Throat"]
+
+5. LLM writes 5 retrieval questions, e.g.
+   Q1 "management of sore throat and fever"
+   Q2 "prescribing considerations and drugs to avoid in diabetes"
+   Q3 "treating throat infection in patients with diabetes"
+   Q4 "drug interactions and contraindications for sore throat meds in diabetes"
+   Q5 "warning signs and referral criteria for sore throat in diabetes"
+
+6. Run 5 FILTERED vector searches on medicalcontexts:
+   Q1 → only type "condition"
+   Q2 → only "contraindication" + "warning"     ← this is what catches
+   Q4 → only "interaction" + "contraindication"    the diabetes drug rules
+   ...
+   Each returns up to 6 chunks, score must be ≥ 0.80
+
+7. Clean the results:
+   drop weak scores → penalise combo drugs → remove duplicate text
+   → keep ≥5 MedlinePlus chunks → final 15 chunks
+
+8. LLM summarises those chunks into 6 buckets:
+   findings / possibleDiagnoses / differentials /
+   redFlags / managementConsiderations / clinicalInsights</pre></div>
+      <p><b>Result handed to Agent 6:</b> the ICD-10 code, a clean explanation of diabetes, and a structured evidence summary — crucially including <strong>red flags like "avoid NSAIDs in diabetic patients"</strong>, pulled verbatim from real FDA label text.</p>
+    </div></details>
+
+    <details class="collap"><summary><span class="num">5</span> Agent 5 — Allergy Context <span class="chev">›</span></summary><div class="body">
+      <p><b>Databases used:</b> <span class="kbadge">agent5_allergy_context_cache</span> → <span class="kbadge">patientprofiles</span> (pre-computed) → <b>RxClass API</b> → <span class="kbadge">medicalcontexts</span></p>
+      <div class="code"><div class="cap"><span>Step by step</span><button class="copybtn">Copy</button></div><pre>1. Full-output cache → MISS
+2. Per-allergen cache for "Penicillin" → MISS
+3. Profile cache (from Stage A) → HIT!  ✅
+   → class = J01C, avoid list already computed
+   → ZERO RxClass API calls needed
+
+4. Add hard-coded cross-reactivity knowledge:
+   Penicillin → also caution with 1st-gen Cephalosporins + Carbapenems
+   note: "~2% cross-reactivity with cephalosporins..."
+
+5. Two vector searches on medicalcontexts (in parallel):
+   • "safe antibiotic alternatives for Penicillin allergic patients"
+   • "cross-reactivity contraindication Penicillin allergy"
+     (filtered to source=openfda, type=contraindication)
+
+6. Compute avoid level:
+   confirmed + severe  →  HARD_BLOCK
+
+7. Cache the expansion (140 days)</pre></div>
+      <p><b>Result handed to Agents 6 &amp; 8:</b></p>
+      <div class="code"><div class="cap"><span>The expanded allergy block</span><button class="copybtn">Copy</button></div><pre>{
+  "allergen": "Penicillin",  "severity": "severe",  "status": "confirmed",
+  "drugClass": "BETA-LACTAM ANTIBACTERIALS, PENICILLINS",
+  "classId": "J01C",
+  "avoidDrugs": ["Amoxicillin","Ampicillin","Penicillin G",
+                 "Piperacillin","Flucloxacillin", ...],
+  "avoidLevel": "hard_block",
+  "crossReactivity": ["Cephalosporins (1st gen)","Carbapenems"],
+  "safeAlternatives": ["Azithromycin ...", "Doxycycline ..."]
+}</pre></div>
+    </div></details>
+
+    <h3>🟡 STAGE C — The video call happens, then ends</h3>
+    <div class="flow">
+      <div class="step"><div class="dot">C1</div><div class="st"><b>Doctor and Ramesh talk on video</b><p><b>DB touched:</b> <span class="kbadge">appointments</span> (status updates). The doctor also sees the AI briefing built from Agents 1/3/4/5.</p></div></div>
+      <div class="step"><div class="dot">C2</div><div class="st"><b>Call ends → transcript saved</b><p><b>DB touched:</b> <span class="kbadge">appointments</span> — status becomes <span class="kbadge">post_call</span>, transcript stored.</p></div></div>
+    </div>
+
+    <h3>🟠 STAGE D — Agent 2 structures the conversation</h3>
+    <p><b>Databases used:</b> LLM → <b>RxNorm API</b> → <span class="kbadge">agent8_allergy_check_cache</span></p>
+    <div class="code"><div class="cap"><span>What Agent 2 does with the transcript</span><button class="copybtn">Copy</button></div><pre>LLM extracts from the conversation:
+  chiefComplaint: "Sore throat with fever for 3 days"
+  mentionedSymptoms: ["Sore throat (3 days)", "Fever 101F (3 days)"]
+  mentionedMedications: ["Metformin 500mg"]
+  mentionedAllergies: ["Penicillin"]
+
+Then RxNorm normalises every medicine (in parallel):
+  "Metformin 500mg"
+    → strip the dose  → "Metformin"
+    → check cache     → MISS
+    → GET rxnav.nlm.nih.gov/REST/rxcui.json?name=Metformin&search=2
+    → RxCUI 6809, official name "metformin"
+    → cache it for 10 years
+
+If a drug cannot be matched at all, it is honestly marked
+"unrecognized" — never guessed.</pre></div>
+    <div class="note"><b class="tag">Honesty rule</b>If the call had <strong>no audio</strong>, Agent 2 is skipped entirely and marked <em>"no audio detected"</em>. The pipeline continues using the pre-consultation form. <strong>No fake transcript is ever invented.</strong></div>
+
+    <h3>🔴 STAGE E — Agent 6 writes the prescription</h3>
+    <p><b>Databases used:</b> none directly — it reads the outputs of Agents 2, 3, 4, 5.</p>
+    <p>Everything gathered above is packed into one large prompt. Agent 6 sees: Ramesh's profile, the structured conversation, 10 similar diabetic cases, the diabetes evidence (including "avoid NSAIDs"), and the penicillin hard-block list. It writes a first draft:</p>
+    <div class="code"><div class="cap"><span>Agent 6's first draft</span><button class="copybtn">Copy</button></div><pre>diagnosis: "Acute bacterial pharyngitis in a diabetic patient"
+medicines:
+  1. Amoxicillin 500mg — three times daily — 5 days   ← ⚠ DANGER
+  2. Paracetamol 500mg — as needed — 3 days</pre></div>
+    <div class="note bad"><b class="tag">The AI just made a mistake</b>Amoxicillin is a <strong>penicillin</strong> — exactly what Ramesh is severely allergic to. This is precisely why the next two agents exist. <em>(In practice Agent 6 usually avoids this because it is given the allergy list — but the safety net must work even when the AI slips.)</em></div>
+
+    <h3>🟣 STAGE F — The two safety agents catch it</h3>
+
+    <details class="collap" open><summary><span class="num">7</span> Agent 7 — Drug interactions (DDInter + openFDA) <span class="chev">›</span></summary><div class="body">
+      <div class="code"><div class="cap"><span>Phase 1 — DDInter pair checks</span><button class="copybtn">Copy</button></div><pre>All drugs = [Amoxicillin, Paracetamol] + [Metformin]
+Pairs to check (3):
+  Amoxicillin ↔ Paracetamol
+  Amoxicillin ↔ Metformin
+  Paracetamol ↔ Metformin
+
+For each pair (in parallel):
+  → check agent7_drug_medic_cache  → MISS
+  → query DrugInteractions with $or on BOTH orders
+  → e.g. { drug_a_norm:"amoxicillin", drug_b_norm:"metformin" }
+       OR { drug_a_norm:"metformin",  drug_b_norm:"amoxicillin" }
+  → save the verdict (even "none") to cache</pre></div>
+      <div class="code"><div class="cap"><span>Phase 2 — openFDA verification</span><button class="copybtn">Copy</button></div><pre>For each drug, fetch in parallel:
+  • openFDA label   (cached 140 days)
+      GET api.fda.gov/drug/label.json?search=openfda.generic_name:"amoxicillin"
+      → indications_and_usage + dosage_and_administration
+  • library context (our own openfda chunks, type-prioritised)
+
+Then ONE LLM call verifies ALL drugs at once:
+  → Amoxicillin: indication MATCH, dosage PASS
+  → Paracetamol: indication MATCH, dosage PASS
+
+Any "Major" DDInter interaction also forces a FLAG.</pre></div>
+      <p><b>Agent 7 verdict here:</b> PASS — no dangerous interaction found. Agent 7 checks <em>drug-vs-drug</em>, not allergies. That is Agent 8's job.</p>
+    </div></details>
+
+    <details class="collap" open><summary><span class="num">8</span> Agent 8 — Allergy safety (RxNorm + RxClass) <span class="chev">›</span></summary><div class="body">
+      <div class="code"><div class="cap"><span>The three checks</span><button class="copybtn">Copy</button></div><pre>Avoid set built from Agent 5's block:
+  names → {penicillin, amoxicillin, ampicillin, penicillin g, ...}
+  CUIs  → fetched from RxClass classMembers for J01C (cached)
+
+CHECK 1 — Name match (instant, no internet):
+  "Amoxicillin" → found in the avoid list  →  ❌ VIOLATION
+  "Paracetamol" → not found → continue to check 2
+
+CHECK 2 — RxCUI class match (only for Paracetamol):
+  RxNorm: Paracetamol → RxCUI 161
+  Is 161 in the J01C member list? → No → continue
+
+CHECK 3 — Cross-reactivity:
+  Paracetamol vs [Cephalosporins, Carbapenems] → no match → ✅ PASS
+
+FINAL:
+  Amoxicillin → HARD_BLOCK  (violates Penicillin allergy, confirmed/severe)
+  Paracetamol → PASS</pre></div>
+      <p><b>Agent 8 verdict:</b> FLAG. Amoxicillin is rejected and the flag is sent back to Agent 6.</p>
+    </div></details>
+
+    <h3>🔁 STAGE G — The loop: Agent 6 rewrites</h3>
+    <p>Agent 6 runs again, this time with the flag included in its prompt: <em>"Amoxicillin was blocked — patient has a confirmed severe Penicillin allergy."</em> It also has Agent 5's <strong>safeAlternatives</strong> list.</p>
+    <div class="code"><div class="cap"><span>Agent 6's revised prescription</span><button class="copybtn">Copy</button></div><pre>diagnosis: "Acute bacterial pharyngitis in a diabetic patient"
+medicines:
+  1. Azithromycin 500mg — once daily — 3 days     ← safe alternative ✅
+  2. Paracetamol 500mg  — as needed  — 3 days     ← NOT an NSAID, safe
+                                                     for a diabetic ✅
+drugSafetyNote: "Azithromycin chosen due to documented severe penicillin
+allergy. Paracetamol preferred over NSAIDs given diabetes."</pre></div>
+    <p>Agents 7 and 8 verify again → both PASS → the loop ends. (Maximum 2 loops; anything still unresolved is escalated to the human doctor.)</p>
+
+    <h3>⚫ STAGE H — Doctor signs, and the data comes full circle</h3>
+    <div class="flow">
+      <div class="step"><div class="dot">H1</div><div class="st"><b>Agent 9 records findings</b><p><b>DB:</b> <span class="kbadge">systemdetecteds</span> — any newly discovered allergy/long-term medicine is saved as <em>pending</em> for Ramesh to confirm.</p></div></div>
+      <div class="step"><div class="dot">H2</div><div class="st"><b>Doctor reviews, edits, signs</b><p><b>DB:</b> <span class="kbadge">appointments</span> — the final prescription is stored. Flagged drugs are never included.</p></div></div>
+      <div class="step"><div class="dot">H3</div><div class="st"><b>A new anonymised Case is created 🔄</b><p><b>DB:</b> <span class="kbadge">cases</span> — this consultation is embedded and saved. <strong>The next diabetic patient with a sore throat will find Ramesh's case through Agent 3's vector search.</strong> The system just got smarter.</p></div></div>
+    </div>
+    <div class="note good"><b class="tag">This is the key insight</b>The data loop is <strong>circular</strong>: past cases help treat the new patient, and the new patient becomes a past case that helps the next one. This is the "learning" part of MediIQ — no model retraining required, just a growing, searchable memory.</div>
+    <div class="diagram">[ End-to-End Data Flow Diagram Here ]<span>Suggested: Profile → Lock (3,4,5 in parallel) → Call → Agent 2 → Agent 6 → 7 &amp; 8 → loop → Doctor → new Case (arrow back to Agent 3)</span></div>
+  </section>
+
+  <!-- ============ 18 TIMELINE ============ -->
+  <section class="block" id="timeline">
+    <span class="section-tag">Putting It Together</span>
+    <h2 class="section">18 · Call timeline — what is touched when</h2>
+    <p>A quick reference table of the whole journey.</p>
+    <div class="tablewrap"><table>
+      <tr><th>When</th><th>Who</th><th>Databases / APIs touched</th></tr>
+      <tr><td>Profile saved</td><td>App</td><td><span class="kbadge">patientprofiles</span>, RxClass (pre-compute allergy classes)</td></tr>
+      <tr><td>Booking</td><td>App</td><td><span class="kbadge">appointments</span>, <span class="kbadge">doctorprofiles</span></td></tr>
+      <tr><td rowspan="3"><b>Lock pressed</b><br/>(all 3 in parallel)</td><td>Agent 3</td><td>cache → Gemini embed → <span class="kbadge">cases</span> vector search → 2 LLM calls</td></tr>
+      <tr><td>Agent 4</td><td>cache → <span class="kbadge">ConditionLookUp</span> → NIH → MedlinePlus Connect → wsearch → <span class="kbadge">medicalcontexts</span> ×5 → 2 LLM calls</td></tr>
+      <tr><td>Agent 5</td><td>cache → profile cache → RxClass → <span class="kbadge">medicalcontexts</span> ×2</td></tr>
+      <tr><td>During call</td><td>App</td><td><span class="kbadge">appointments</span> (live status via Socket.IO)</td></tr>
+      <tr><td>Call ends</td><td>Agent 2</td><td>LLM → RxNorm (parallel, cached)</td></tr>
+      <tr><td>Prescribing</td><td>Agent 6</td><td>No DB — reads Agents 2/3/4/5 outputs</td></tr>
+      <tr><td>Safety check 1</td><td>Agent 7</td><td><span class="kbadge">DrugInteractions</span> (DDInter) + openFDA API + <span class="kbadge">medicalcontexts</span> → 1 LLM call</td></tr>
+      <tr><td>Safety check 2</td><td>Agent 8</td><td>RxNorm + RxClass (both cached)</td></tr>
+      <tr><td>Findings</td><td>Agent 9</td><td><span class="kbadge">systemdetecteds</span></td></tr>
+      <tr><td>Doctor sends</td><td>App</td><td><span class="kbadge">appointments</span> → new <span class="kbadge">cases</span> document (embedded)</td></tr>
+    </table></div>
+  </section>
+
+  <!-- ============ 19 EMBEDDINGS ============ -->
+  <section class="block" id="embeddings">
+    <span class="section-tag">Putting It Together</span>
+    <h2 class="section">19 · Embeddings &amp; vector search explained simply</h2>
+    <h3>What is an embedding?</h3>
+    <p>An <strong>embedding</strong> is a list of numbers that captures the <em>meaning</em> of a piece of text. MediIQ uses Google's <span class="kbadge">gemini-embedding-001</span>, which produces <strong>3,072 numbers</strong> for any text.</p>
+    <div class="note"><b class="tag">Easy way to picture it</b>Imagine every sentence is a dot on a giant map. Sentences about fever land in one area; sentences about broken bones land far away. The 3,072 numbers are just the <em>coordinates</em> of that dot. "Finding similar cases" = "finding the nearest dots".</div>
+
+    <h3>Where embeddings are used</h3>
+    <div class="tablewrap"><table>
+      <tr><th>Collection</th><th>Vector index name</th><th>What is embedded</th></tr>
+      <tr><td><span class="kbadge">cases</span></td><td><span class="kbadge">case_vector_index</span></td><td>Symptoms + duration + severity + notes of a past case</td></tr>
+      <tr><td><span class="kbadge">medicalcontexts</span></td><td><span class="kbadge">medicalcontext_vector_index</span></td><td>Each knowledge chunk, with a context header prepended</td></tr>
+    </table></div>
+
+    <h3>Why only symptoms are embedded for case search</h3>
+    <p>When building the search text for Agent 3, MediIQ deliberately includes <strong>only symptoms, duration, severity and notes</strong> — <em>not</em> age or conditions.</p>
+    <p><strong>Why?</strong> Because we want matching by <em>illness</em>, not by <em>person</em>. If demographics were embedded, a 45-year-old with a broken leg might match a 45-year-old with a fever, just because both are 45. Instead demographics are applied <em>afterwards</em> as a scoring boost — the best of both worlds.</p>
+
+    <h3>The one permanent rule about embeddings</h3>
+    <div class="note warn"><b class="tag">Embeddings are ALWAYS Gemini</b>Even when the admin switches the AI engine to DeepSeek or Ollama, embeddings still use Gemini. <strong>Reason:</strong> the stored vectors were created by Gemini. A different model produces a different "map", so a DeepSeek query vector would be meaningless against Gemini-built vectors — search would return nonsense. <em>Query and stored vectors must always come from the same model.</em></div>
+    <p>This is also why Agent 4's badge can read <em>"deepseek + medlineplus + vector"</em> — the <strong>reasoning</strong> ran on DeepSeek while the <strong>embedding</strong> ran on Gemini.</p>
+  </section>
+
+  <!-- ============ 20 WHY ============ -->
+  <section class="block" id="why">
+    <span class="section-tag">Putting It Together</span>
+    <h2 class="section">20 · Why these sources were chosen</h2>
+    <div class="tablewrap"><table>
+      <tr><th>Choice</th><th>Reason</th></tr>
+      <tr><td><b>Official government sources</b> (NIH, FDA, NLM)</td><td>Free, trustworthy, and citable. Random web text would be unsafe for medical use.</td></tr>
+      <tr><td><b>No API keys needed</b></td><td>All medical APIs used are open. No cost, no vendor lock-in, easy to reproduce.</td></tr>
+      <tr><td><b>DDInter downloaded, not called live</b></td><td>There is no public API, the data is stable, and 175k local rows with indexes are far faster than any network call.</td></tr>
+      <tr><td><b>MedlinePlus/FDA chunked locally</b></td><td>You cannot vector-search a live API. To search by meaning we must own and embed the text.</td></tr>
+      <tr><td><b>RxNorm/RxClass called live</b></td><td>They are huge and updated as new drugs appear — live keeps us current, and caching removes the speed cost.</td></tr>
+      <tr><td><b>Everything cached 140 days</b></td><td>Medical facts change slowly. Caching cuts ~70 external calls to ~3 without hurting accuracy.</td></tr>
+      <tr><td><b>Two safety databases, not one</b></td><td>DDInter answers "do these drugs clash?"; RxClass answers "will this trigger the allergy?". Different risks need different sources.</td></tr>
+    </table></div>
+
+    <h3>Honest limitations (say these before being asked)</h3>
+    <ul>
+      <li><strong>Case library is small</strong> (131 cases) — RAG quality improves as it grows.</li>
+      <li><strong>US-centric data.</strong> FDA labels and MedlinePlus are American; Indian brand names may not resolve in RxNorm.</li>
+      <li><strong>Cross-reactivity is hard-coded</strong> for the main families rather than fully data-driven.</li>
+      <li><strong>Cached facts could go stale</strong> within the 140-day window if a drug warning changes.</li>
+      <li><strong>Not a certified medical device</strong> — a licensed doctor signs every prescription.</li>
+    </ul>
+  </section>
+
+  <!-- ============ 21 INTERVIEW ============ -->
+  <section class="block" id="interview">
+    <span class="section-tag">Putting It Together</span>
+    <h2 class="section">21 · Interview Q&amp;A — data layer</h2>
+
+    <details class="collap"><summary><span class="num">Q</span> Which databases does your project use? <span class="chev">›</span></summary><div class="body">
+      <p>One MongoDB Atlas database with two roles. <b>Operational collections</b> (users, appointments, profiles) and <b>medical knowledge stores</b>: a 131-case library with 3072-dim embeddings, a 3,347-chunk knowledge library built from MedlinePlus + openFDA, a 2,134-row ICD-10 lookup, and 175,201 DDInter drug-interaction pairs. On top of that we call six free medical APIs live: NIH Clinical Tables, MedlinePlus Connect, MedlinePlus wsearch, RxNorm, RxClass and openFDA.</p>
+    </div></details>
+
+    <details class="collap"><summary><span class="num">Q</span> Why store some data locally and call other data live? <span class="chev">›</span></summary><div class="body">
+      <p>Three factors: <b>speed</b>, <b>searchability</b>, and <b>freshness</b>. DDInter has no API and is stable, so 175k indexed local rows give millisecond lookups. MedlinePlus/FDA text had to be local because you cannot run vector search against a remote API — we needed to chunk and embed it ourselves. RxNorm/RxClass change as new drugs launch, so they stay live, and heavy caching removes the latency penalty.</p>
+    </div></details>
+
+    <details class="collap"><summary><span class="num">Q</span> How does a penicillin allergy block amoxicillin? <span class="chev">›</span></summary><div class="body">
+      <p>Name matching alone would fail, because "amoxicillin" doesn't contain the word "penicillin". So Agent 5 maps the allergen to an example drug (amoxicillin), asks <b>RxClass</b> for its ATC class (<b>J01C — beta-lactam penicillins</b>), and pulls every member of that class into an avoid list. Agent 8 then checks each prescribed drug three ways: by name, by RxCUI against the class member IDs, and against hard-coded cross-reactivity families. Amoxicillin is caught on the very first check.</p>
+    </div></details>
+
+    <details class="collap"><summary><span class="num">Q</span> How do you keep it fast with so many sources? <span class="chev">›</span></summary><div class="body">
+      <p>Four techniques. <b>(1) Pre-computation</b> — allergy classes are resolved when the profile is saved, not during the consultation. <b>(2) Parallelism</b> — Agents 3/4/5 run together, drug pairs and API fetches run together. <b>(3) Multi-level caching</b> — 5 cache collections with 140-day sliding TTL, taking a repeat consultation from ~70 external calls to ~3. <b>(4) Batching</b> — Agent 7 verifies all drugs in a single LLM call instead of one per drug.</p>
+    </div></details>
+
+    <details class="collap"><summary><span class="num">Q</span> What is a sliding TTL and why use it? <span class="chev">›</span></summary><div class="body">
+      <p>TTL is how long a cached answer lives — ours is 140 days. "Sliding" means each use resets the clock. The effect is that frequently-needed facts (common illnesses, common drugs) effectively never expire, while rare one-off entries clean themselves up. MongoDB deletes them automatically via a TTL index on <span class="kbadge">expiresAt</span>, so there's no cleanup job to maintain.</p>
+    </div></details>
+
+    <details class="collap"><summary><span class="num">Q</span> How do you stop the AI hallucinating medical facts? <span class="chev">›</span></summary><div class="body">
+      <p>Retrieval plus constraints. Every fact is retrieved from a real source before the AI writes anything, and the summarising prompt says explicitly "do NOT add information not found in the chunks" and "preserve every caution verbatim". Retrieved chunks must clear a 0.80 similarity floor. Then two independent safety agents check the output against DDInter and RxClass, and finally a licensed doctor reviews and signs.</p>
+    </div></details>
+
+    <details class="collap"><summary><span class="num">Q</span> Why does vector search need 3072 numbers? <span class="chev">›</span></summary><div class="body">
+      <p>That's the output size of <span class="kbadge">gemini-embedding-001</span>. More dimensions capture finer shades of meaning. The important constraint is consistency: the Atlas index is configured for 3072 dimensions, and query vectors must come from the same model — which is why embeddings always use Gemini even when the reasoning model is switched to DeepSeek or Ollama.</p>
+    </div></details>
+
+    <details class="collap"><summary><span class="num">Q</span> What happens if an external API is down? <span class="chev">›</span></summary><div class="body">
+      <p>Every external call has a timeout (6–10s) and is wrapped so failure is non-fatal. wsearch returns an empty hint list; ICD-10 falls back to "unresolved"; a missing FDA label becomes "Not available" in the prompt; if the verification LLM fails, Agent 7 fails <em>open</em> and lets the doctor decide. Negative results are cached too, so we don't hammer a failing service. The pipeline always finishes with whatever real data it could gather — it never blocks and never invents a substitute.</p>
+    </div></details>
+  </section>
+
+  <footer class="docfoot">
+    <p><b>MediIQ — Databases &amp; Medical Data Handbook.</b> All counts in this document were measured directly from the live MongoDB Atlas database, and all API calls shown are copied from the real agent source code.</p>
+    <p>Medical data sources: MedlinePlus &amp; RxNorm/RxClass (US National Library of Medicine), openFDA (US FDA), NIH Clinical Tables, and the DDInter research dataset. MediIQ is not a certified medical device — a licensed doctor approves every prescription.</p>
+  </footer>
+</main>
+</div>
+
+<script>
+(function(){ // theme
+  var root=document.documentElement, btn=document.getElementById('themeBtn');
+  var saved=localStorage.getItem('mediiq-db-theme'); if(saved) root.setAttribute('data-theme',saved);
+  function sync(){btn.textContent=root.getAttribute('data-theme')==='dark'?'☀️':'🌙';} sync();
+  btn.addEventListener('click',function(){
+    var n=root.getAttribute('data-theme')==='dark'?'light':'dark';
+    root.setAttribute('data-theme',n); localStorage.setItem('mediiq-db-theme',n); sync();
+  });
+})();
+(function(){ // progress
+  var bar=document.getElementById('progress');
+  function u(){var h=document.documentElement.scrollHeight-document.documentElement.clientHeight;
+    bar.style.width=(h>0?(window.scrollY/h)*100:0)+'%';}
+  window.addEventListener('scroll',u,{passive:true}); window.addEventListener('resize',u); u();
+})();
+(function(){ // active nav
+  var links=[].slice.call(document.querySelectorAll('#nav a')), map={};
+  links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a;});
+  var secs=links.map(function(a){return document.getElementById(a.getAttribute('href').slice(1));}).filter(Boolean);
+  var o=new IntersectionObserver(function(es){es.forEach(function(e){
+    if(e.isIntersecting){links.forEach(function(l){l.classList.remove('active');});
+      var a=map[e.target.id]; if(a){a.classList.add('active'); a.scrollIntoView({block:'nearest'});}}
+  });},{rootMargin:'-14% 0px -78% 0px',threshold:0});
+  secs.forEach(function(s){o.observe(s);});
+})();
+(function(){ // search
+  var i=document.getElementById('search'), links=[].slice.call(document.querySelectorAll('#nav a')),
+      labels=[].slice.call(document.querySelectorAll('#nav .grouplabel'));
+  i.addEventListener('input',function(){
+    var q=i.value.trim().toLowerCase();
+    links.forEach(function(a){a.classList.toggle('hidden', q!=='' && a.textContent.toLowerCase().indexOf(q)===-1);});
+    labels.forEach(function(lb){
+      var n=lb.nextElementSibling, vis=false;
+      while(n && !n.classList.contains('grouplabel')){
+        if(n.tagName==='A' && !n.classList.contains('hidden')){vis=true;break;} n=n.nextElementSibling;}
+      lb.style.display=(q!=='' && !vis)?'none':'';
+    });
+  });
+  document.addEventListener('keydown',function(e){
+    if(e.key==='/' && document.activeElement!==i){e.preventDefault(); i.focus();}});
+})();
+(function(){ // copy buttons
+  document.querySelectorAll('.code .copybtn').forEach(function(b){
+    b.addEventListener('click',function(){
+      var p=b.closest('.code').querySelector('pre');
+      navigator.clipboard.writeText(p?p.innerText:'').then(function(){
+        var o=b.textContent; b.textContent='Copied!'; b.classList.add('done');
+        setTimeout(function(){b.textContent=o; b.classList.remove('done');},1400);
+      });
+    });
+  });
+})();
+(function(){ // mobile drawer
+  var s=document.getElementById('sidebar'), m=document.getElementById('menuBtn'), b=document.getElementById('backdrop');
+  m.addEventListener('click',function(){s.classList.add('open');b.classList.add('show');});
+  b.addEventListener('click',function(){s.classList.remove('open');b.classList.remove('show');});
+  s.addEventListener('click',function(e){if(e.target.tagName==='A'){s.classList.remove('open');b.classList.remove('show');}});
+})();
+</script>
+</body>
+</html>

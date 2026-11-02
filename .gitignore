@@ -1,0 +1,98 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+Thumbs.db
+Desktop.ini
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files — contain secrets (API keys, DB URI, JWT secret)
+.env
+.env.*
+!.env.example
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+ml/venv/
+ml/.venv/
+*.egg
+
+# ML model files (large binary, tracked separately or rebuilt)
+ml/models/*.pkl
+
+# Claude Code config (personal, not project)
+.claude/
+
+# IDE / editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary / scratchpad
+/tmp/
+*.tmp
+
+# Project docs / evidence (not code)
+Medi\ iQ\ Video\ Evidence/
+How\ to\ Run/
+Documents/
+Claude\ MDs/
+Interview/
+Patent\ Doc/
+Phase\ 5/
+phase_6_ui/
+Project\ Detail.txt
+project\ html/
+
+# ML raw data (large, downloaded via script)
+ml/data/raw/
+ml/data/processed/
+
+# Lab model weights (downloaded separately)
+ml/models/lab/*.pth
+
+# Python cache in api
+ml/api/__pycache__/

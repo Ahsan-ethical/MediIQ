@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MediIQ — Complete Project Handbook</title>
+<style>
+  /* ============================ THEME TOKENS ============================ */
+  :root{
+    --brand:#2f6bff; --brand-2:#06b6d4; --accent:#7c5cff;
+    --bg:#f6f8fc; --surface:#ffffff; --surface-2:#eef2f9; --surface-3:#e3e9f4;
+    --text:#0f1729; --muted:#475069; --subtle:#8791a7; --border:#dce3ef;
+    --good:#10b981; --warn:#f59e0b; --bad:#f43f5e;
+    --code-bg:#0f1729; --code-text:#e8edf7;
+    --shadow:0 1px 2px rgba(16,23,41,.05),0 8px 24px -12px rgba(16,23,41,.18);
+    --radius:16px;
+  }
+  html[data-theme="dark"]{
+    --bg:#0b0e14; --surface:#121722; --surface-2:#171d2a; --surface-3:#1f2735;
+    --text:#e8edf7; --muted:#a4b0c6; --subtle:#6b7688; --border:#232c3c;
+    --code-bg:#0a0d13; --code-text:#dbe4f3;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 30px -14px rgba(0,0,0,.7);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--bg);color:var(--text);
+    font-family:"Segoe UI",Roboto,-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased;
+  }
+  /* ============================ SCROLL PROGRESS ============================ */
+  #progress{position:fixed;top:0;left:0;height:3px;width:0%;z-index:100;
+    background:linear-gradient(90deg,var(--brand),var(--brand-2),var(--accent));transition:width .1s linear}
+  /* ============================ LAYOUT ============================ */
+  .shell{display:grid;grid-template-columns:290px 1fr;max-width:1500px;margin:0 auto}
+  /* Sidebar */
+  aside{position:sticky;top:0;height:100vh;overflow-y:auto;border-right:1px solid var(--border);
+    background:var(--surface);padding:20px 14px 60px}
+  .brand{display:flex;align-items:center;gap:11px;padding:8px 10px 16px}
+  .brand .logo{width:38px;height:38px;border-radius:11px;flex:0 0 auto;
+    background:linear-gradient(135deg,var(--brand),var(--brand-2));display:grid;place-items:center;color:#fff;font-weight:800}
+  .brand b{font-size:18px;letter-spacing:-.02em}
+  .brand small{display:block;color:var(--subtle);font-weight:600;font-size:11px;letter-spacing:.04em;text-transform:uppercase}
+  .searchwrap{position:relative;margin:6px 6px 14px}
+  #search{width:100%;padding:10px 12px 10px 34px;border-radius:11px;border:1px solid var(--border);
+    background:var(--surface-2);color:var(--text);font-size:13.5px;outline:none}
+  #search:focus{border-color:var(--brand);box-shadow:0 0 0 4px color-mix(in srgb,var(--brand) 15%,transparent)}
+  .searchwrap svg{position:absolute;left:11px;top:11px;color:var(--subtle)}
+  nav a{display:block;padding:7px 12px;margin:1px 4px;border-radius:9px;color:var(--muted);
+    text-decoration:none;font-size:13.5px;font-weight:500;transition:.15s;border:1px solid transparent}
+  nav a:hover{background:var(--surface-2);color:var(--text)}
+  nav a.active{background:color-mix(in srgb,var(--brand) 14%,transparent);color:var(--brand);border-color:color-mix(in srgb,var(--brand) 25%,transparent);font-weight:600}
+  nav .grouplabel{font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--subtle);
+    font-weight:800;padding:16px 14px 5px}
+  nav a.hidden{display:none}
+  /* Main */
+  main{padding:38px clamp(18px,4vw,64px) 120px;min-width:0}
+  .topbar{display:flex;align-items:center;gap:12px;justify-content:space-between;margin-bottom:26px}
+  .topbar .crumbs{color:var(--subtle);font-size:13px;font-weight:600}
+  .btns{display:flex;gap:8px;align-items:center}
+  .iconbtn{width:40px;height:40px;border-radius:11px;border:1px solid var(--border);background:var(--surface);
+    color:var(--text);cursor:pointer;display:grid;place-items:center;font-size:16px;transition:.15s}
+  .iconbtn:hover{background:var(--surface-2)}
+  #menuBtn{display:none}
+  /* ============================ HERO ============================ */
+  .hero{background:linear-gradient(135deg,color-mix(in srgb,var(--brand) 12%,var(--surface)),color-mix(in srgb,var(--accent) 10%,var(--surface)));
+    border:1px solid var(--border);border-radius:22px;padding:40px 34px;margin-bottom:34px;position:relative;overflow:hidden}
+  .hero h1{font-size:clamp(28px,4vw,42px);margin:0 0 10px;letter-spacing:-.03em;line-height:1.1}
+  .hero p{font-size:17px;color:var(--muted);max-width:70ch;margin:0}
+  .hero .pill{display:inline-block;background:var(--surface);border:1px solid var(--border);color:var(--brand);
+    font-weight:700;font-size:12px;padding:6px 13px;border-radius:999px;margin-bottom:16px;letter-spacing:.02em}
+  .herofacts{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+  .herofacts span{background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:8px 13px;font-size:13px;font-weight:600;color:var(--muted)}
+  /* ============================ TYPOGRAPHY ============================ */
+  h2.section{font-size:27px;letter-spacing:-.02em;margin:8px 0 4px;scroll-margin-top:20px;line-height:1.2}
+  .section-tag{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+    color:var(--brand);background:color-mix(in srgb,var(--brand) 12%,transparent);padding:4px 10px;border-radius:7px;margin-bottom:12px}
+  h3{font-size:20px;margin:30px 0 8px;letter-spacing:-.01em}
+  h4{font-size:16px;margin:22px 0 6px;color:var(--text)}
+  p{margin:11px 0}
+  section.block{margin-bottom:26px;padding-top:14px;border-top:1px dashed var(--border)}
+  section.block:first-of-type{border-top:none}
+  a.inline{color:var(--brand);text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--brand) 35%,transparent)}
+  strong{color:var(--text)}
+  .lead{font-size:17px;color:var(--muted)}
+  ul,ol{padding-left:22px}
+  li{margin:6px 0}
+  /* ============================ CARDS ============================ */
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+    padding:20px 22px;box-shadow:var(--shadow);margin:16px 0}
+  .grid{display:grid;gap:14px}
+  .grid.two{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+  .grid.three{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+  .mini{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 18px}
+  .mini h4{margin:0 0 6px;font-size:15px}
+  .mini p{margin:0;font-size:14px;color:var(--muted)}
+  .kbadge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;padding:3px 9px;border-radius:7px;
+    background:var(--surface-2);border:1px solid var(--border);color:var(--muted)}
+  /* callouts */
+  .note{border-left:4px solid var(--brand);background:color-mix(in srgb,var(--brand) 7%,var(--surface));
+    padding:13px 16px;border-radius:0 12px 12px 0;margin:16px 0;font-size:14.5px}
+  .note.good{border-color:var(--good);background:color-mix(in srgb,var(--good) 9%,var(--surface))}
+  .note.warn{border-color:var(--warn);background:color-mix(in srgb,var(--warn) 10%,var(--surface))}
+  .note b.tag{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;color:var(--brand)}
+  .note.good b.tag{color:var(--good)} .note.warn b.tag{color:color-mix(in srgb,var(--warn) 80%,#000)}
+  html[data-theme="dark"] .note.warn b.tag{color:var(--warn)}
+  /* ============================ TABLES ============================ */
+  .tablewrap{overflow-x:auto;border:1px solid var(--border);border-radius:14px;margin:16px 0}
+  table{border-collapse:collapse;width:100%;font-size:14px;min-width:520px}
+  th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+  th{background:var(--surface-2);font-weight:700;font-size:12.5px;text-transform:uppercase;letter-spacing:.03em;color:var(--muted)}
+  tr:last-child td{border-bottom:none}
+  td b{color:var(--text)}
+  /* ============================ COLLAPSIBLE ============================ */
+  details.collap{border:1px solid var(--border);border-radius:14px;margin:12px 0;background:var(--surface);overflow:hidden}
+  details.collap>summary{cursor:pointer;padding:15px 18px;font-weight:700;font-size:15.5px;list-style:none;
+    display:flex;align-items:center;gap:11px;user-select:none}
+  details.collap>summary::-webkit-details-marker{display:none}
+  details.collap>summary .chev{margin-left:auto;transition:.2s;color:var(--subtle)}
+  details.collap[open]>summary .chev{transform:rotate(90deg)}
+  details.collap>summary .num{width:26px;height:26px;border-radius:8px;flex:0 0 auto;display:grid;place-items:center;
+    font-size:12.5px;font-weight:800;background:color-mix(in srgb,var(--brand) 15%,transparent);color:var(--brand)}
+  details.collap .body{padding:2px 18px 18px;border-top:1px solid var(--border)}
+  /* ============================ CODE / EXAMPLE ============================ */
+  .code{position:relative;background:var(--code-bg);color:var(--code-text);border-radius:13px;margin:14px 0;
+    font-family:"JetBrains Mono",Consolas,Menlo,monospace;font-size:13px;line-height:1.6;overflow:hidden}
+  .code .cap{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;
+    background:rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.08);font-size:11.5px;color:#9fb0cc;font-weight:700;letter-spacing:.03em}
+  .code pre{margin:0;padding:15px;overflow-x:auto;white-space:pre}
+  .copybtn{background:rgba(255,255,255,.1);color:#dbe4f3;border:none;border-radius:7px;padding:4px 11px;
+    cursor:pointer;font-size:11.5px;font-weight:700;transition:.15s}
+  .copybtn:hover{background:rgba(255,255,255,.2)}
+  .copybtn.done{background:var(--good);color:#fff}
+  /* diagram placeholder */
+  .diagram{border:2px dashed var(--border);border-radius:16px;padding:34px 20px;text-align:center;color:var(--subtle);
+    background:repeating-linear-gradient(45deg,transparent,transparent 12px,color-mix(in srgb,var(--border) 30%,transparent) 12px,color-mix(in srgb,var(--border) 30%,transparent) 13px);
+    margin:18px 0;font-weight:700;font-size:14px}
+  .diagram span{display:block;font-size:12px;font-weight:500;margin-top:6px;color:var(--subtle)}
+  /* flow steps */
+  .flow{display:flex;flex-direction:column;gap:0;margin:16px 0}
+  .step{display:flex;gap:15px;position:relative;padding-bottom:20px}
+  .step:not(:last-child)::before{content:"";position:absolute;left:16px;top:34px;bottom:0;width:2px;background:var(--border)}
+  .step .dot{width:34px;height:34px;border-radius:10px;flex:0 0 auto;display:grid;place-items:center;font-weight:800;font-size:14px;
+    background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#fff;z-index:1}
+  .step .st{flex:1}
+  .step .st b{display:block;margin-bottom:2px}
+  .step .st p{margin:0;font-size:14px;color:var(--muted)}
+  /* glossary chip */
+  .term{border-bottom:1px dotted var(--brand);cursor:help;font-weight:600}
+  footer.docfoot{border-top:1px solid var(--border);margin-top:50px;padding-top:24px;color:var(--subtle);font-size:13.5px}
+  /* backdrop for mobile drawer */
+  #backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:40}
+  /* ============================ RESPONSIVE ============================ */
+  @media(max-width:960px){
+    .shell{grid-template-columns:1fr}
+    aside{position:fixed;left:0;top:0;z-index:50;width:280px;transform:translateX(-100%);transition:transform .25s ease;box-shadow:var(--shadow)}
+    aside.open{transform:translateX(0)}
+    #menuBtn{display:grid}
+    #backdrop.show{display:block}
+  }
+  @media(max-width:520px){
+    body{font-size:15px} main{padding:20px 16px 90px} .hero{padding:26px 20px}
+  }
+  ::selection{background:color-mix(in srgb,var(--brand) 30%,transparent)}
+  aside::-webkit-scrollbar{width:8px} aside::-webkit-scrollbar-thumb{background:var(--border);border-radius:9px}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div id="backdrop"></div>
+
+<div class="shell">
+  <!-- ============================ SIDEBAR ============================ -->
+  <aside id="sidebar">
+    <div class="brand">
+      <div class="logo">M</div>
+      <div><b>MediIQ</b><small>Project Handbook</small></div>
+    </div>
+    <div class="searchwrap">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input id="search" placeholder="Search the docs…" autocomplete="off" />
+    </div>
+    <nav id="nav">
+      <div class="grouplabel">Start Here</div>
+      <a href="#overview">1 · Project Overview</a>
+      <a href="#problem">2 · Problem &amp; Goals</a>
+      <a href="#features">3 · Features</a>
+      <a href="#stack">4 · Tech Stack (what &amp; why)</a>
+      <div class="grouplabel">How It Is Built</div>
+      <a href="#architecture">5 · Architecture</a>
+      <a href="#roles">6 · Roles &amp; User Flows</a>
+      <a href="#workflow">7 · End-to-End Workflow</a>
+      <a href="#frontend">8 · Frontend</a>
+      <a href="#backend">9 · Backend &amp; Realtime</a>
+      <a href="#auth">10 · Authentication &amp; Security</a>
+      <a href="#database">11 · Database</a>
+      <div class="grouplabel">The AI Brain</div>
+      <a href="#ai-engine">12 · AI Engine &amp; Modes</a>
+      <a href="#agents">13 · The 9 AI Agents</a>
+      <a href="#pipeline">14 · Agent Pipeline</a>
+      <a href="#rag">15 · RAG Pipeline</a>
+      <a href="#medical-data">16 · Medical Data &amp; Knowledge</a>
+      <div class="grouplabel">Vitals ML</div>
+      <a href="#vitals">17 · Camera Vitals (rPPG + BP)</a>
+      <div class="grouplabel">Everything Else</div>
+      <a href="#video">18 · Video Consultations</a>
+      <a href="#prescription">19 · Prescription &amp; PDF</a>
+      <a href="#caching">20 · Caching &amp; Performance</a>
+      <a href="#errors">21 · Error Handling</a>
+      <a href="#env">22 · Environment Variables</a>
+      <a href="#deploy">23 · Deployment</a>
+      <a href="#limits">24 · Limitations</a>
+      <a href="#future">25 · Future Improvements</a>
+      <a href="#decisions">26 · Key Design Decisions</a>
+      <a href="#interview">27 · Interview Q&amp;A</a>
+    </nav>
+  </aside>
+
+  <!-- ============================ MAIN ============================ -->
+  <main>
+    <div class="topbar">
+      <button class="iconbtn" id="menuBtn" aria-label="Menu">☰</button>
+      <div class="crumbs">MediIQ · Complete Technical Documentation</div>
+      <div class="btns">
+        <button class="iconbtn" id="themeBtn" aria-label="Toggle theme">🌙</button>
+      </div>
+    </div>
+
+    <div class="hero">
+      <span class="pill">AI-Native Telemedicine · Full Project Handbook</span>
+      <h1>MediIQ — Healthcare that reasons with you</h1>
+      <p>MediIQ is an online doctor-consultation platform. A patient does a live video call with a real doctor, and behind the scenes a team of <strong>9 AI agents</strong> reads the patient's history, listens to the call, finds similar past cases, checks medical knowledge, and writes a <strong>safety-checked prescription draft</strong> for the doctor to review. It can even measure <strong>blood pressure and heart rate from a face video</strong> — no smartwatch needed.</p>
+      <div class="herofacts">
+        <span>🤖 9-agent AI pipeline</span>
+        <span>📹 Live video calls</span>
+        <span>❤️ Camera-based vitals</span>
+        <span>🔍 RAG + vector search</span>
+        <span>💊 Drug &amp; allergy safety checks</span>
+        <span>🌗 3 roles · full dashboards</span>
+      </div>
+    </div>
+
+    <p class="lead">This handbook explains the <strong>entire project from start to finish</strong> in very simple words. Every hard word is explained the moment it appears. Read it top-to-bottom, or jump to any section from the sidebar. It is written so that someone who has never seen this project can understand exactly how everything works — and so you can confidently answer any interview question about it.</p>
+
+    <!-- ===================================================== 1. OVERVIEW -->
+    <section class="block" id="overview">
+      <span class="section-tag">Start Here</span>
+      <h2 class="section">1 · Project Overview</h2>
+      <p>MediIQ is a <strong>telemedicine platform</strong>. Telemedicine simply means <em>seeing a doctor over the internet instead of in person</em>. A patient opens the website, picks a doctor who is online, and has a live video call. That part alone is normal. What makes MediIQ special is the <strong>AI layer</strong> that helps the doctor at every step.</p>
+
+      <div class="card">
+        <h4 style="margin-top:0">In one paragraph</h4>
+        <p style="margin-bottom:0">A patient books a visit and fills a short form about their symptoms. The moment they lock that form, background AI agents start preparing: they read the patient's medical history, search a library of past cases that look similar, look up the illness in trusted medical databases, and study the patient's allergies. Then the video call happens. After the call ends, more AI agents take over: they turn the conversation into clean text, write a first-draft prescription, and run two automatic <strong>safety checks</strong> — one for dangerous drug combinations and one for allergy conflicts. If anything is unsafe, the AI rewrites the prescription. Finally, the human doctor reviews everything, edits if needed, and sends the final prescription as a clean PDF. <strong>Nothing reaches the patient without a human doctor approving it.</strong></p>
+      </div>
+
+      <h3>Who uses it?</h3>
+      <div class="grid three">
+        <div class="mini"><h4>🧑‍🦱 Patient</h4><p>Books consultations, fills symptom forms, scans vitals with their camera, joins the call, and receives a prescription.</p></div>
+        <div class="mini"><h4>🩺 Doctor</h4><p>Goes "Live", accepts patients, reads an AI briefing during the call, then reviews and signs the AI-drafted prescription.</p></div>
+        <div class="mini"><h4>🛡️ Admin</h4><p>Approves new doctors, chooses which AI model the whole system uses, and watches health-trend analytics.</p></div>
+      </div>
+
+      <div class="note"><b class="tag">Key idea to remember</b>MediIQ is <strong>"AI-assisted", not "AI-replacing"</strong>. The AI does the tiring background work (reading, searching, checking, drafting). The licensed human doctor always makes the final call. This is both safer and legally correct.</div>
+    </section>
+
+    <!-- ===================================================== 2. PROBLEM -->
+    <section class="block" id="problem">
+      <span class="section-tag">Start Here</span>
+      <h2 class="section">2 · Problem Statement &amp; Goals</h2>
+      <h3>The problems it solves</h3>
+      <ul>
+        <li><strong>Doctors have very little time per patient.</strong> They often can't read the full history or double-check every drug interaction. MediIQ does that reading and checking automatically.</li>
+        <li><strong>Prescription mistakes are dangerous.</strong> A drug can clash with another drug, or trigger an allergy. MediIQ runs automatic safety checks on every draft.</li>
+        <li><strong>Vitals usually need special devices.</strong> Blood pressure needs a cuff; heart rate needs a monitor. MediIQ estimates both from a <strong>30-second face video</strong> using the phone/laptop camera.</li>
+        <li><strong>Past knowledge is wasted.</strong> Every clinic sees the same illnesses again and again, but that experience is never reused. MediIQ stores anonymised past cases and retrieves similar ones to guide new decisions.</li>
+      </ul>
+      <h3>The goals</h3>
+      <div class="grid two">
+        <div class="mini"><h4>🎯 Save doctor time</h4><p>Auto-summarise history, transcribe the call, and pre-draft the prescription.</p></div>
+        <div class="mini"><h4>🎯 Increase safety</h4><p>Two independent AI safety agents catch drug and allergy problems before the doctor signs.</p></div>
+        <div class="mini"><h4>🎯 Make care accessible</h4><p>Contactless vitals + video calls mean care from anywhere, no special equipment.</p></div>
+        <div class="mini"><h4>🎯 Learn from history</h4><p>Reuse anonymised past cases with vector search so the system gets smarter over time.</p></div>
+      </div>
+    </section>
+
+    <!-- ===================================================== 3. FEATURES -->
+    <section class="block" id="features">
+      <span class="section-tag">Start Here</span>
+      <h2 class="section">3 · Full Feature List</h2>
+      <div class="tablewrap"><table>
+        <tr><th>Feature</th><th>What it does (simple words)</th></tr>
+        <tr><td><b>9-agent AI pipeline</b></td><td>A chain of 9 small AI programs, each doing one job, passing results to the next.</td></tr>
+        <tr><td><b>Live video consultation</b></td><td>Real-time doctor↔patient video using Agora (a video-call service).</td></tr>
+        <tr><td><b>Camera vitals (rPPG)</b></td><td>Estimates blood pressure &amp; heart rate from tiny colour changes in face skin.</td></tr>
+        <tr><td><b>Similar-case search (RAG)</b></td><td>Finds past patients with similar symptoms to guide the current decision.</td></tr>
+        <tr><td><b>Drug interaction check</b></td><td>Checks if two prescribed medicines are dangerous together.</td></tr>
+        <tr><td><b>Allergy safety check</b></td><td>Checks if any prescribed medicine could trigger the patient's known allergies.</td></tr>
+        <tr><td><b>Auto re-prescribe loop</b></td><td>If a drug is flagged, the AI rewrites the prescription with a safe alternative.</td></tr>
+        <tr><td><b>Prescription PDF</b></td><td>Generates a clean, branded, doctor-signed prescription document.</td></tr>
+        <tr><td><b>Post-visit chatbot</b></td><td>Patients can ask an AI assistant about their medicines and side-effects.</td></tr>
+        <tr><td><b>Outbreak analytics</b></td><td>Admin sees anonymised trends — top symptoms, severity, consultation volume.</td></tr>
+        <tr><td><b>Switchable AI engine</b></td><td>Admin picks which AI model runs everything (Gemini / DeepSeek / Ollama / hybrid).</td></tr>
+        <tr><td><b>Light/Dark themed UI</b></td><td>Modern, animated, mobile-friendly interface for all three roles.</td></tr>
+      </table></div>
+    </section>
+
+    <!-- ===================================================== 4. TECH STACK -->
+    <section class="block" id="stack">
+      <span class="section-tag">Start Here</span>
+      <h2 class="section">4 · Tech Stack — what was used and why</h2>
+      <p>Here is every major technology, in plain words: <em>what it is</em> and <em>why it was chosen</em>.</p>
+      <div class="tablewrap"><table>
+        <tr><th>Technology</th><th>What it is</th><th>Why it was chosen</th></tr>
+        <tr><td><b>Next.js 16</b></td><td>A framework for building websites with React that also runs backend code.</td><td>One codebase for both frontend pages and backend API routes. Fast, modern, easy to deploy on Vercel.</td></tr>
+        <tr><td><b>React 19</b></td><td>A library for building user interfaces out of reusable "components".</td><td>Industry standard; huge ecosystem; makes complex, interactive dashboards manageable.</td></tr>
+        <tr><td><b>TypeScript</b></td><td>JavaScript with type-checking (it warns you about mistakes before running).</td><td>Catches bugs early — important for a medical app where data shape must be correct.</td></tr>
+        <tr><td><b>Tailwind CSS v4</b></td><td>A styling system using small utility classes.</td><td>Fast, consistent styling; easy dark mode with design tokens.</td></tr>
+        <tr><td><b>Framer Motion</b></td><td>An animation library for React.</td><td>Smooth, professional animations without hand-writing complex CSS.</td></tr>
+        <tr><td><b>MongoDB Atlas + Mongoose</b></td><td>A cloud NoSQL database + a helper to define data shapes.</td><td>Flexible documents fit medical data well; Atlas also provides <b>vector search</b> for the AI.</td></tr>
+        <tr><td><b>Socket.IO</b></td><td>A library for instant two-way messages between browser and server.</td><td>Powers live call state, doctor approvals, and instant notifications.</td></tr>
+        <tr><td><b>Agora RTC</b></td><td>A ready-made video-calling service.</td><td>Reliable, low-latency video without building a video system from scratch.</td></tr>
+        <tr><td><b>Google Gemini</b></td><td>A large language model (AI that understands and writes text) + an embedding model.</td><td>Strong medical reasoning; its embedding model powers similar-case search.</td></tr>
+        <tr><td><b>DeepSeek / Ollama</b></td><td>Alternative AI models (DeepSeek is hosted; Ollama runs locally).</td><td>Give admins choice — cost, privacy, or speed trade-offs.</td></tr>
+        <tr><td><b>Python + FastAPI + XGBoost</b></td><td>The language, web-server, and machine-learning library for the vitals system.</td><td>Python is best for ML; XGBoost is excellent for predicting numbers from features.</td></tr>
+        <tr><td><b>MediaPipe</b></td><td>Google's on-device face-detection library.</td><td>Finds the face and skin regions needed to read vitals from video.</td></tr>
+        <tr><td><b>@react-pdf/renderer</b></td><td>A library that builds PDF files from React code.</td><td>Creates the final printable prescription document.</td></tr>
+        <tr><td><b>JWT + bcrypt</b></td><td>A login-token standard + a password-scrambling tool.</td><td>Secure, stateless login; passwords are never stored in plain text.</td></tr>
+      </table></div>
+      <div class="diagram">[ Tech Stack Layers Diagram Here ]<span>Suggested: Frontend (Next/React) → Backend (API + Socket.IO) → Data (MongoDB) → AI (Gemini/DeepSeek + Python ML)</span></div>
+    </section>
+
+    <!-- ===================================================== 5. ARCHITECTURE -->
+    <section class="block" id="architecture">
+      <span class="section-tag">How It Is Built</span>
+      <h2 class="section">5 · Architecture Overview</h2>
+      <p>The system has <strong>four big parts</strong> that talk to each other. Think of it like a hospital: the reception (frontend), the staff office (backend), the records room (database), and the specialist team (AI).</p>
+      <div class="grid two">
+        <div class="mini"><h4>1 · Frontend (what you see)</h4><p>Next.js pages and React components for patients, doctors, and admins. Runs in the browser.</p></div>
+        <div class="mini"><h4>2 · Backend (the brain-stem)</h4><p>Next.js API routes + a custom Node server running Socket.IO for real-time updates.</p></div>
+        <div class="mini"><h4>3 · Database (memory)</h4><p>MongoDB Atlas stores users, appointments, cases, and AI results. Includes a vector index for search.</p></div>
+        <div class="mini"><h4>4 · AI &amp; ML (the specialists)</h4><p>The 9-agent pipeline (using Gemini/DeepSeek/Ollama) + a separate Python service for camera vitals.</p></div>
+      </div>
+      <div class="note"><b class="tag">One important design choice</b>Instead of the default Next.js server, MediIQ runs a <strong>custom server (<span class="kbadge">server.ts</span>)</strong> that hosts the website <em>and</em> a Socket.IO server together. This lets call state, doctor approvals, and notifications update <strong>instantly</strong> without the browser repeatedly asking "any news yet?".</div>
+      <div class="diagram">[ High-Level Architecture Diagram Here ]<span>Suggested boxes: Browser ⇄ Next.js API ⇄ MongoDB Atlas · Browser ⇄ Socket.IO · Browser ⇄ Agora Video · Backend ⇄ Gemini/DeepSeek · Browser ⇄ Python Vitals API</span></div>
+    </section>
+
+    <!-- ===================================================== 6. ROLES -->
+    <section class="block" id="roles">
+      <span class="section-tag">How It Is Built</span>
+      <h2 class="section">6 · Roles &amp; User Flows</h2>
+      <p>Every account has one <strong>role</strong>: patient, doctor, or admin. The role decides which pages and API routes the user can reach. The role is stored inside the login token, so the server always knows who is asking.</p>
+
+      <details class="collap"><summary><span class="num">P</span> Patient flow <span class="chev">›</span></summary>
+      <div class="body"><ol>
+        <li>Register &amp; fill a <b>health profile</b> (age, blood group, known conditions, allergies, current medicines).</li>
+        <li>Go to <b>Find Doctors</b>, see who is "Live", and book a consultation.</li>
+        <li>Fill the <b>pre-consultation form</b> (symptoms, duration, severity) and optionally do a <b>camera vitals scan</b>.</li>
+        <li>Press <b>Lock details</b> — this quietly starts AI agents 3, 4, 5 in the background.</li>
+        <li>Join the <b>video call</b> once the doctor approves.</li>
+        <li>Receive the <b>prescription</b>, and chat with the <b>post-visit assistant</b> about medicines.</li>
+      </ol></div></details>
+
+      <details class="collap"><summary><span class="num">D</span> Doctor flow <span class="chev">›</span></summary>
+      <div class="body"><ol>
+        <li>Register, submit credentials, and wait for <b>admin approval</b>.</li>
+        <li>Toggle <b>"Live"</b> to start receiving consultation requests.</li>
+        <li>Accept a patient; during the call, read the <b>AI patient briefing</b> (summary, likely conditions, suggested questions).</li>
+        <li>End the call → land on the <b>post-call review</b> page.</li>
+        <li>Watch the <b>9-agent pipeline</b> run, then review the AI-drafted prescription and safety flags.</li>
+        <li>Edit if needed, then <b>sign &amp; send</b> the prescription to the patient.</li>
+      </ol></div></details>
+
+      <details class="collap"><summary><span class="num">A</span> Admin flow <span class="chev">›</span></summary>
+      <div class="body"><ol>
+        <li>Approve or reject new doctor sign-ups.</li>
+        <li>Choose the global <b>AI Engine mode</b> (which model the whole system uses).</li>
+        <li>Monitor the <b>Outbreak Monitor</b> — anonymised symptom &amp; severity trends across all consultations.</li>
+        <li>Use <b>developer tools</b> to inspect the agent pipeline and the vitals lab.</li>
+      </ol></div></details>
+      <div class="diagram">[ Role-Based Access Flow Diagram Here ]</div>
+    </section>
+
+    <!-- ===================================================== 7. WORKFLOW -->
+    <section class="block" id="workflow">
+      <span class="section-tag">How It Is Built</span>
+      <h2 class="section">7 · Complete End-to-End Workflow</h2>
+      <p>This is the single most important section to understand the whole app. It follows <strong>one consultation from booking to final prescription</strong>, step by step.</p>
+      <div class="flow">
+        <div class="step"><div class="dot">1</div><div class="st"><b>Booking</b><p>Patient picks a Live doctor. An <b>Appointment</b> record is created in the database.</p></div></div>
+        <div class="step"><div class="dot">2</div><div class="st"><b>Pre-consultation form + optional vitals scan</b><p>Patient types symptoms and can scan their face for BP &amp; heart rate.</p></div></div>
+        <div class="step"><div class="dot">3</div><div class="st"><b>Lock details → agents 3, 4, 5 pre-warm</b><p>In the background: find similar cases, gather medical context, expand allergies. Results are saved so they are ready before the call ends. This "pre-warming" saves time.</p></div></div>
+        <div class="step"><div class="dot">4</div><div class="st"><b>Doctor approves → live video call</b><p>Agora carries the video; Socket.IO carries the call state. The doctor sees an AI briefing (from Agent 1 + the pre-warmed agents).</p></div></div>
+        <div class="step"><div class="dot">5</div><div class="st"><b>Call ends</b><p>The appointment status becomes <span class="kbadge">post_call</span> and the transcript is saved.</p></div></div>
+        <div class="step"><div class="dot">6</div><div class="st"><b>Agent 2 — Transcribe</b><p>Turns the raw conversation into clean, structured text. If there was no audio, it is skipped honestly (no fake data).</p></div></div>
+        <div class="step"><div class="dot">7</div><div class="st"><b>Agent 6 — Prescribe</b><p>Reads everything (history + similar cases + medical context + allergies + transcript) and writes a first-draft prescription.</p></div></div>
+        <div class="step"><div class="dot">8</div><div class="st"><b>Agents 7 &amp; 8 — Safety checks</b><p>Agent 7 checks drug-drug interactions; Agent 8 checks allergy conflicts. If either flags a drug, the pipeline loops back to Agent 6 to pick a safe alternative (up to 2 times).</p></div></div>
+        <div class="step"><div class="dot">9</div><div class="st"><b>Agent 9 — Findings</b><p>Detects any newly discovered allergy or long-term medicine to add to the patient's record.</p></div></div>
+        <div class="step"><div class="dot">10</div><div class="st"><b>Doctor reviews → signs → sends PDF</b><p>The doctor edits if needed and sends the final prescription. Flagged drugs are never included.</p></div></div>
+      </div>
+      <div class="diagram">[ End-to-End Consultation Sequence Diagram Here ]</div>
+    </section>
+
+    <!-- ===================================================== 8. FRONTEND -->
+    <section class="block" id="frontend">
+      <span class="section-tag">How It Is Built</span>
+      <h2 class="section">8 · Frontend</h2>
+      <p>The frontend is what the user sees and clicks. It is built with <strong>Next.js App Router</strong> — pages live in folders under <span class="kbadge">app/</span>, and the folder name becomes the web address.</p>
+      <h3>How pages are organised</h3>
+      <ul>
+        <li><b>app/(auth)/</b> — login &amp; register pages.</li>
+        <li><b>app/patient/</b> — dashboard, find doctors, pre-consultation, consultation, AI consult, profile.</li>
+        <li><b>app/doctor/</b> — dashboard, appointments, consultation, post-call review, profile.</li>
+        <li><b>app/admin/</b> — overview, doctor approvals, AI engine, analytics, dev tools.</li>
+      </ul>
+      <h3>Design system &amp; components</h3>
+      <p>All buttons, cards, inputs, and badges come from a shared <b>UI kit</b> in <span class="kbadge">components/ui</span>. Colours are defined once as <b>design tokens</b> (like <span class="kbadge">--brand</span>, <span class="kbadge">--surface</span>) so light and dark mode just swap the token values. Animations use Framer Motion helpers kept in one file so motion feels consistent everywhere.</p>
+      <h3>How the frontend talks to the backend</h3>
+      <p>Pages call backend <b>API routes</b> using the browser's <span class="kbadge">fetch()</span> function. For example, the doctor's post-call page keeps calling an endpoint every few seconds to ask "what is the pipeline doing now?" and updates the progress bar with the answer. This repeated asking is called <span class="term" title="Polling = repeatedly asking the server for updates at fixed time gaps">polling</span>.</p>
+      <div class="note good"><b class="tag">State management</b>MediIQ keeps things simple: it uses React's built-in state (<span class="kbadge">useState</span>, <span class="kbadge">useEffect</span>) instead of heavy external libraries. Live shared state (like call status) comes through Socket.IO events, not a global store.</div>
+    </section>
+
+    <!-- ===================================================== 9. BACKEND -->
+    <section class="block" id="backend">
+      <span class="section-tag">How It Is Built</span>
+      <h2 class="section">9 · Backend &amp; Real-Time Layer</h2>
+      <h3>API routes</h3>
+      <p>Every backend action is an <b>API route</b> — a small function on the server that the frontend can call. They live under <span class="kbadge">app/api/</span>. Examples:</p>
+      <div class="tablewrap"><table>
+        <tr><th>Route</th><th>Purpose</th></tr>
+        <tr><td><b>/api/auth/login</b></td><td>Check email + password, hand back a login token.</td></tr>
+        <tr><td><b>/api/doctors/available</b></td><td>List all approved doctors for the "Find Doctors" page.</td></tr>
+        <tr><td><b>/api/appointments</b></td><td>Create a new booking.</td></tr>
+        <tr><td><b>/api/appointments/[id]/lock-preconsultation</b></td><td>Lock the form and start pre-warming agents 3/4/5.</td></tr>
+        <tr><td><b>/api/appointments/[id]/run-precall</b></td><td>Actually run agents 3/4/5 and wait for them (serverless-safe).</td></tr>
+        <tr><td><b>/api/appointments/[id]/end-call</b></td><td>Mark the call finished and save the transcript.</td></tr>
+        <tr><td><b>/api/appointments/[id]/run-pipeline</b></td><td>Run the post-call agents (2 → 6 → 7 → 8 → 9).</td></tr>
+        <tr><td><b>/api/appointments/[id]/prescription</b></td><td>Doctor sends the final prescription to the patient.</td></tr>
+        <tr><td><b>/api/chat</b></td><td>The post-visit patient chatbot.</td></tr>
+      </table></div>
+      <h3>The custom server &amp; Socket.IO</h3>
+      <p>A file called <span class="kbadge">server.ts</span> starts Next.js and a <b>Socket.IO</b> server at the same time. Socket.IO keeps an open "phone line" between browser and server. When a doctor accepts a patient, the server instantly pushes a message down that line, and the patient's screen updates without a refresh.</p>
+      <div class="note warn"><b class="tag">Serverless gotcha (great interview point)</b>On Vercel (where the app is deployed), a server function is frozen the moment it sends its reply. So you <b>cannot</b> "reply now, keep the AI running in the background" — the background work gets killed. MediIQ fixes this by making the pipeline routes <b>wait for the AI to finish before replying</b> (with an extended time limit), and by using an <b>atomic claim</b> in the database so the pipeline runs exactly once even though the page keeps polling.</div>
+    </section>
+
+    <!-- ===================================================== 10. AUTH -->
+    <section class="block" id="auth">
+      <span class="section-tag">How It Is Built</span>
+      <h2 class="section">10 · Authentication &amp; Security</h2>
+      <p><b>Authentication</b> means "proving who you are". MediIQ uses <b>JWT</b> (JSON Web Token) stored in a browser cookie.</p>
+      <h3>Login flow, step by step</h3>
+      <div class="flow">
+        <div class="step"><div class="dot">1</div><div class="st"><b>Register</b><p>The password is <b>hashed</b> with bcrypt — scrambled one-way so even the database never sees the real password.</p></div></div>
+        <div class="step"><div class="dot">2</div><div class="st"><b>Login</b><p>The server compares the typed password against the stored hash. If they match, it creates a <b>JWT</b>.</p></div></div>
+        <div class="step"><div class="dot">3</div><div class="st"><b>Token stored</b><p>The JWT (holding user id, role, name) is put in a cookie named <span class="kbadge">mediiq_token</span>, valid for 7 days.</p></div></div>
+        <div class="step"><div class="dot">4</div><div class="st"><b>Every request</b><p>The server reads the cookie, verifies the token's signature, and now knows exactly who is asking and what role they have.</p></div></div>
+      </div>
+      <div class="grid two">
+        <div class="mini"><h4>🔒 What a JWT is</h4><p>A signed ticket. "Signed" means the server can detect if anyone changed it. If tampered, it is rejected.</p></div>
+        <div class="mini"><h4>🔒 Role checks</h4><p>Each protected route checks the role — e.g. only a <b>patient</b> can list doctors, only the matching <b>doctor</b> can send that appointment's prescription.</p></div>
+        <div class="mini"><h4>🔒 Passwords</h4><p>Never stored in plain text. bcrypt hashing makes stolen data useless to attackers.</p></div>
+        <div class="mini"><h4>🔒 Secrets</h4><p>API keys and the JWT secret live in environment variables, never in the code or the Git repo.</p></div>
+      </div>
+      <div class="diagram">[ Authentication Flow Diagram Here ]</div>
+    </section>
+
+    <!-- ===================================================== 11. DATABASE -->
+    <section class="block" id="database">
+      <span class="section-tag">How It Is Built</span>
+      <h2 class="section">11 · Database</h2>
+      <p>MediIQ uses <b>MongoDB</b>, a database that stores data as flexible <b>documents</b> (like labelled boxes) grouped into <b>collections</b> (like folders). Mongoose defines the shape of each document.</p>
+      <h3>Main collections</h3>
+      <div class="tablewrap"><table>
+        <tr><th>Collection</th><th>Stores</th><th>Key fields</th></tr>
+        <tr><td><b>User</b></td><td>Every account.</td><td>name, email, password (hashed), role.</td></tr>
+        <tr><td><b>DoctorProfile</b></td><td>Doctor details.</td><td>specialization, qualification, fee, verificationStatus, isLive, rating, signature.</td></tr>
+        <tr><td><b>PatientProfile</b></td><td>Patient medical record.</td><td>age, gender, blood group, knownConditions, allergies, currentMedications, summaries.</td></tr>
+        <tr><td><b>Appointment</b></td><td>One consultation.</td><td>patientRef, doctorRef, status, preConsultation, transcript, agentOutputs, aiPrescription, agentPipelineStep.</td></tr>
+        <tr><td><b>Case</b></td><td>Anonymised past cases for search.</td><td>symptoms, diagnosis, prescription, patient demographics, <b>embedding</b> (the search vector).</td></tr>
+        <tr><td><b>SystemDetected</b></td><td>AI-found allergies/medicines pending patient approval.</td><td>patientRef, type, value, status.</td></tr>
+        <tr><td><b>ChatConversation</b></td><td>Post-visit chatbot messages.</td><td>patientRef, messages.</td></tr>
+        <tr><td><b>Settings</b></td><td>Global admin settings.</td><td>AI engine mode, demo mode.</td></tr>
+        <tr><td><b>Agent caches</b></td><td>Saved AI results to avoid repeating work.</td><td>cacheKey, result, expiresAt.</td></tr>
+      </table></div>
+      <h3>Relationships (how records connect)</h3>
+      <ul>
+        <li>An <b>Appointment</b> points to one <b>patient</b> and one <b>doctor</b> (via their user ids).</li>
+        <li>A <b>DoctorProfile</b> / <b>PatientProfile</b> each point to one <b>User</b>.</li>
+        <li>When we show a doctor's name, we "<b>populate</b>" — follow the pointer from DoctorProfile to User to fetch the name.</li>
+      </ul>
+      <div class="note warn"><b class="tag">Real bug this project hit (good story for interview)</b>When one API only imported <span class="kbadge">DoctorProfile</span> but not <span class="kbadge">User</span>, the "populate" step crashed on fresh serverless instances ("Schema not registered for model User"), so the doctor list showed empty until you refreshed. The fix: make each model <b>register the models it points to</b> so populate always works. A textbook serverless + Mongoose lesson.</div>
+      <h3>The special vector index</h3>
+      <p>The <b>Case</b> collection has an extra field called <span class="kbadge">embedding</span> — a long list of numbers describing the meaning of the case's symptoms. MongoDB Atlas builds a <b>vector index</b> (<span class="kbadge">case_vector_index</span>) on it so the AI can find "cases that mean something similar" very fast. This is the heart of the RAG search (Section 15).</p>
+      <div class="diagram">[ Database Schema / ER Diagram Here ]</div>
+    </section>
+
+    <!-- ===================================================== 12. AI ENGINE -->
+    <section class="block" id="ai-engine">
+      <span class="section-tag">The AI Brain</span>
+      <h2 class="section">12 · AI Engine &amp; Modes</h2>
+      <p>An <b>LLM</b> (Large Language Model) is an AI trained on huge amounts of text that can read and write like a person. MediIQ can use three different LLMs, and the <b>admin picks which one</b> the whole system uses. This choice is saved in the database, so it applies everywhere instantly.</p>
+      <h3>The three models</h3>
+      <div class="grid three">
+        <div class="mini"><h4>Gemini</h4><p>Google's model (<span class="kbadge">gemini-2.5-flash</span>). Strong medical reasoning. Also makes the search embeddings.</p></div>
+        <div class="mini"><h4>DeepSeek</h4><p>DeepSeek v4 Flash, used through the hosted <b>OpenCode Zen</b> API. No local setup needed.</p></div>
+        <div class="mini"><h4>Ollama</h4><p><span class="kbadge">qwen3:8b</span> running on a local machine — full privacy, no cloud.</p></div>
+      </div>
+      <h3>The four modes</h3>
+      <div class="tablewrap"><table>
+        <tr><th>Mode</th><th>How it behaves</th></tr>
+        <tr><td><b>Gemini Only</b></td><td>Every agent uses Gemini.</td></tr>
+        <tr><td><b>DeepSeek Only</b></td><td>Every agent uses DeepSeek.</td></tr>
+        <tr><td><b>Gemini + Ollama</b></td><td>Hybrid — the <b>prescriber</b> (Agent 6) prefers Gemini; all other agents use Ollama.</td></tr>
+        <tr><td><b>DeepSeek + Gemini</b></td><td>Hybrid — the <b>prescriber</b> prefers Gemini; all other agents use DeepSeek.</td></tr>
+      </table></div>
+      <h3>Why the prescriber is special</h3>
+      <p>Writing the actual prescription (Agent 6) is the most safety-critical step, so in hybrid modes MediIQ gives it the <b>best available model (Gemini)</b>. It does this with a clever race: it asks <b>both</b> models at the same time and <b>prefers Gemini if it answers within 60 seconds</b>; otherwise it uses the other model's answer so the patient is never left waiting. Every other (less critical) agent just uses the secondary model to save cost.</p>
+      <div class="note"><b class="tag">Permanent exception</b>The <b>embedding model is always Gemini</b> (<span class="kbadge">gemini-embedding-001</span>), no matter the mode. This is because the vector search index was built with Gemini's 3072-number embeddings, and search only works if the query uses the same embedding model.</div>
+    </section>
+
+    <!-- ===================================================== 13. AGENTS -->
+    <section class="block" id="agents">
+      <span class="section-tag">The AI Brain</span>
+      <h2 class="section">13 · The 9 AI Agents (in full detail)</h2>
+      <p>An <b>agent</b> here is a small, focused AI program that does <b>one job</b>, takes clear inputs, and returns a clear output. Instead of one giant AI doing everything, MediIQ uses 9 specialists in a chain. This is easier to build, test, cache, and trust. Each agent below lists its <b>purpose, input, output, how it works</b>, and <b>who it feeds</b>.</p>
+
+      <details class="collap" open><summary><span class="num">1</span> Patient Summary Agent <span class="chev">›</span></summary><div class="body">
+        <p><b>Purpose:</b> Give the doctor a quick summary of who this patient is.</p>
+        <p><b>Input:</b> the patient's profile + their past consultation history.</p>
+        <p><b>Output:</b> a <em>profile summary</em> (general background) and a <em>running clinical summary</em> (what has happened across past visits).</p>
+        <p><b>How it works:</b> runs when the profile is saved. It feeds the doctor's in-call briefing and Agent 6.</p>
+      </div></details>
+
+      <details class="collap"><summary><span class="num">2</span> Transcribe Agent <span class="chev">›</span></summary><div class="body">
+        <p><b>Purpose:</b> Turn the messy call conversation into clean, structured medical text.</p>
+        <p><b>Input:</b> the raw call transcript.</p>
+        <p><b>Output:</b> structured transcript + extracted symptoms, medicines, and allergies, with drug names <b>normalised</b> (standardised) using RxNorm.</p>
+        <p><b>How it works:</b> runs after the call. <b>Honesty rule:</b> if there was no audio/speech, it does <b>not</b> invent anything — it marks itself "no audio detected" and the pipeline continues using the pre-consultation form instead.</p>
+      </div></details>
+
+      <details class="collap"><summary><span class="num">3</span> Similar Cases Agent <span class="chev">›</span> <span class="kbadge" style="margin-left:6px">RAG</span></summary><div class="body">
+        <p><b>Purpose:</b> Find past patients whose symptoms look similar, to guide the current decision.</p>
+        <p><b>Input:</b> current symptoms, duration, severity, patient age &amp; conditions.</p>
+        <p><b>Output:</b> the top ~10 most relevant past cases + a plain-language "pattern summary" of what those cases usually turned out to be.</p>
+        <p><b>How it works (this is the RAG engine — see Section 15):</b> clean the symptom text → turn it into an embedding → vector-search the Case library → boost cases with matching age/conditions → ask the LLM to re-rank the best 10 → summarise. Feeds Agent 6.</p>
+      </div></details>
+
+      <details class="collap"><summary><span class="num">4</span> Medical Context Agent <span class="chev">›</span> <span class="kbadge" style="margin-left:6px">RAG</span></summary><div class="body">
+        <p><b>Purpose:</b> Gather trusted medical knowledge about the patient's conditions/symptoms.</p>
+        <p><b>Input:</b> the patient's conditions and booking symptoms.</p>
+        <p><b>Output:</b> official <b>ICD-10 codes</b> (standard disease codes), patient-friendly explanations, and an evidence summary (findings, possible diagnoses, differentials, red flags).</p>
+        <p><b>How it works:</b> looks up each condition's ICD-10 code (local table first, then NIH's API), pulls patient-friendly info from <b>MedlinePlus</b>, retrieves supporting evidence, and summarises it. Feeds Agent 6.</p>
+      </div></details>
+
+      <details class="collap"><summary><span class="num">5</span> Allergy Context Agent <span class="chev">›</span></summary><div class="body">
+        <p><b>Purpose:</b> Understand the patient's allergies deeply — not just the one drug, but the whole <b>drug family</b>.</p>
+        <p><b>Input:</b> the patient's known allergies.</p>
+        <p><b>Output:</b> each allergy expanded into its drug class, cross-reactivity warnings (related drugs that could also cause a reaction), and safe alternatives.</p>
+        <p><b>How it works:</b> uses <b>RxClass</b> (a drug-classification database) to expand, e.g., "Penicillin allergy" into the whole penicillin/beta-lactam family. Feeds Agents 6 and 8.</p>
+      </div></details>
+
+      <details class="collap"><summary><span class="num">6</span> Reasoning / Prescriber Agent <span class="chev">›</span> <span class="kbadge" style="margin-left:6px">most important</span></summary><div class="body">
+        <p><b>Purpose:</b> The actual decision-maker. Write the draft prescription.</p>
+        <p><b>Input:</b> <em>everything</em> — patient profile, structured transcript (Agent 2), similar cases (Agent 3), medical context (Agent 4), allergy context (Agent 5).</p>
+        <p><b>Output:</b> a diagnosis, a list of medicines (with dose, timing, frequency, duration, purpose), 5 advice points, and a drug-safety note — all as clean JSON.</p>
+        <p><b>How it works:</b> a carefully written prompt tells it to reason independently (similar cases are "weak references", never to be copied), to avoid risky drugs for at-risk patients (e.g. no NSAIDs for diabetics), and to check interactions with current medicines. In hybrid modes, it prefers Gemini for quality. Feeds Agents 7 and 8.</p>
+      </div></details>
+
+      <details class="collap"><summary><span class="num">7</span> Drug Interaction Check Agent <span class="chev">›</span> <span class="kbadge" style="margin-left:6px">safety</span></summary><div class="body">
+        <p><b>Purpose:</b> Catch dangerous drug-drug combinations and wrong doses.</p>
+        <p><b>Input:</b> the draft prescription + patient's current medicines/conditions.</p>
+        <p><b>Output:</b> a PASS/FLAG verdict for each medicine, with reasons.</p>
+        <p><b>How it works:</b> checks interactions using the <b>DDInter</b> interaction database and verifies indications/doses via <b>openFDA</b> drug labels. Flags feed back to Agent 6.</p>
+      </div></details>
+
+      <details class="collap"><summary><span class="num">8</span> Allergy Safety Check Agent <span class="chev">›</span> <span class="kbadge" style="margin-left:6px">safety</span></summary><div class="body">
+        <p><b>Purpose:</b> Make sure no prescribed medicine could trigger the patient's allergies.</p>
+        <p><b>Input:</b> the draft prescription + the expanded allergy classes from Agent 5.</p>
+        <p><b>Output:</b> PASS or a violation flag per drug (e.g. "Cephalexin cross-reacts with a Penicillin allergy").</p>
+        <p><b>How it works:</b> cross-checks each drug's class (via RxClass) against the patient's allergy classes. Flags feed back to Agent 6.</p>
+      </div></details>
+
+      <details class="collap"><summary><span class="num">9</span> Finding Detector Agent <span class="chev">›</span></summary><div class="body">
+        <p><b>Purpose:</b> Keep the patient's record up to date automatically.</p>
+        <p><b>Input:</b> the final pipeline output.</p>
+        <p><b>Output:</b> new "findings" — e.g. an allergy or a long-term medicine mentioned during the visit — saved as <b>pending</b> for the patient to confirm.</p>
+        <p><b>How it works:</b> writes findings to the <span class="kbadge">SystemDetected</span> collection so they can be added to the profile after approval.</p>
+      </div></details>
+      <div class="diagram">[ Agent Communication / Data-Flow Diagram Here ]<span>Suggested: 1 & 3 & 4 & 5 → feed → 6 → 7 & 8 (loop back to 6) → 9</span></div>
+    </section>
+
+    <!-- ===================================================== 14. PIPELINE -->
+    <section class="block" id="pipeline">
+      <span class="section-tag">The AI Brain</span>
+      <h2 class="section">14 · The Agent Pipeline (orchestration)</h2>
+      <p>The <b>pipeline</b> is the manager that runs the agents in the right order and saves their results. It runs in <b>two phases</b>.</p>
+      <h3>Phase 1 — Pre-warm (when the patient locks the form)</h3>
+      <p>Agents <b>3, 4, 5</b> run in the <b>background, in parallel</b> (all at once, because they don't depend on each other). Their results are saved so they are ready before the call even ends. This makes the final prescription faster.</p>
+      <h3>Phase 2 — Post-call (when the call ends)</h3>
+      <div class="flow">
+        <div class="step"><div class="dot">A</div><div class="st"><b>Agent 2 transcribes</b><p>(or skips if no audio).</p></div></div>
+        <div class="step"><div class="dot">B</div><div class="st"><b>Make sure 3/4/5 exist</b><p>If the pre-warm didn't finish (very short call), the pipeline runs the missing ones now.</p></div></div>
+        <div class="step"><div class="dot">C</div><div class="st"><b>Agent 6 prescribes</b><p>Using all gathered data.</p></div></div>
+        <div class="step"><div class="dot">D</div><div class="st"><b>Agents 7 &amp; 8 verify</b><p>If clean → done. If flagged → loop back to Agent 6 (max 2 loops) to replace unsafe drugs.</p></div></div>
+        <div class="step"><div class="dot">E</div><div class="st"><b>Agent 9 records findings, save final prescription</b><p>The doctor's page shows every result live.</p></div></div>
+      </div>
+      <h3>The safety loop (great to explain in interviews)</h3>
+      <p>This is the clever part. Agent 6 writes a prescription → Agents 7 &amp; 8 judge it → if a drug is unsafe, the flags are sent <b>back into Agent 6</b>, which rewrites the prescription avoiding those drugs → checked again. This repeats up to 2 times, then anything still unresolved is escalated to the human doctor. Flagged drugs are <b>never</b> sent to the patient.</p>
+      <div class="note good"><b class="tag">Reliability details</b>Each agent's result is saved to the database <b>the instant it finishes</b>, so if the doctor refreshes the page, completed agents stay done and only unfinished ones restart. An <b>atomic claim</b> (a one-shot database flag) makes sure the pipeline runs exactly once even though the page polls every 2.5 seconds. Writes use "dot-notation" updates so one agent's save never erases another's.</div>
+      <div class="diagram">[ Agent Pipeline State Machine Diagram Here ]</div>
+    </section>
+
+    <!-- ===================================================== 15. RAG -->
+    <section class="block" id="rag">
+      <span class="section-tag">The AI Brain</span>
+      <h2 class="section">15 · RAG Pipeline (similar-case retrieval)</h2>
+      <p><b>RAG</b> means <b>Retrieval-Augmented Generation</b>. In simple words: <em>before the AI answers, first go fetch relevant real information, then let the AI use it.</em> This makes answers grounded in real data instead of guesses. MediIQ's Agent 3 is a full RAG system over the clinic's <b>Case library</b>.</p>
+
+      <h3>Step 0 — The data (the "knowledge")</h3>
+      <p>The <b>Case</b> collection holds many anonymised past cases: symptoms, diagnosis, prescription, and patient demographics. Each case was turned into an <b>embedding</b> when it was stored.</p>
+      <div class="note"><b class="tag">What is an embedding?</b>An <b>embedding</b> is a list of numbers (here, <b>3072 numbers</b>) that represents the <em>meaning</em> of text. Two texts with similar meaning get similar number-lists, even if they use different words. "high temperature" and "fever" land close together. This lets the computer measure "meaning-closeness" mathematically.</div>
+
+      <h3>Step 1 — Clean the symptom text</h3>
+      <p>The patient's typed symptoms may have typos or slang. If the text looks messy, a quick LLM call cleans it into proper clinical words (e.g. "cant stop coughin" → "persistent cough"). If it already looks clean, this step is skipped to save time and money.</p>
+
+      <h3>Step 2 — Turn the query into an embedding</h3>
+      <p>The cleaned symptoms are sent to Gemini's embedding model, which returns the 3072-number vector. Importantly, only <b>symptoms</b> are embedded (not age/history), so matching is based on the illness itself.</p>
+
+      <h3>Step 3 — Vector search in MongoDB Atlas</h3>
+      <p>MongoDB compares the query vector against every case's stored vector using the <span class="kbadge">case_vector_index</span>, and returns the closest matches. It looks at 150 candidates and keeps the top 50.</p>
+      <div class="code"><div class="cap"><span>Concept: the vector search (simplified)</span><button class="copybtn">Copy</button></div><pre>$vectorSearch:
+  index: "case_vector_index"
+  path: "embedding"          // the 3072-number field on each Case
+  queryVector: [ ...3072 numbers... ]  // the patient's symptoms
+  numCandidates: 150         // scan 150 nearby cases
+  limit: 50                  // keep the best 50</pre></div>
+
+      <h3>Step 4 — Demographic boost (re-ranking part 1)</h3>
+      <p>Pure meaning-match isn't enough. A case from a patient with the <b>same conditions</b> or a <b>close age</b> is more useful, so MediIQ adds a small score boost to those and re-sorts. This is a simple, fast, rule-based re-rank.</p>
+
+      <h3>Step 5 — LLM re-rank (re-ranking part 2)</h3>
+      <p>The top 15 cases are shown to the LLM, which picks the <b>10 most clinically relevant</b> and writes a one-line reason for each. This is smarter than pure math because it understands clinical nuance (e.g. differential diagnoses).</p>
+
+      <h3>Step 6 — Build the summary (the "generation")</h3>
+      <p>The LLM reads the final 10 cases and writes a short <b>pattern summary</b>: the most common diagnoses, the usual treatments, and any safety patterns. This summary + the 10 cases are handed to <b>Agent 6</b> as a <em>weak reference</em> — helpful context, never a copy-paste answer.</p>
+
+      <h3>Step 7 — Cache the result</h3>
+      <p>The whole result is saved with a 30-day sliding cache. If a very similar patient appears again, the answer is returned instantly without redoing the search.</p>
+      <div class="note warn"><b class="tag">Why it is designed this way</b>Real medical guidance must be <b>grounded</b> in real cases and must not be blindly copied. So RAG retrieves real precedent, re-ranking picks the best, and the prompt firmly tells Agent 6 to reason independently. Retrieval gives knowledge; the prompt guards safety.</div>
+      <div class="diagram">[ RAG Pipeline Diagram Here ]<span>Suggested: symptoms → clean → embed → vector search → demographic boost → LLM rerank → summary → Agent 6</span></div>
+    </section>
+
+    <!-- ===================================================== 16. MEDICAL DATA -->
+    <section class="block" id="medical-data">
+      <span class="section-tag">The AI Brain</span>
+      <h2 class="section">16 · Medical Data &amp; Knowledge Sources</h2>
+      <p>The AI is only as good as the medical knowledge it can reach. MediIQ combines its <b>own case library</b> with several <b>free, official medical databases</b>. Here is every source and what it is used for.</p>
+      <div class="tablewrap"><table>
+        <tr><th>Source</th><th>What it is</th><th>Used by / for</th></tr>
+        <tr><td><b>Case library (own DB)</b></td><td>Anonymised past consultations with embeddings.</td><td>Agent 3 — similar-case RAG search.</td></tr>
+        <tr><td><b>NIH Clinical Tables</b></td><td>Official US service that maps illness names to <b>ICD-10 codes</b>.</td><td>Agent 4 — standard disease codes.</td></tr>
+        <tr><td><b>MedlinePlus Connect</b></td><td>Patient-friendly explanations of conditions from the US National Library of Medicine.</td><td>Agent 4 — plain-language condition info.</td></tr>
+        <tr><td><b>MedlinePlus Web Search</b></td><td>Health-topic search service.</td><td>Agent 4 — extra supporting evidence.</td></tr>
+        <tr><td><b>RxNorm (RxNav)</b></td><td>Standard names &amp; IDs for medicines.</td><td>Agent 2 — normalise drug names.</td></tr>
+        <tr><td><b>RxClass (RxNav)</b></td><td>Groups drugs into families/classes.</td><td>Agents 5 &amp; 8 — allergy class expansion &amp; cross-checks.</td></tr>
+        <tr><td><b>DDInter</b></td><td>Drug-drug interaction database.</td><td>Agent 7 — dangerous-combination checks.</td></tr>
+        <tr><td><b>openFDA</b></td><td>Official FDA drug labels, indications, warnings.</td><td>Agents 4 &amp; 7 — dose/indication verification.</td></tr>
+      </table></div>
+      <div class="note"><b class="tag">Why these were chosen</b>They are <b>free, official, and trustworthy</b>. Using government/standard medical databases (instead of random web text) keeps the AI's facts reliable — critical for a health app. Results are cached to stay fast and to avoid hammering the free APIs.</div>
+      <h3>What is "ICD-10"? (you will be asked)</h3>
+      <p>ICD-10 is a worldwide list of standard codes for diseases (e.g. a specific code for "influenza"). Using codes instead of free text means the system can talk about diseases precisely and pull the exact matching information.</p>
+    </section>
+
+    <!-- ===================================================== 17. VITALS -->
+    <section class="block" id="vitals">
+      <span class="section-tag">Vitals ML</span>
+      <h2 class="section">17 · Camera Vitals — rPPG + Blood-Pressure Model</h2>
+      <p>This is the most impressive part to explain in an interview, so it is covered in the most detail. The goal: <b>measure heart rate and blood pressure from a 30-second face video</b>, with no cuff and no wearable.</p>
+
+      <h3>The core idea — what is rPPG?</h3>
+      <p><b>rPPG</b> stands for <b>remote photoplethysmography</b>. Long word, simple idea:</p>
+      <ul>
+        <li>Every time your heart beats, it pushes blood into your face.</li>
+        <li>That extra blood changes the colour of your skin by a <b>tiny</b> amount — far too small for the eye to see, but a camera can measure it.</li>
+        <li>By watching how the skin colour rises and falls over time, we can recover your <b>pulse waveform</b> — the same wavy signal a fingertip pulse-oximeter produces.</li>
+      </ul>
+      <div class="note"><b class="tag">Plain-word definition</b><b>PPG signal</b> = a wavy line showing your pulse over time. <b>rPPG</b> = getting that same wavy line from a <em>camera</em> instead of a clip on your finger.</div>
+
+      <h3>Part A — How the machine-learning model was MADE and TRAINED</h3>
+      <p>Blood pressure is predicted by a trained ML model. Here is exactly how that model was built, in order.</p>
+
+      <h4>1. The training data (what medical data was added)</h4>
+      <p>The model was trained on a public medical dataset called the <b>PPG-BP dataset</b>. It contains real <b>finger PPG recordings</b> from many subjects, each labelled with that person's true <b>systolic and diastolic blood pressure</b> (measured with a real cuff). Each subject has multiple recordings. This gives pairs of <em>"here is a pulse waveform"</em> → <em>"here is the real blood pressure"</em>, which is exactly what a model needs to learn from.</p>
+      <div class="note"><b class="tag">Two numbers in blood pressure</b><b>SBP</b> (systolic) = the higher number, pressure when the heart beats. <b>DBP</b> (diastolic) = the lower number, pressure when the heart rests. The model predicts both.</div>
+
+      <h4>2. Turning waveforms into "features"</h4>
+      <p>The model does not read the raw wavy line. Instead, each waveform is summarised into <b>15 meaningful numbers</b> called <b>features</b> (a feature = one measurable property of the signal). These describe the shape and rhythm of the pulse:</p>
+      <div class="tablewrap"><table>
+        <tr><th>Feature group</th><th>Features</th><th>Meaning (simple)</th></tr>
+        <tr><td><b>Heart rate</b></td><td>hr_fft, hr_peaks, hr_final</td><td>How fast the heart beats, measured two ways then averaged.</td></tr>
+        <tr><td><b>Heart-rate variability</b></td><td>rmssd, sdnn, pnn50</td><td>How much the time between beats changes — a health signal.</td></tr>
+        <tr><td><b>Pulse shape (morphology)</b></td><td>pulse_width, rise_time, fall_time, peak_amplitude, notch_ratio, aug_index</td><td>The exact shape of each pulse wave — strongly linked to blood pressure.</td></tr>
+        <tr><td><b>Quality</b></td><td>signal_quality, peak_count, signal_std</td><td>How clean/trustworthy the signal is.</td></tr>
+      </table></div>
+      <p>Why features instead of the raw signal? Because these shape numbers (like how sharp the pulse rises, or the "dicrotic notch" caused by the artery's elasticity) carry the real information about blood pressure, and they let a simpler, faster, more reliable model do the job.</p>
+
+      <h4>3. The model type — XGBoost quantile regression</h4>
+      <p><b>XGBoost</b> is a popular ML method that combines many small decision trees to predict a number. MediIQ actually trains <b>6 models</b>:</p>
+      <ul>
+        <li>3 for <b>SBP</b> and 3 for <b>DBP</b>.</li>
+        <li>For each, one predicts the <b>low estimate</b> (5th percentile), one the <b>middle</b> (50th, the actual answer), and one the <b>high estimate</b> (95th percentile).</li>
+        <li>The low + high give a <b>90% confidence range</b> — e.g. "systolic ≈ 122, likely between 114 and 130". Showing a range is more honest than a single fake-precise number.</li>
+      </ul>
+      <div class="code"><div class="cap"><span>Training config (from train.py) — explained below</span><button class="copybtn">Copy</button></div><pre>objective     = "reg:quantileerror"   # predict a percentile, not just the mean
+max_depth     = 5        # each tree is shallow (avoids over-fitting)
+n_estimators  = 400      # up to 400 trees
+learning_rate = 0.03     # learn slowly and carefully
+early_stopping_rounds = 30   # stop if it stops improving
+reg_alpha=0.1, reg_lambda=1.0   # penalties that keep the model simple
+train/test split = 80% / 20%    # learn on 80%, grade on the unseen 20%</pre></div>
+      <p>In simple words: it builds up to 400 tiny decision trees, learning slowly so it generalises well, checks itself on data it never saw, and stops early if it is no longer improving. The trained models are saved as <span class="kbadge">.pkl</span> files and loaded by the vitals service.</p>
+
+      <h4>4. How the model is graded</h4>
+      <p>It is scored with <b>MAE</b> (Mean Absolute Error = average mistake in mmHg) and <b>coverage</b> (how often the true value really falls inside the predicted 90% range). Heart rate lands within roughly <b>±5–8 beats per minute</b> in good lighting.</p>
+      <div class="note"><b class="tag">Research/lab model</b>Alongside XGBoost, the project also experiments with a deep-learning model — a <b>1D-ResNet</b> neural network (saved as a <span class="kbadge">.pth</span> file) — kept in a separate "lab" area for research. XGBoost is the production choice because it is fast, light, and reliable on this feature-based data.</div>
+
+      <h3>Part B — How a live camera scan works (inference)</h3>
+      <p>The training used clean finger data at 1000 samples/second. A webcam is much slower (~30 frames/second) and noisier, so the live pipeline has to carefully convert the camera signal to match what the model expects.</p>
+      <div class="flow">
+        <div class="step"><div class="dot">1</div><div class="st"><b>Capture face video (~30 fps)</b><p>The patient looks at the camera for ~30 seconds.</p></div></div>
+        <div class="step"><div class="dot">2</div><div class="st"><b>Find skin regions with MediaPipe</b><p>MediaPipe locates the face; the app samples 3 skin patches: <b>forehead, left cheek, right cheek</b>. It averages the colour in each patch per frame.</p></div></div>
+        <div class="step"><div class="dot">3</div><div class="st"><b>POS algorithm → pulse waveform</b><p>The <b>POS</b> (Plane-Orthogonal-to-Skin) algorithm combines the red/green/blue colour changes in a way that cancels out lighting noise and keeps the real pulse. Done for each of the 3 patches.</p></div></div>
+        <div class="step"><div class="dot">4</div><div class="st"><b>Combine the 3 patches by quality</b><p>Each patch gets a signal-quality score (SNR). Cleaner patches count more in the final combined waveform.</p></div></div>
+        <div class="step"><div class="dot">5</div><div class="st"><b>Resample 30 Hz → 1000 Hz</b><p>The camera waveform is stretched to 1000 samples/second so it matches the training data exactly. This step is critical — without it the features would be wrong.</p></div></div>
+        <div class="step"><div class="dot">6</div><div class="st"><b>Extract the 15 features</b><p>The same feature code used in training runs on the live waveform.</p></div></div>
+        <div class="step"><div class="dot">7</div><div class="st"><b>XGBoost predicts BP + HR</b><p>The 6 models output systolic &amp; diastolic with a 90% range, plus heart rate and an AHA blood-pressure category (Normal / Elevated / High).</p></div></div>
+      </div>
+
+      <h3>Part C — Privacy (a strong talking point)</h3>
+      <div class="note good"><b class="tag">No video ever leaves the device</b>The browser does the face-detection and colour-averaging <b>locally</b>, then sends only the tiny per-frame colour numbers (about 30 KB) to the Python vitals API. The actual video of the patient's face is <b>never uploaded or stored</b>. The server just runs POS → resample → features → prediction and returns the numbers.</div>
+      <h3>Where the vitals service lives</h3>
+      <p>The vitals system is a separate <b>Python FastAPI service</b> (in the <span class="kbadge">ml/</span> folder). The main endpoint is <span class="kbadge">/api/v1/vitals/predict-rgb</span>. It validates the input (must be 3 equal-length patches, values 0–255, at least 60 frames), rejects low-quality scans with a helpful message ("please rescan in better lighting"), and returns the result. The Next.js app calls this service and attaches the vitals to the pre-consultation.</p>
+      <div class="diagram">[ rPPG → Feature → XGBoost Pipeline Diagram Here ]<span>Suggested: Face video → MediaPipe ROIs → POS → combine → resample 1000Hz → 15 features → 6 XGBoost models → BP + HR</span></div>
+    </section>
+
+    <!-- ===================================================== 18. VIDEO -->
+    <section class="block" id="video">
+      <span class="section-tag">Everything Else</span>
+      <h2 class="section">18 · Video Consultations</h2>
+      <p>The live call uses <b>Agora</b>, a video-calling service. Building reliable video from scratch is very hard, so a proven service is used instead.</p>
+      <ul>
+        <li><b>Agora RTC</b> carries the actual audio/video streams between doctor and patient.</li>
+        <li><b>Agora tokens</b> (short-lived signed passes) are generated by the backend so only the two right people can join that specific call room.</li>
+        <li><b>Socket.IO</b> carries the "control" messages: doctor accepted, patient joined, call ended. These update both screens instantly.</li>
+      </ul>
+      <p>When the call ends, the app saves the transcript and flips the appointment to <span class="kbadge">post_call</span>, which triggers the post-call agent pipeline.</p>
+      <div class="diagram">[ Video Call Signalling Diagram Here ]</div>
+    </section>
+
+    <!-- ===================================================== 19. PRESCRIPTION -->
+    <section class="block" id="prescription">
+      <span class="section-tag">Everything Else</span>
+      <h2 class="section">19 · Prescription &amp; PDF</h2>
+      <p>Agent 6 produces the prescription as structured data (JSON). The doctor's page fills an editable form with it. Here is the shape of that data:</p>
+      <div class="code"><div class="cap"><span>Prescription data shape (example)</span><button class="copybtn">Copy</button></div><pre>{
+  "diagnosis": "Prolonged viral syndrome with fever and myalgia",
+  "medicines": [{
+    "medicine": "Paracetamol", "dosage": "500mg",
+    "timing": "after food", "frequency": "as needed",
+    "duration": "3 days",
+    "condition": "take only if temperature > 100.4F",
+    "purpose": "Reduce fever and relieve pain"
+  }],
+  "advice": ["Drink plenty of fluids", "Rest well", ...],
+  "drugSafetyNote": "Paracetamol chosen because NSAIDs are unsafe with diabetes"
+}</pre></div>
+      <p>Once the doctor edits and approves, the <b>@react-pdf/renderer</b> library builds a clean, branded PDF with the clinic header, patient details, medicines table, advice, the drug-safety note, and the doctor's saved signature image. Flagged (unsafe) drugs are excluded automatically.</p>
+      <div class="note"><b class="tag">Post-visit chatbot</b>After the visit, the patient can open a chat assistant that knows their prescription and can answer "when should I take this?" or "I got a rash — what should I do?". It is powered by the same LLM engine.</div>
+    </section>
+
+    <!-- ===================================================== 20. CACHING -->
+    <section class="block" id="caching">
+      <span class="section-tag">Everything Else</span>
+      <h2 class="section">20 · Caching &amp; Performance</h2>
+      <p>AI calls and external medical APIs are slow and sometimes cost money. MediIQ avoids repeating work with several layers of <b>caching</b> (saving a result to reuse later).</p>
+      <div class="grid two">
+        <div class="mini"><h4>Agent result caches</h4><p>Agents 3, 4, 5, 7, 8 each have their own cache collection. A repeat of a similar request returns the saved answer instantly.</p></div>
+        <div class="mini"><h4>Sliding TTL</h4><p>Caches expire after a period (e.g. 30 days), but each use extends the life — popular answers stay hot.</p></div>
+        <div class="mini"><h4>Pre-warming</h4><p>Agents 3/4/5 run during the call, so their results are ready by the time it ends.</p></div>
+        <div class="mini"><h4>Parallel execution</h4><p>Independent agents run at the same time instead of one after another.</p></div>
+        <div class="mini"><h4>Skip cheap LLM calls</h4><p>Clean symptom text skips the "clean-up" LLM call entirely.</p></div>
+        <div class="mini"><h4>External-API cache</h4><p>MedlinePlus/ICD lookups are cached in memory/DB to avoid re-hitting free APIs.</p></div>
+      </div>
+    </section>
+
+    <!-- ===================================================== 21. ERRORS -->
+    <section class="block" id="errors">
+      <span class="section-tag">Everything Else</span>
+      <h2 class="section">21 · Error Handling &amp; Reliability</h2>
+      <ul>
+        <li><b>Honest empty states:</b> if an agent finds nothing (no similar cases, no audio), it says so instead of inventing data.</li>
+        <li><b>allSettled for parallel agents:</b> if one of agents 3/4/5 fails, the other two are still saved — one failure never wastes the others' work.</li>
+        <li><b>Model fallback:</b> if the preferred model times out, the backup model answers so the user is never stuck.</li>
+        <li><b>Atomic claim:</b> guarantees the pipeline runs exactly once despite constant page polling.</li>
+        <li><b>Serverless-safe DB connection:</b> reuses the database connection only if it is truly alive, retries on failure, and never caches a broken connection — this fixed an intermittent "no data until refresh" bug.</li>
+        <li><b>Graceful API failures:</b> external medical APIs have timeouts; if one is down, the agent continues with what it has.</li>
+      </ul>
+    </section>
+
+    <!-- ===================================================== 22. ENV -->
+    <section class="block" id="env">
+      <span class="section-tag">Everything Else</span>
+      <h2 class="section">22 · Environment Variables (purpose only)</h2>
+      <div class="note warn"><b class="tag">Security</b>These are secret settings kept <b>outside</b> the code (in a <span class="kbadge">.env.local</span> file, and in Vercel's settings). The actual secret values are never shown or committed to Git. Only their <em>purpose</em> is listed here.</div>
+      <div class="tablewrap"><table>
+        <tr><th>Variable</th><th>Purpose</th></tr>
+        <tr><td><b>MONGODB_URI</b></td><td>Address + credentials to connect to the MongoDB Atlas database.</td></tr>
+        <tr><td><b>JWT_SECRET</b></td><td>Secret key used to sign and verify login tokens.</td></tr>
+        <tr><td><b>GEMINI_API_KEY</b></td><td>Key to use Google Gemini (reasoning + embeddings).</td></tr>
+        <tr><td><b>DEEPSEEK_API_KEY</b></td><td>Key for DeepSeek via the OpenCode Zen API.</td></tr>
+        <tr><td><b>OLLAMA_URL</b></td><td>Address of the local Ollama server (optional).</td></tr>
+        <tr><td><b>AGORA app id / certificate</b></td><td>Credentials for the video-call service &amp; token generation.</td></tr>
+      </table></div>
+    </section>
+
+    <!-- ===================================================== 23. DEPLOY -->
+    <section class="block" id="deploy">
+      <span class="section-tag">Everything Else</span>
+      <h2 class="section">23 · Deployment</h2>
+      <ul>
+        <li>The <b>Next.js app</b> (frontend + API + Socket.IO) is deployed on <b>Vercel</b>.</li>
+        <li>The long-running pipeline routes set an extended time limit (<span class="kbadge">maxDuration = 300</span>) so the AI can finish before the serverless function is stopped (Pro plan allows up to 300s; the free Hobby plan caps at 60s).</li>
+        <li>The <b>Python vitals service</b> runs separately (it can be tunnelled during development with ngrok; CORS is configured to allow the Vercel and localhost origins).</li>
+        <li>The database is <b>MongoDB Atlas</b> (cloud), which also hosts the vector search index.</li>
+      </ul>
+    </section>
+
+    <!-- ===================================================== 24. LIMITS -->
+    <section class="block" id="limits">
+      <span class="section-tag">Everything Else</span>
+      <h2 class="section">24 · Limitations (be honest in interviews)</h2>
+      <ul>
+        <li><b>Not a medical device.</b> It assists a doctor; it is not certified for real clinical use on its own.</li>
+        <li><b>Vitals are estimates.</b> Camera BP/HR depends on good lighting and a still face; it is not a replacement for a real cuff.</li>
+        <li><b>LLMs can make mistakes.</b> That is exactly why two safety agents + a human doctor review every prescription.</li>
+        <li><b>Case library is small.</b> RAG quality grows as more anonymised cases are added.</li>
+        <li><b>Serverless time limits.</b> Very slow model runs can hit the platform's function time cap.</li>
+      </ul>
+    </section>
+
+    <!-- ===================================================== 25. FUTURE -->
+    <section class="block" id="future">
+      <span class="section-tag">Everything Else</span>
+      <h2 class="section">25 · Future Improvements</h2>
+      <div class="grid two">
+        <div class="mini"><h4>Fine-tuned medical chatbot</h4><p>A model specialised for post-consultation support + allergy tracking.</p></div>
+        <div class="mini"><h4>Bigger, richer case library</h4><p>More anonymised cases → sharper RAG retrieval.</p></div>
+        <div class="mini"><h4>More vitals</h4><p>Add SpO2 (oxygen), respiration rate, and stress from the same face video.</p></div>
+        <div class="mini"><h4>Better deep-learning rPPG</h4><p>Move the lab neural-network models into production for tougher lighting.</p></div>
+        <div class="mini"><h4>Real speech-to-text</h4><p>Live transcription during the call for Agent 2.</p></div>
+        <div class="mini"><h4>Multi-language support</h4><p>Serve patients in regional languages.</p></div>
+      </div>
+    </section>
+
+    <!-- ===================================================== 26. DECISIONS -->
+    <section class="block" id="decisions">
+      <span class="section-tag">Everything Else</span>
+      <h2 class="section">26 · Key Design Decisions (with reasons)</h2>
+      <div class="tablewrap"><table>
+        <tr><th>Decision</th><th>Why</th></tr>
+        <tr><td><b>Many small agents, not one big AI</b></td><td>Easier to build, test, cache, and trust; each step is inspectable.</td></tr>
+        <tr><td><b>Human doctor always signs</b></td><td>Safety + legality. AI assists, never replaces.</td></tr>
+        <tr><td><b>Two independent safety agents</b></td><td>Drug interactions and allergies are different risks; checking both catches more.</td></tr>
+        <tr><td><b>Feature-based XGBoost for BP</b></td><td>Fast, light, reliable on small feature data; gives honest confidence ranges.</td></tr>
+        <tr><td><b>Browser-side vitals extraction</b></td><td>Privacy — the face video never leaves the device.</td></tr>
+        <tr><td><b>Switchable AI engine</b></td><td>Flexibility over cost, speed, and privacy.</td></tr>
+        <tr><td><b>Awaited pipeline routes</b></td><td>Survive serverless (background tasks get killed on Vercel).</td></tr>
+        <tr><td><b>Gemini-only embeddings</b></td><td>Vector search only works if query and stored vectors use the same model.</td></tr>
+      </table></div>
+    </section>
+
+    <!-- ===================================================== 27. INTERVIEW -->
+    <section class="block" id="interview">
+      <span class="section-tag">Everything Else</span>
+      <h2 class="section">27 · Interview Q&amp;A — Quick Reference</h2>
+      <p>Short, ready-to-say answers to the most likely questions.</p>
+
+      <details class="collap"><summary><span class="num">Q</span> In one line, what is MediIQ? <span class="chev">›</span></summary><div class="body"><p>An AI-assisted telemedicine platform where a real doctor runs a video consultation and a 9-agent AI pipeline prepares context, drafts a safety-checked prescription, and even reads vitals from a face video — but the doctor always approves the final prescription.</p></div></details>
+
+      <details class="collap"><summary><span class="num">Q</span> How does RAG work here? <span class="chev">›</span></summary><div class="body"><p>Symptoms are turned into a 3072-number embedding with Gemini, MongoDB Atlas vector-searches the case library for the closest cases, they're re-ranked (first by matching age/conditions, then by the LLM), summarised, and handed to the prescriber as grounding context — never copied.</p></div></details>
+
+      <details class="collap"><summary><span class="num">Q</span> How was the BP model trained? <span class="chev">›</span></summary><div class="body"><p>On the public PPG-BP dataset (finger PPG waveforms labelled with real cuff BP). Each waveform becomes 15 shape/rhythm features. Six XGBoost quantile models (SBP &amp; DBP × low/median/high) are trained with an 80/20 split, shallow trees, slow learning rate, regularisation, and early stopping — giving a BP estimate plus a 90% confidence range.</p></div></details>
+
+      <details class="collap"><summary><span class="num">Q</span> How do you get BP from a camera? <span class="chev">›</span></summary><div class="body"><p>MediaPipe finds 3 skin patches (forehead + cheeks), the POS algorithm turns their tiny colour changes into a pulse waveform, patches are combined by quality, the signal is resampled to 1000 Hz to match training, 15 features are extracted, and XGBoost predicts BP + HR. Only colour numbers (not video) leave the device.</p></div></details>
+
+      <details class="collap"><summary><span class="num">Q</span> How do you make it safe? <span class="chev">›</span></summary><div class="body"><p>Two independent AI agents check every draft — one for drug-drug interactions (DDInter/openFDA), one for allergy conflicts (RxClass). If anything is flagged, the prescriber rewrites it (up to 2 loops). Flagged drugs are never sent, and a licensed doctor signs off.</p></div></details>
+
+      <details class="collap"><summary><span class="num">Q</span> Biggest technical challenge? <span class="chev">›</span></summary><div class="body"><p>Running a long multi-step AI pipeline on serverless, where background tasks get killed. Solved with awaited routes + extended time limits + an atomic once-only claim + saving each agent's result immediately so refreshes never lose progress.</p></div></details>
+    </section>
+
+    <footer class="docfoot">
+      <p><b>MediIQ — Complete Project Handbook.</b> Every section above explains one part of the system in plain words, with placeholders where you can drop in your own diagrams. Use the search box (top of the sidebar) to jump to any topic during revision.</p>
+      <p>AI assists; a licensed doctor always makes the final decision. Not a certified medical device.</p>
+    </footer>
+  </main>
+</div>
+
+<script>
+/* ============================ THEME TOGGLE ============================ */
+(function(){
+  var root=document.documentElement, btn=document.getElementById('themeBtn');
+  var saved=localStorage.getItem('mediiq-doc-theme');
+  if(saved){root.setAttribute('data-theme',saved);}
+  function sync(){btn.textContent=root.getAttribute('data-theme')==='dark'?'☀️':'🌙';}
+  sync();
+  btn.addEventListener('click',function(){
+    var next=root.getAttribute('data-theme')==='dark'?'light':'dark';
+    root.setAttribute('data-theme',next);localStorage.setItem('mediiq-doc-theme',next);sync();
+  });
+})();
+
+/* ============================ SCROLL PROGRESS ============================ */
+(function(){
+  var bar=document.getElementById('progress');
+  function upd(){
+    var h=document.documentElement.scrollHeight-document.documentElement.clientHeight;
+    var p=h>0?(window.scrollY/h)*100:0;
+    bar.style.width=p+'%';
+  }
+  window.addEventListener('scroll',upd,{passive:true});
+  window.addEventListener('resize',upd);upd();
+})();
+
+/* ============================ ACTIVE SECTION IN SIDEBAR ============================ */
+(function(){
+  var links=Array.prototype.slice.call(document.querySelectorAll('#nav a'));
+  var map={};links.forEach(function(a){var id=a.getAttribute('href').slice(1);map[id]=a;});
+  var sections=links.map(function(a){return document.getElementById(a.getAttribute('href').slice(1));}).filter(Boolean);
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        links.forEach(function(l){l.classList.remove('active');});
+        var a=map[e.target.id];if(a){a.classList.add('active');
+          a.scrollIntoView({block:'nearest'});}
+      }
+    });
+  },{rootMargin:'-15% 0px -78% 0px',threshold:0});
+  sections.forEach(function(s){obs.observe(s);});
+})();
+
+/* ============================ SEARCH FILTER ============================ */
+(function(){
+  var input=document.getElementById('search');
+  var links=Array.prototype.slice.call(document.querySelectorAll('#nav a'));
+  var labels=Array.prototype.slice.call(document.querySelectorAll('#nav .grouplabel'));
+  input.addEventListener('input',function(){
+    var q=input.value.trim().toLowerCase();
+    links.forEach(function(a){
+      var hit=a.textContent.toLowerCase().indexOf(q)>-1;
+      a.classList.toggle('hidden',q!==''&&!hit);
+    });
+    // hide a group label if all its following links are hidden
+    labels.forEach(function(lb){
+      var n=lb.nextElementSibling,anyVisible=false;
+      while(n&&n.classList.contains('grouplabel')===false){
+        if(n.tagName==='A'&&!n.classList.contains('hidden')){anyVisible=true;break;}
+        n=n.nextElementSibling;
+      }
+      lb.style.display=(q!==''&&!anyVisible)?'none':'';
+    });
+  });
+  // keyboard: press "/" to focus search
+  document.addEventListener('keydown',function(e){
+    if(e.key==='/'&&document.activeElement!==input){e.preventDefault();input.focus();}
+  });
+})();
+
+/* ============================ COPY BUTTONS ============================ */
+(function(){
+  document.querySelectorAll('.code .copybtn').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var pre=btn.closest('.code').querySelector('pre');
+      var txt=pre?pre.innerText:'';
+      navigator.clipboard.writeText(txt).then(function(){
+        var old=btn.textContent;btn.textContent='Copied!';btn.classList.add('done');
+        setTimeout(function(){btn.textContent=old;btn.classList.remove('done');},1400);
+      });
+    });
+  });
+})();
+
+/* ============================ MOBILE DRAWER ============================ */
+(function(){
+  var side=document.getElementById('sidebar'),
+      menu=document.getElementById('menuBtn'),
+      back=document.getElementById('backdrop');
+  function open(){side.classList.add('open');back.classList.add('show');}
+  function close(){side.classList.remove('open');back.classList.remove('show');}
+  menu.addEventListener('click',open);
+  back.addEventListener('click',close);
+  side.addEventListener('click',function(e){if(e.target.tagName==='A')close();});
+})();
+</script>
+</body>
+</html>
